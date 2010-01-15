@@ -1,8 +1,6 @@
-<?php
-
-/**
+{**
  * Project:     Seeker
- * File:        include.user.php
+ * File:        current_contract.tpl
  *
  * Seeker is free software: you can redistribute it and/or modify it 
  * under the terms of the GNU General Public License as published 
@@ -19,19 +17,20 @@
  * http://www.gnu.org/licenses/.
  *
  * @link http://code.google.com/p/seeker-game/
- * @copyright 2010 Speed School Student Council
+ * @copyright 2009 Speed School Student Council
  * @author Jared Hatfield
  * @package seeker-game
  * @version 1.0
- */
+ *}
+{include file="header.tpl" title=Seeker}
+{if $contract_id eq -1}
+    <h2>No active contracts.</h2>
+{else}
+    <h3>Current Contracts</h3>
+	<b>Current Target:</b> {$contract_info.target_name}<br />
+	<b>Contract Issued:</b> {$contract_info.assigned}<br />
+	<b>Contract Expires:</b> {$contract_info.expiration}<br />
+	<b>Time Remaining:</b> {$contract_hours_left} hours and {$contract_minutes_left} minutes<br />
+{/if}
 
-function get_active_users(){
-	$query = "SELECT `id`, `username`, `name`, `email`, `phone` FROM users u WHERE `active` = 1 ORDER BY `name`;";
-	$result = mysql_query($query);
-	$val = array();
-	while($row = mysql_fetch_assoc($result)){
-		$val[] = $row;
-	}
-	return $val;
-}
-?>
+{include file="footer.tpl"}

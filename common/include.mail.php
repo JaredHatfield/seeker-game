@@ -2,7 +2,7 @@
 
 /**
  * Project:     Seeker
- * File:        include.user.php
+ * File:        include.mail.php
  *
  * Seeker is free software: you can redistribute it and/or modify it 
  * under the terms of the GNU General Public License as published 
@@ -25,13 +25,23 @@
  * @version 1.0
  */
 
-function get_active_users(){
-	$query = "SELECT `id`, `username`, `name`, `email`, `phone` FROM users u WHERE `active` = 1 ORDER BY `name`;";
-	$result = mysql_query($query);
-	$val = array();
-	while($row = mysql_fetch_assoc($result)){
-		$val[] = $row;
+function send_contract_notification($contract_id){
+	global $_CONFIG;
+	if($_CONFIG['sendemail']){
+		$info = get_contract_information($contract_id);
+		$hours = ceil($info['seconds_remaining']/60/60);
+		$subject = "[Seeker] New Contract for " . $info['assassin_name'];
+		$to = $info['assassin_email'];
+		$body = $info['assassin_name'] . ",\n\n" . "You have been assigned a new contract.  Your target's name is " . $info['target_name'];
+		$body .= ".  You have just under " . $hours . " hours to complete your objective before the contract expires.\n\n Good luck!";
+		
+		
+		echo $subject . "<br/>" . $to . "<br/>" . $body . "<br/><br/>";
+		
+		// TODO: add the code to send the actual email;
 	}
-	return $val;
 }
+
+
+
 ?>

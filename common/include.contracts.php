@@ -19,11 +19,34 @@
  * http://www.gnu.org/licenses/.
  *
  * @link http://code.google.com/p/seeker-game/
- * @copyright 2009 Speed School Student Council
+ * @copyright 2010 Speed School Student Council
  * @author Jared Hatfield
  * @package seeker-game
  * @version 1.0
  */
 
+function get_user_contract_id($user_id){
+	$query  = "SELECT `id` FROM contract WHERE `assassin` = " . $user_id . " AND `status` = 1;";
+	$result = mysql_query($query);
+	if(mysql_num_rows($result) == 1){
+		$row = mysql_fetch_row($result);
+		return $row[0];
+	}
+	else{
+		return -1;
+	}
+}
 
+function get_contract_information($contract_id){
+	$query  = "SELECT c.id, c.assassin, ua.name assassin_name, ua.email assassin_email, c.target, ut.name target_name, ";
+	$query .= "assigned, expiration, time_to_sec(timediff(expiration, NOW())) seconds_remaining, updated, status FROM contract c ";
+	$query .= "JOIN users ua ON c.assassin = ua.id JOIN users ut ON c.target = ut.id WHERE c.`id` = " . $contract_id . ";";
+	$result = mysql_query($query);
+	$row = mysql_fetch_assoc($result);
+	return $row;
+}
+
+function check_kill_attempt($contract_id, $key){
+	
+}
 ?>

@@ -79,7 +79,7 @@
 	<tr>
 		<td>
 			<center>
-			<a href="./index.php">Home</a> | <a href="./index.php?page=listusers">Users</a>
+			<a href="./index.php">Home</a> | <a href="./index.php?page=listusers">Users</a> | <a href="./index.php?page=current_contract">Current Contract</a>
 			</center>
 		</td>
 	</tr>

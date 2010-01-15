@@ -19,7 +19,7 @@
  * http://www.gnu.org/licenses/.
  *
  * @link http://code.google.com/p/seeker-game/
- * @copyright 2009 Speed School Student Council
+ * @copyright 2010 Speed School Student Council
  * @author Jared Hatfield
  * @package seeker-game
  * @version 1.0
@@ -27,6 +27,7 @@
 include_once("./common/include.contracts.php");
 include_once("./common/include.user.php");
 include_once("./common/include.manage.php");
+include_once("./common/include.mail.php");
 
 
 $conn = mysql_connect($_CONFIG['host'], $_CONFIG['username'] , $_CONFIG['password'] ) or die ('Error connecting to mysql');
