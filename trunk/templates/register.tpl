@@ -1,8 +1,6 @@
-<?php
-
-/**
+{**
  * Project:     Seeker
- * File:        include.user.php
+ * File:        register.tpl
  *
  * Seeker is free software: you can redistribute it and/or modify it 
  * under the terms of the GNU General Public License as published 
@@ -23,15 +21,20 @@
  * @author Jared Hatfield
  * @package seeker-game
  * @version 1.0
- */
-
-function get_active_users(){
-	$query = "SELECT `id`, `username`, `name`, `email`, `phone` FROM users u WHERE `active` = 1 ORDER BY `name`;";
-	$result = mysql_query($query);
-	$val = array();
-	while($row = mysql_fetch_assoc($result)){
-		$val[] = $row;
-	}
-	return $val;
-}
-?>
+ *}
+{include file="header.tpl" title=Seeker}
+<h3>Register</h3>
+<FORM action="./index.php?page=process" method="post">
+	<P>
+	Username: <INPUT type="text" name="uname"><br />
+	Password: <INPUT type="password" name="passwd1"><br />
+	Password Again: <INPUT type="password" name="passwd2"><br />
+	Full Name: <INPUT type="password" name="fname"><br />
+	Email Address: <INPUT type="password" name="email"><br />
+	
+	{*<INPUT type="hidden" name="key" value="{php}echo secureform_add('register', 4){/php}">*}
+	<input type="hidden" name="action" value="register">
+	<INPUT type="submit" value="Send">
+	</P>
+ </FORM>
+{include file="footer.tpl"}

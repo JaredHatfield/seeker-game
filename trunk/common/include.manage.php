@@ -19,7 +19,7 @@
  * http://www.gnu.org/licenses/.
  *
  * @link http://code.google.com/p/seeker-game/
- * @copyright 2009 Speed School Student Council
+ * @copyright 2010 Speed School Student Council
  * @author Jared Hatfield
  * @package seeker-game
  * @version 1.0
@@ -36,7 +36,12 @@ function assign_new_contracts(){
 	
 	// Assign contracts to those students
 	for($i = 0; $i < sizeof($val); $i++){
-		echo print_r($val[$i]);
+		$assassin = $val[$i]['id'];
+		$target = get_target_for($assassin);
+		// There is a potential target
+		if($target != -1){
+			add_contract($assassin, $target, 12);
+		}
 	}
 }
 
@@ -65,6 +70,10 @@ function add_contract($assassin, $target, $hour){
 	$query  = "INSERT INTO contract (`assassin`, `target`, `assigned`, `expiration`, `updated`, `status`) ";
 	$query .= "VALUE (" . $assassin . "," . $target . ",NOW(),ADDDATE(NOW(), INTERVAL " . $hour . " HOUR),NOW(), 1);";
 	$result = mysql_query($query);
+	
+	// We need to send an email to the user so they know about their contract
+	$contract_id = mysql_insert_id();
+	send_contract_notification($contract_id);
 }
 
 function contract_open_count($user_id){
