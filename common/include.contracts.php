@@ -46,10 +46,22 @@ function get_contract_information($contract_id){
 	return $row;
 }
 
+function get_users_contracts($user_id){
+	$query  = "SELECT c.`id`, c.`target`, ut.`name` target_name, c.`assigned`, c.`expiration`, c.`updated`, c.`status`, s.`value` status_name ";
+	$query .= "FROM contract c JOIN status s ON c.status = s.id JOIN users ut ON c.target = ut.id WHERE `assassin` = " . $user_id . " ";
+	$query .= "AND c.`status` != 1 ORDER BY `assigned` DESC;";
+	$result = mysql_query($query);
+	$val = array();
+	while($row = mysql_fetch_assoc($result)){
+		$val[] = $row;
+	}
+	return $val;
+}
+
 function kill_attempt($contract_id, $key){
 	$contract_info = get_contract_information($contract_id);
 	$target_info = get_user_information($contract_info['target']);
-	if($key == $target_info['secret']){
+	if($key == strtolower($target_info['secret'])){
 		// The secrets match, the kill was a success so update the game state
 		
 		// Mark this contract as successful
@@ -58,14 +70,15 @@ function kill_attempt($contract_id, $key){
 		
 		// Tell the assassin that he/she was successful
 		send_contract_success($contract_id);
+		post_news_item("<a href=\"./index.php?page=user&id=" . $contract_info['assassin'] . "\">" . $contract_info['assassin_name'] . "</a> successfully completed a contract by locating <a href=\"./index.php?page=user&id=" . $contract_info['target'] . "\">" . $contract_info['target_name'] . "</a>");
 		
 		// Get a list of contracts that were missed because the target was killed
 		$query  = "SELECT `id` FROM contract WHERE `status` = 1 AND `assassin` != " . $contract_info['assassin'];
 		$query .= " AND `target` = " . $contract_info['target'] . ";";
 		$result = mysql_query($query);
-		$missed = array();
+		$missed_contracts = array();
 		while($row = mysql_fetch_assoc($result)){
-			$missed[] = $row['id'];
+			$missed_contracts[] = $row['id'];
 		}
 		
 		// Mark other contracts for this target as failed
@@ -73,8 +86,9 @@ function kill_attempt($contract_id, $key){
 		$result = mysql_query($query);
 		
 		// Tell those who missed their target that they missed their target
-		for($i = 0; $i < sizeof($missed); $i++){
-			send_contract_missed($missed[$i], $contract_info['assassin']);
+		for($i = 0; $i < sizeof($missed_contracts); $i++){
+			send_contract_missed($missed_contracts[$i], $contract_info['assassin']);
+			post_news_item_failed($missed_contracts[$i], "missed");
 		}
 		
 		// Mark the targets contract as failed if this person had an active contract
@@ -97,6 +111,9 @@ function kill_attempt($contract_id, $key){
 		
 		// Tell the target that they were killed
 		send_contract_failed_by_death($contract_info['target'], $contract_info['assassin'], $targets_failed_contract_id);
+		if($targets_failed_contract_id != -1){
+			post_news_item_failed($targets_failed_contract_id, "killed");
+		}
 		
 		
 		// Issue new contracts

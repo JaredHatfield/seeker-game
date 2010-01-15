@@ -1,6 +1,6 @@
 {**
  * Project:     Seeker
- * File:        listusers.tpl
+ * File:        user.tpl
  *
  * Seeker is free software: you can redistribute it and/or modify it 
  * under the terms of the GNU General Public License as published 
@@ -17,31 +17,31 @@
  * http://www.gnu.org/licenses/.
  *
  * @link http://code.google.com/p/seeker-game/
- * @copyright 2009 Speed School Student Council
+ * @copyright 2010 Speed School Student Council
  * @author Jared Hatfield
  * @package seeker-game
  * @version 1.0
  *}
 {include file="header.tpl" title=Seeker}
 
+<h3>{$fullname}</h3>
+
 <table>
 {strip}
 	<tr bgcolor="#cccccc">
-		<td>Name</td>
+		<td>Target</td>
+		<td>Assigned</td>
+		<td>Updated</td>
 		<td>Status</td>
 	</tr>
 {/strip}
-{section name=mysec loop=$all_users}
+{section name=mysec loop=$contracts}
 {strip}
 	<tr bgcolor="{cycle values="#eeeeee,#dddddd"}">
-		<td><a href="./index.php?page=user&id={$all_users[mysec].id}">{$all_users[mysec].name}</a></td>
-		<td>
-			{if $all_users[mysec].alive eq 1}
-				Alive
-			{else}
-				Respawn in {$all_users[mysec].delay}
-			{/if}
-		</td>
+		<td><a href="./index.php?page=user&id={$contracts[mysec].target}">{$contracts[mysec].target_name}</a></td>
+		<td>{$contracts[mysec].assigned}</td>
+		<td>{$contracts[mysec].updated}</td>
+		<td>{$contracts[mysec].status_name}</td>
 	</tr>
 {/strip}
 {/section}

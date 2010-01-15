@@ -42,5 +42,6 @@ $_CONFIG['sendemail'] = TRUE;
 $_CONFIG['secretlength'] = 4;
 $_CONFIG['secretalphabet'] = "23456789bcdfghjkmnpqrstvwxyz"; 
 
+$_CONFIG['newslength'] = 10;
 
 ?>
