@@ -25,6 +25,8 @@
  * @version 1.0
  */
 
+include_once("./configs/config.php");
+include_once("./common/include.index.php");
 
 
 ?>
