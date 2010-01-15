@@ -44,4 +44,17 @@ A total of <b>{$total_contract_count}</b> contracts have been issued.
 <br /><br />
 Right now there are <b>{$open_contract_count}</b> open contracts.
 
+<br />
+<h2>News</h2>
+<table>
+{section name=mysec loop=$news}
+{strip}
+	<tr bgcolor="{cycle values="#eeeeee,#dddddd"}">
+		<td>{$news[mysec].message}</a></td>
+		<td>{$news[mysec].timestamp}</a></td>
+	</tr>
+{/strip}
+{/section}
+</table>
+
 {include file="footer.tpl"}

@@ -26,7 +26,7 @@
  */
 
 function get_active_users(){
-	$query = "SELECT `id`, `username`, `name`, `email`, `phone` FROM users u WHERE `active` = 1 ORDER BY `name`;";
+	$query = "SELECT `id`, `username`, `name`, `email`, `phone`, UNIX_TIMESTAMP(`spawn`) spawn FROM users u WHERE `active` = 1 ORDER BY `name`;";
 	$result = mysql_query($query);
 	$val = array();
 	while($row = mysql_fetch_assoc($result)){

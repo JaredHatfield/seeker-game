@@ -25,6 +25,26 @@
  * @version 1.0
  */
 
+function expire_contracts(){
+	// Get the id's of the contracts that have expired and need to be marked as such
+	$query = "SELECT `id` FROM contract WHERE `expiration` < NOW() AND `status` = 1;";
+	$result = mysql_query($query);
+	$val = array();
+	while($row = mysql_fetch_assoc($result)){
+		$val[] = $row['id'];
+	}
+	
+	// Go through all of these contracts
+	for($i = 0; $i < sizeof($val); $i++){
+		// Mark the contract as expired
+		$query = "UPDATE contract SET `status` = 3, `updated` = NOW() WHERE `id` = " . $val[$i] . " AND `expiration` < NOW() AND `status` = 1;";
+		$result = mysql_query($query);
+		
+		// Post this to the news feed
+		post_news_item_failed($val[$i], "expired");
+	}
+}
+ 
 function assign_new_contracts(){
 	// Find all of the students that do not have a contract
 	$query = "SELECT `id` FROM users u WHERE `id` NOT IN (SELECT `assassin` FROM contract WHERE `status` = 1) AND `spawn` < NOW();";
@@ -35,13 +55,21 @@ function assign_new_contracts(){
 	}
 	
 	// Assign contracts to those students
+	$count = 0;
 	for($i = 0; $i < sizeof($val); $i++){
 		$assassin = $val[$i]['id'];
 		$target = get_target_for($assassin);
 		// There is a potential target
 		if($target != -1){
 			add_contract($assassin, $target, 12);
+			$count++;
 		}
+	}
+	if($count == 1){
+		post_news_item("A new contract has been issued.");
+	}
+	else if($count > 1){
+		post_news_item($count . " new contracts have been issued.");
 	}
 }
 

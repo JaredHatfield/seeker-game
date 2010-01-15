@@ -29,6 +29,9 @@ require './libs/Smarty.class.php';
 include_once("./configs/config.php");
 include_once("./common/include.index.php");
 
+// Lazy cron to expire contracts
+expire_contracts();
+
 // Smarty
 $smarty = new Smarty;
 $smarty->compile_check = true;
@@ -54,8 +57,7 @@ if(!isset($_GET['page'])){
 	$smarty->assign("total_contract_count", get_total_contract_count());
 	$smarty->assign("active_member_count", get_active_member_count());
 	$smarty->assign("live_member_count", get_live_member_count());
-	
-	
+	$smarty->assign("news", get_recent_news_items());
 	$smarty->display('index.tpl');
 }
 else if($_GET['page'] == "logoff"){
@@ -114,9 +116,6 @@ else if($_GET['page'] == "process"){
 			$smarty->display('redirect.tpl');
 			exit();
 		}
-		
-		
-		
 	}
 	else if($action == "killtarget"){
 		$outcome = kill_attempt(mysql_real_escape_string($_POST['contract_id']), mysql_real_escape_string($_POST['secret']));
@@ -138,9 +137,28 @@ else if($_GET['page'] == "login"){
 else if($_GET['page'] == "register"){
 	$smarty->display('register.tpl');
 }
+else if($_GET['page'] == "user"){
+	$page_userid = mysql_real_escape_string($_GET['id']);
+	$page_user = get_user_information($page_userid);
+	$smarty->assign("fullname", $page_user['name']);
+	$smarty->assign("contracts", get_users_contracts($page_userid));
+	$smarty->display('user.tpl');
+}
 else if($_GET['page'] == "listusers"){
-	// other pages
-	$smarty->assign("all_users", get_active_users());
+	$users = get_active_users();
+	for($i = 0; $i < sizeof($users); $i++){
+		if(date(time()) > $users[$i]['spawn']){
+			$users[$i]['alive'] = 1;
+		}
+		else{
+			$users[$i]['alive'] = 0;
+			$diff = $users[$i]['spawn'] - date(time());
+			$contract_hours_left = floor($diff/60/60);
+			$contract_minutes_left =  floor(($diff - $contract_hours_left*60*60)/60);
+			$users[$i]['delay'] = $contract_hours_left . " hours and " . $contract_minutes_left . " minutes";
+		}
+	}
+	$smarty->assign("all_users", $users);
 	$smarty->display('listusers.tpl');
 }
 else if($_GET['page'] == "current_contract"){
