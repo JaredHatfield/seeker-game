@@ -1,8 +1,6 @@
-<?php
-
-/**
+{**
  * Project:     Seeker
- * File:        include.user.php
+ * File:        footer.tpl
  *
  * Seeker is free software: you can redistribute it and/or modify it 
  * under the terms of the GNU General Public License as published 
@@ -23,15 +21,12 @@
  * @author Jared Hatfield
  * @package seeker-game
  * @version 1.0
- */
-
-function get_active_users(){
-	$query = "SELECT `id`, `username`, `name`, `email`, `phone` FROM users u WHERE `active` = 1 ORDER BY `name`;";
-	$result = mysql_query($query);
-	$val = array();
-	while($row = mysql_fetch_assoc($result)){
-		$val[] = $row;
-	}
-	return $val;
-}
-?>
+ *}
+		</td>
+	</tr>
+	<tr>
+		<td style="text-align: center; font-size:10px">Powered By: <a href="http://code.google.com/p/seeker-game/">seeker-game</a></td>
+	</tr>
+</table>
+</body>
+</html>

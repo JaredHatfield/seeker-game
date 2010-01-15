@@ -24,6 +24,10 @@
  * @package seeker-game
  * @version 1.0
  */
+include_once("./common/include.contracts.php");
+include_once("./common/include.user.php");
+include_once("./common/include.manage.php");
+
 
 $conn = mysql_connect($_CONFIG['host'], $_CONFIG['username'] , $_CONFIG['password'] ) or die ('Error connecting to mysql');
 $selected = mysql_select_db($_CONFIG['database'], $conn) or die ('Database unavailable');

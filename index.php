@@ -25,8 +25,34 @@
  * @version 1.0
  */
 
+require './libs/Smarty.class.php';
 include_once("./configs/config.php");
 include_once("./common/include.index.php");
+
+
+$smarty = new Smarty;
+$smarty->compile_check = true;
+//$smarty->debugging = true;
+$smarty->assign("pagename", "");
+
+if(!isset($_GET['page'])){
+	// Main page
+	$smarty->display('index.tpl');
+}
+else if($_GET['page'] == "listusers"){
+	// other pages
+	$smarty->assign("all_users", get_active_users());
+	$smarty->display('listusers.tpl');
+}
+else if($_GET['page'] == "test"){
+	// Debuging information here
+	
+}
+else{
+	$smarty->display('notfound.tpl');
+}
+
+
 
 
 ?>
