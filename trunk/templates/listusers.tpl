@@ -1,8 +1,6 @@
-<?php
-
-/**
+{**
  * Project:     Seeker
- * File:        include.user.php
+ * File:        listusers.tpl
  *
  * Seeker is free software: you can redistribute it and/or modify it 
  * under the terms of the GNU General Public License as published 
@@ -23,15 +21,24 @@
  * @author Jared Hatfield
  * @package seeker-game
  * @version 1.0
- */
+ *}
+{include file="header.tpl" title=Seeker}
 
-function get_active_users(){
-	$query = "SELECT `id`, `username`, `name`, `email`, `phone` FROM users u WHERE `active` = 1 ORDER BY `name`;";
-	$result = mysql_query($query);
-	$val = array();
-	while($row = mysql_fetch_assoc($result)){
-		$val[] = $row;
-	}
-	return $val;
-}
-?>
+<table>
+{strip}
+	<tr bgcolor="#cccccc">
+		<td>Name</td>
+	</tr>
+{/strip}
+{section name=mysec loop=$all_users}
+{strip}
+	<tr bgcolor="{cycle values="#eeeeee,#dddddd"}">
+		<td class="editdrill">
+			<a href="./index.php?page=user&id={$all_users[mysec].id}">{$all_users[mysec].name}</a>
+		</td>
+	</tr>
+{/strip}
+{/section}
+</table>
+
+{include file="footer.tpl"}
