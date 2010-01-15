@@ -49,6 +49,13 @@ else{
 // Process the page
 if(!isset($_GET['page'])){
 	// Main page
+	$smarty->assign("open_contract_count", get_open_contract_count());
+	$smarty->assign("successful_contract_count", get_successful_contract_count());
+	$smarty->assign("total_contract_count", get_total_contract_count());
+	$smarty->assign("active_member_count", get_active_member_count());
+	$smarty->assign("live_member_count", get_live_member_count());
+	
+	
 	$smarty->display('index.tpl');
 }
 else if($_GET['page'] == "logoff"){
@@ -82,6 +89,33 @@ else if($_GET['page'] == "process"){
 		exit();
 	}
 	else if($action == "register"){
+		$username = mysql_real_escape_string($_POST['uname']);
+		$password1 = mysql_real_escape_string($_POST['passwd1']);
+		$password2 = mysql_real_escape_string($_POST['passwd2']);
+		$fullname = mysql_real_escape_string($_POST['fname']);
+		$emailaddress = mysql_real_escape_string($_POST['email']);
+		
+		if($password1 != $password2){
+			$smarty->assign("message","Error: The passwords you entered did not match, try registering again.");
+			$smarty->display('error.tpl');
+			exit();
+		}
+		else if(strlen($password1) <= 6){
+			$smarty->assign("message","Error: Your password must be at least 6 characters long.");
+			$smarty->display('error.tpl');
+			exit();
+		}
+		else{
+			$_SESSION['userid'] = register($username, $password1, $fullname, $emailaddress);
+			
+			// TODO: Send a welcome email to the user
+			
+			$smarty->assign("url","./index.php");
+			$smarty->display('redirect.tpl');
+			exit();
+		}
+		
+		
 		
 	}
 	else if($action == "killtarget"){
@@ -133,6 +167,7 @@ else if($_GET['page'] == "process_contract"){
 }
 else if($_GET['page'] == "test"){
 	// Debuging information here
+	assign_new_contracts();
 }
 else{
 	$smarty->display('notfound.tpl');
