@@ -1,6 +1,6 @@
 {**
  * Project:     Seeker
- * File:        login.tpl
+ * File:        process_contract.tpl
  *
  * Seeker is free software: you can redistribute it and/or modify it 
  * under the terms of the GNU General Public License as published 
@@ -23,14 +23,12 @@
  * @version 1.0
  *}
 {include file="header.tpl" title=Seeker}
-<h3>Login</h3>
-<FORM action="./index.php?page=process" method="post">
-	<P>
-	Username: <INPUT type="text" name="uname"><br />
-	Password: <INPUT type="password" name="passwd"><br />
-	{*<INPUT type="hidden" name="key" value="{php}echo secureform_add('login', 4){/php}">*}
-	<input type="hidden" name="action" value="login">
-	<INPUT type="submit" value="Send">
-	</P>
- </FORM>
+
+{if $success eq 1}
+	<h2>The secret you entered was correct!  Your target has been eliminated.</h2>
+{else}
+	<h2>Error: The secret you entred was not correct.</h2>
+{/if}
+
+
 {include file="footer.tpl"}

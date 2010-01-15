@@ -42,4 +42,23 @@ function get_user_information($user_id){
 	return $row;
 }
 
+function get_user_id($username){
+	$query = "SELECT `id` FROM users WHERE `username` = '" . $username . "';";
+	$result = mysql_query($query);
+	$row = mysql_fetch_row($result);
+	return $row[0];
+}
+
+function authenticate($username, $password){
+	$query = "SELECT COUNT(*) number FROM users WHERE `username` = '" . $username . "' AND `password` = '" . $password . "';";
+	$result = mysql_query($query);
+	$row = mysql_fetch_assoc($result);
+	if($row['number'] == 1){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
 ?>
