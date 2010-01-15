@@ -25,21 +25,64 @@
  * @version 1.0
  */
 
-function send_contract_notification($contract_id){
+function send_message($to, $subject, $body){
 	global $_CONFIG;
 	if($_CONFIG['sendemail']){
-		$info = get_contract_information($contract_id);
-		$hours = ceil($info['seconds_remaining']/60/60);
-		$subject = "[Seeker] New Contract for " . $info['assassin_name'];
-		$to = $info['assassin_email'];
-		$body = $info['assassin_name'] . ",\n\n" . "You have been assigned a new contract.  Your target's name is " . $info['target_name'];
-		$body .= ".  You have just under " . $hours . " hours to complete your objective before the contract expires.\n\n Good luck!";
-		
-		
-		echo $subject . "<br/>" . $to . "<br/>" . $body . "<br/><br/>";
-		
 		// TODO: add the code to send the actual email;
 	}
+	$query = "INSERT INTO mail (`to`, `subject`, `body`, `when`) VALUES(\"" . mysql_real_escape_string($to);
+	$query .= "\", \"" . mysql_real_escape_string($subject) . "\", \"" . mysql_real_escape_string($body) . "\", NOW());";
+	$result = mysql_query($query);
+}
+
+function send_contract_notification($contract_id){
+	$info = get_contract_information($contract_id);
+	$hours = ceil($info['seconds_remaining']/60/60);
+	$subject = "[Seeker] New Contract Issued";
+	$to = $info['assassin_email'];
+	$body = $info['assassin_name'] . ",\n\n" . "You have been assigned a new contract.  Your target's name is " . $info['target_name'];
+	$body .= ".  You have just under " . $hours . " hours to complete your objective before the contract expires.\n\n Good luck!";
+	send_message($to, $subject, $body);
+}
+
+function send_contract_success($contract_id){
+	$info = get_contract_information($contract_id);
+	$subject = "[Seeker] Successfully Completed Contract!";
+	$to = $info['assassin_email'];
+	$body = $info['assassin_name'] . ",\n\n" . "Congratulations!  You have successfully completed the following contract:\n\n";
+	$body .= "Target: " . $info['target_name'] . "\n";
+	$body .= "Issued: " . $info['assigned'] . "\n";
+	$body .= "Completed: " . $info['updated'] . "\n";
+	send_message($to, $subject, $body);
+}
+
+function send_contract_missed($contract_id, $actual_assassin_id){
+	$info = get_contract_information($contract_id);
+	$actual_assassin = get_user_information($actual_assassin_id);
+	$subject = "[Seeker] You Missed Your Target";
+	$to = $info['assassin_email'];
+	$body = $info['assassin_name'] . ",\n\n" . "You have failed following contract:\n\n";
+	$body .= "Target: " . $info['target_name'] . "\n";
+	$body .= "Issued: " . $info['assigned'] . "\n";
+	$body .= "Failed: " . $info['updated'] . "\n\n\n";
+	$body .= $actual_assassin['name'] . " made it to the target before you did.  Better luck next time.";
+	send_message($to, $subject, $body);
+}
+
+
+function send_contract_failed_by_death($user_id, $actual_assassin_id, $contract_id){
+	$user_info = get_user_information($user_id);
+	$actual_assassin = get_user_information($actual_assassin_id);
+	$subject = "[Seeker] You Have Been Eliminated!";
+	$to = $user_info['email'];
+	$body = $user_info['name'] . ",\n\n" . "You have been eliminated by " . $actual_assassin['name'] . "!\n\n";
+	$body .= "Your respawn time has been set for " . $user_info['spawn'] . " at which time you will be able to get a new contract.\n\n";
+	if($contract_id != -1){
+		$info = get_contract_information($contract_id);
+		$body .= "Additionally, you have failed to complete your contract on " . $info['target_name'] . ".\n\n";
+	}
+	$body .= "As a result of your elimination, your secret has been changed to " . $user_info['secret'] . ".";
+	send_message($to, $subject, $body);
 }
 
 

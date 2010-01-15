@@ -34,4 +34,12 @@ function get_active_users(){
 	}
 	return $val;
 }
+
+function get_user_information($user_id){
+	$query = "SELECT `id`, `username`, `name`, `email`, `phone`, `secret`, `active`, `spawn` FROM users WHERE `id` = " . $user_id . ";";
+	$result = mysql_query($query);
+	$row = mysql_fetch_assoc($result);
+	return $row;
+}
+
 ?>

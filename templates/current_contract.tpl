@@ -31,6 +31,14 @@
 	<b>Contract Issued:</b> {$contract_info.assigned}<br />
 	<b>Contract Expires:</b> {$contract_info.expiration}<br />
 	<b>Time Remaining:</b> {$contract_hours_left} hours and {$contract_minutes_left} minutes<br />
+	<b>Secret: 
+	<FORM action="./index.php?page=process" method="post">
+		<INPUT type="text" name="secret">
+		<input type="hidden" name="contract_id" value="{$contract_id}">
+		{*<INPUT type="hidden" name="key" value="{php}echo secureform_add('killtarget', 4){/php}">*}
+		<input type="hidden" name="action" value="killtarget">
+		<INPUT type="submit" value="Send">
+ </FORM>
 {/if}
 
 {include file="footer.tpl"}
