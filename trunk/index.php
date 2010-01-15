@@ -39,6 +39,10 @@ if(!isset($_GET['page'])){
 	// Main page
 	$smarty->display('index.tpl');
 }
+else if($_GET['page'] == "process"){
+	// This is special, this is where stuff is actually executed and then redirected
+	print_r($_POST);
+}
 else if($_GET['page'] == "login"){
 	$smarty->display('login.tpl');
 }
@@ -65,7 +69,6 @@ else if($_GET['page'] == "current_contract"){
 }
 else if($_GET['page'] == "test"){
 	// Debuging information here
-	
 }
 else{
 	$smarty->display('notfound.tpl');

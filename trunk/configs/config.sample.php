@@ -39,4 +39,8 @@ $_CONFIG['password'] = 'password';
 
 $_CONFIG['sendemail'] = TRUE;
 
+$_CONFIG['secretlength'] = 4;
+$_CONFIG['secretalphabet'] = "23456789bcdfghjkmnpqrstvwxyz"; 
+
+
 ?>
