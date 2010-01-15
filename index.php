@@ -29,19 +29,74 @@ require './libs/Smarty.class.php';
 include_once("./configs/config.php");
 include_once("./common/include.index.php");
 
-
+// Smarty
 $smarty = new Smarty;
 $smarty->compile_check = true;
 //$smarty->debugging = true;
 $smarty->assign("pagename", "");
 
+
+// User management
+if(isset($_SESSION['userid']) && $_SESSION['userid'] != -1){
+	$current_user = get_user_information($_SESSION['userid']);
+	$smarty->assign("logged_in", 1);
+	$smarty->assign("user_name", $current_user['name']);
+}
+else{
+	$smarty->assign("logged_in", 0);
+}
+
+// Process the page
 if(!isset($_GET['page'])){
 	// Main page
 	$smarty->display('index.tpl');
 }
+else if($_GET['page'] == "logoff"){
+	$_SESSION['userid'] = -1;
+	$smarty->assign("url","./index.php");
+	$smarty->display('redirect.tpl');
+	exit();
+}
 else if($_GET['page'] == "process"){
 	// This is special, this is where stuff is actually executed and then redirected
-	print_r($_POST);
+	if(!isset($_POST['action'])){
+		$smarty->assign("url","./index.php");
+		$smarty->display('redirect.tpl');
+		exit();
+	}
+	
+	$action = mysql_real_escape_string($_POST['action']);
+	
+	// Process the input
+	if($action == "login"){
+		if(authenticate(mysql_real_escape_string($_POST['uname']), mysql_real_escape_string($_POST['passwd']))){
+			// The user is logged in
+			$_SESSION['userid'] = get_user_id(mysql_real_escape_string($_POST['uname']));
+			$smarty->assign("url","./index.php");
+		}
+		else{
+			// Incorrect username or password
+			$smarty->assign("url","./index.php?page=login");
+		}
+		$smarty->display('redirect.tpl');
+		exit();
+	}
+	else if($action == "register"){
+		
+	}
+	else if($action == "killtarget"){
+		$outcome = kill_attempt(mysql_real_escape_string($_POST['contract_id']), mysql_real_escape_string($_POST['secret']));
+		if($outcome){
+			// The kill was successful
+			$smarty->assign("url","./index.php?page=process_contract&outcome=1");
+		}
+		else{
+			// The kill was not successful
+			$smarty->assign("url","./index.php?page=process_contract&outcome=0");
+		}
+		$smarty->display('redirect.tpl');
+		exit();
+	}
 }
 else if($_GET['page'] == "login"){
 	$smarty->display('login.tpl');
@@ -55,17 +110,26 @@ else if($_GET['page'] == "listusers"){
 	$smarty->display('listusers.tpl');
 }
 else if($_GET['page'] == "current_contract"){
-	$contract_id = get_user_contract_id(2); // TODO: The user's id should be passed to this when they are logged in
+	$contract_id = get_user_contract_id($_SESSION['userid']);
 	$smarty->assign("contract_id", $contract_id);
 	if($contract_id != -1){
 		$contract_info = get_contract_information($contract_id);
 		$contract_hours_left = floor($contract_info['seconds_remaining']/60/60);
-		$contract_minutes_left =  ceil(($contract_info['seconds_remaining'] - $contract_hours_left*60*60)/60);
+		$contract_minutes_left =  floor(($contract_info['seconds_remaining'] - $contract_hours_left*60*60)/60);
 		$smarty->assign("contract_hours_left", $contract_hours_left);
 		$smarty->assign("contract_minutes_left", $contract_minutes_left);
 		$smarty->assign("contract_info",$contract_info);
 	}
 	$smarty->display('current_contract.tpl');
+}
+else if($_GET['page'] == "process_contract"){
+	if(isset($_GET['outcome']) && $_GET['outcome'] == "1"){
+		$smarty->assign("success", 1);
+	}
+	else{
+		$smarty->assign("success", 2);
+	}
+	$smarty->display('process_contract.tpl');
 }
 else if($_GET['page'] == "test"){
 	// Debuging information here

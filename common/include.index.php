@@ -24,6 +24,9 @@
  * @package seeker-game
  * @version 1.0
  */
+
+ session_start();
+ 
 include_once("./common/include.contracts.php");
 include_once("./common/include.user.php");
 include_once("./common/include.manage.php");
