@@ -35,6 +35,19 @@ function send_message($to, $subject, $body){
 	$result = mysql_query($query);
 }
 
+function send_welcome_email($userid){
+	$info = get_user_information($userid);
+	$subject = "[Seeker] Welcome to the Game";
+	$to = $info['email'];
+	$body  = $info['name'] . ",\n\n" . "Welcome to Seeker.  This email is just the notification that you have registered.  ";
+	$body .= "You will receive an email when you are issued a contract.\n\n";
+	$body .= "Your secret is " . $info['secret'] . " and you will give this to someone that eliminates you, keep this handy.  ";
+	$body .= "When you are eliminated your secret will change.\n\n";
+	$body .= "To eliminate your contract you can enter your contracts secret on the website or via text message\n\n";
+	$body .= "Good luck!";
+	send_message($to, $subject, $body);
+}
+
 function send_contract_notification($contract_id){
 	$info = get_contract_information($contract_id);
 	$hours = ceil($info['seconds_remaining']/60/60);

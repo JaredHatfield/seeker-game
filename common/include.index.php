@@ -36,4 +36,39 @@ include_once("./common/include.mail.php");
 $conn = mysql_connect($_CONFIG['host'], $_CONFIG['username'] , $_CONFIG['password'] ) or die ('Error connecting to mysql');
 $selected = mysql_select_db($_CONFIG['database'], $conn) or die ('Database unavailable');
 
+function get_open_contract_count(){
+	$query = "SELECT COUNT(*) number FROM contract WHERE `status` = 1;";
+	$result = mysql_query($query);
+	$row = mysql_fetch_row($result);
+	return $row[0];
+}
+
+function get_successful_contract_count(){
+	$query = "SELECT COUNT(*) FROM contract WHERE `status` = 2;";
+	$result = mysql_query($query);
+	$row = mysql_fetch_row($result);
+	return $row[0];
+}
+
+function get_total_contract_count(){
+	$query = "SELECT COUNT(*) FROM contract;";
+	$result = mysql_query($query);
+	$row = mysql_fetch_row($result);
+	return $row[0];
+}
+
+function get_active_member_count(){
+	$query = "SELECT COUNT(*) number FROM users WHERE `active` = 1;";
+	$result = mysql_query($query);
+	$row = mysql_fetch_row($result);
+	return $row[0];
+}
+
+function get_live_member_count(){
+	$query = "SELECT COUNT(*) number FROM users WHERE `active` = 1 AND `spawn` < NOW();";
+	$result = mysql_query($query);
+	$row = mysql_fetch_row($result);
+	return $row[0];
+}
+
 ?>

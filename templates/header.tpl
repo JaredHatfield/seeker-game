@@ -79,12 +79,12 @@
 	<tr>
 		<td>
 			<center>
-			<a href="./index.php">Home</a> | <a href="./index.php?page=listusers">Users</a> | <a href="./index.php?page=current_contract">Current Contract</a>
+			<a href="./index.php">Home</a> | <a href="./index.php?page=listusers">Players</a>
 			<br />
 			{if $logged_in eq 0}
 				<a href="./index.php?page=login">Login</a> | <a href="./index.php?page=register">Register</a>
 			{else}
-				Welcome, {$user_name} | <a href="./index.php?page=logoff">Log off</a>
+				Welcome, {$user_name} | <a href="./index.php?page=current_contract">Current Contract</a> | <a href="./index.php?page=logoff">Log off</a>
 			{/if}
 			
 			</center>

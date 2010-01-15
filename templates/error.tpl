@@ -1,6 +1,6 @@
 {**
  * Project:     Seeker
- * File:        register.tpl
+ * File:        index.tpl
  *
  * Seeker is free software: you can redistribute it and/or modify it 
  * under the terms of the GNU General Public License as published 
@@ -23,19 +23,7 @@
  * @version 1.0
  *}
 {include file="header.tpl" title=Seeker}
-<h3>Register</h3>
-<FORM action="./index.php?page=process" method="post">
-	<P>
-	Username: <INPUT type="text" name="uname"><br />
-	Password: <INPUT type="password" name="passwd1"><br />
-	Password Again: <INPUT type="password" name="passwd2"><br />
-	Full Name: <INPUT type="text" name="fname"><br />
-	Email Address: <INPUT type="text" name="email"><br />
-	{*Phone Number: <INPUT type="text" name="phone"><br />*}
-	
-	{*<INPUT type="hidden" name="key" value="{php}echo secureform_add('register', 4){/php}">*}
-	<input type="hidden" name="action" value="register">
-	<INPUT type="submit" value="Send">
-	</P>
- </FORM>
+
+<h2>{$message}</h2>
+
 {include file="footer.tpl"}

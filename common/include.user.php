@@ -50,7 +50,7 @@ function get_user_id($username){
 }
 
 function authenticate($username, $password){
-	$query = "SELECT COUNT(*) number FROM users WHERE `username` = '" . $username . "' AND `password` = '" . $password . "';";
+	$query = "SELECT COUNT(*) number FROM users WHERE `username` = '" . $username . "' AND `password` = '" . sha1($password) . "';";
 	$result = mysql_query($query);
 	$row = mysql_fetch_assoc($result);
 	if($row['number'] == 1){
@@ -60,5 +60,20 @@ function authenticate($username, $password){
 		return false;
 	}
 }
+
+function register($username, $password, $name, $email){
+	$query = "INSERT INTO users (`username`, `password`, `name`, `email`, `phone`, `secret`, `active`, `spawn`) ";
+	$query .= "VALUES('" . $username . "', '" . sha1($password) . "', '" . $name . "', '" . $email . "', '0000000000', '" . generate_secret() . "',  1, NOW());";
+	$result = mysql_query($query);
+	return mysql_insert_id ();
+}
+
+
+
+
+
+
+
+
 
 ?>
