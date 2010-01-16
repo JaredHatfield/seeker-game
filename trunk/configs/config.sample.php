@@ -44,8 +44,17 @@ $_CONFIG['secretalphabet'] = "23456789bcdfghjkmnpqrstvwxyz";
 
 $_CONFIG['newslength'] = 10;
 
+// These should be two prime numbers used to obscure the users ids where necessary to avoid possible hacking
+// It is recommended that these number be changed for security uprposes
+$_CONFIG['obscure_top'] = 4507; // This number should be in the thousands ~4000 - 5000
+$_CONFIG['obscure_bottom'] = 4583 ; // This number should be in the thousands ~4000 - 5000
+
 // http://www.zeepmobile.com
 $_CONFIG['zeep_api'] = "";
 $_CONFIG['zeep_secret'] = "";
+
+// http://recaptcha.net/
+$_CONFIG['recaptcha_public'] = "";
+$_CONFIG['recaptcha_private'] = "";
 
 ?>

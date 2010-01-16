@@ -58,7 +58,25 @@ function get_users_contracts($user_id){
 	return $val;
 }
 
+function is_valid_contract_id($contract_id){
+	$query = "SELECT COUNT(*) number FROM contract WHERE `id` = 3;";
+	$result = mysql_query($query);
+	$row = mysql_fetch_row($result);
+	if($row[0] == 1){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
 function kill_attempt($contract_id, $key){
+	// Check to see if the contract even exists, if it is not we are stopping here
+	if(!is_valid_contract_id($contract_id)){
+		return false;
+	}
+	
+	// Get the contract status and information
 	$contract_info = get_contract_information($contract_id);
 	$target_info = get_user_information($contract_info['target']);
 	if($key == strtolower($target_info['secret'])){
