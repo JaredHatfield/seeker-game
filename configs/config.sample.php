@@ -44,4 +44,8 @@ $_CONFIG['secretalphabet'] = "23456789bcdfghjkmnpqrstvwxyz";
 
 $_CONFIG['newslength'] = 10;
 
+// http://www.zeepmobile.com
+$_CONFIG['zeep_api'] = "";
+$_CONFIG['zeep_secret'] = "";
+
 ?>

@@ -24,5 +24,12 @@
  *}
 {include file="header.tpl" title=Seeker}
 
+<iframe
+  style="width: 100%; height: 300px; border: none;"
+  frameborder="0" allowtransparency="0" id="zeep_mobile_settings_panel"
+  src="https://www.zeepmobile.com/subscription/settings?api_key={$api_key}&user_id={$userid}"
+>
+</iframe>
+
 
 {include file="footer.tpl"}

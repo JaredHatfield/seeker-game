@@ -36,7 +36,7 @@ function get_active_users(){
 }
 
 function get_user_information($user_id){
-	$query = "SELECT `id`, `username`, `name`, `email`, `phone`, `secret`, `active`, `spawn` FROM users WHERE `id` = " . $user_id . ";";
+	$query = "SELECT `id`, `username`, `name`, `email`, `phone`, `secret`, `active`, `spawn`, IF(NOW()<u.`spawn`,0,1), UNIX_TIMESTAMP(`spawn`) spawn_unix status FROM users WHERE `id` = " . $user_id . ";";
 	$result = mysql_query($query);
 	$row = mysql_fetch_assoc($result);
 	return $row;
@@ -68,7 +68,10 @@ function register($username, $password, $name, $email){
 	return mysql_insert_id ();
 }
 
-
+function set_user_phone($userid, $phone){
+	$query = "UPDATE users SET `phone` = '" . $phone . "' WHERE `id` = " . $userid . " LIMIT 1;";
+	$result = mysql_query($query);
+}
 
 
 

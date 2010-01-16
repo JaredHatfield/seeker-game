@@ -32,6 +32,7 @@ include_once("./common/include.user.php");
 include_once("./common/include.manage.php");
 include_once("./common/include.mail.php");
 include_once("./common/include.news.php");
+include_once("./common/include.textmessage.php");
 
 
 $conn = mysql_connect($_CONFIG['host'], $_CONFIG['username'] , $_CONFIG['password'] ) or die ('Error connecting to mysql');

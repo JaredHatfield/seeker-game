@@ -112,7 +112,7 @@ else if($_GET['page'] == "process"){
 			
 			// TODO: Send a welcome email to the user
 			
-			$smarty->assign("url","./index.php");
+			$smarty->assign("url","./index.php?page=register_zeep");
 			$smarty->display('redirect.tpl');
 			exit();
 		}
@@ -136,6 +136,18 @@ else if($_GET['page'] == "login"){
 }
 else if($_GET['page'] == "register"){
 	$smarty->display('register.tpl');
+}
+else if($_GET['page'] == "register_zeep"){
+	if(isset($_SESSION['userid']) && $_SESSION['userid'] != -1){
+		$smarty->assign("api_key", $_CONFIG['zeep_api']);
+		$smarty->assign("userid", $_SESSION['userid']);
+		$smarty->display('register_zeep.tpl');
+	}
+	else {
+		$smarty->assign("message","Error: There has been an error in the registration process.");
+		$smarty->display('error.tpl');
+		exit();
+	}
 }
 else if($_GET['page'] == "user"){
 	$page_userid = mysql_real_escape_string($_GET['id']);
