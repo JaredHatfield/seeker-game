@@ -40,6 +40,8 @@ function expire_contracts(){
 		$query = "UPDATE contract SET `status` = 3, `updated` = NOW() WHERE `id` = " . $val[$i] . " AND `expiration` < NOW() AND `status` = 1;";
 		$result = mysql_query($query);
 		
+		// Send a message to the user
+		send_contract_failed_by_expiration($val[$i]);
 		// Post this to the news feed
 		post_news_item_failed($val[$i], "expired");
 	}
@@ -61,6 +63,7 @@ function assign_new_contracts(){
 		$target = get_target_for($assassin);
 		// There is a potential target
 		if($target != -1){
+			// The message notifying the user about their contract is sent in the add_contract function
 			add_contract($assassin, $target, 12);
 			$count++;
 		}
@@ -99,7 +102,7 @@ function add_contract($assassin, $target, $hour){
 	$query .= "VALUE (" . $assassin . "," . $target . ",NOW(),ADDDATE(NOW(), INTERVAL " . $hour . " HOUR),NOW(), 1);";
 	$result = mysql_query($query);
 	
-	// We need to send an email to the user so they know about their contract
+	// We need to send a message to the user so they know about their contract
 	$contract_id = mysql_insert_id();
 	send_contract_notification($contract_id);
 }

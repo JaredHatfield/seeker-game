@@ -25,7 +25,8 @@
  * @version 1.0
  */
 
-require './libs/Smarty.class.php';
+require_once('./libs/Smarty.class.php');
+require_once('./recaptcha/recaptchalib.php');
 include_once("./configs/config.php");
 include_once("./common/include.index.php");
 
@@ -97,7 +98,26 @@ else if($_GET['page'] == "process"){
 		$fullname = mysql_real_escape_string($_POST['fname']);
 		$emailaddress = mysql_real_escape_string($_POST['email']);
 		
-		if($password1 != $password2){
+		// Determine if the captcha was entered in correctly
+		$recaptcha_fail = true;
+		$recaptcha_error = "";
+		if (isset($_POST["recaptcha_response_field"])) {
+			$resp = recaptcha_check_answer ($_CONFIG['recaptcha_private'], $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
+			if ($resp->is_valid) {
+                $recaptcha_fail = false;
+			} else {
+                # set the error code so that we can display it
+                $recaptcha_error = $resp->error;
+			}
+		}
+		
+		// Determine what page to display or action to take
+		if($recaptcha_fail){
+			$smarty->assign("message","Recaptcha Error: " . $recaptcha_error);
+			$smarty->display('error.tpl');
+			exit();
+		}
+		else if($password1 != $password2){
 			$smarty->assign("message","Error: The passwords you entered did not match, try registering again.");
 			$smarty->display('error.tpl');
 			exit();
@@ -133,6 +153,8 @@ else if($_GET['page'] == "login"){
 	$smarty->display('login.tpl');
 }
 else if($_GET['page'] == "register"){
+	$error = "";
+	$smarty->assign("recaptcha", recaptcha_get_html($_CONFIG['recaptcha_public'], $error));
 	$smarty->display('register.tpl');
 }
 else if($_GET['page'] == "register_zeep"){
@@ -195,7 +217,6 @@ else if($_GET['page'] == "process_contract"){
 }
 else if($_GET['page'] == "test"){
 	// Debuging information here
-	
 }
 else{
 	$smarty->display('notfound.tpl');

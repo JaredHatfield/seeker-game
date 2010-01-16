@@ -31,8 +31,7 @@
 	Password Again: <INPUT type="password" name="passwd2"><br />
 	Full Name: <INPUT type="text" name="fname"><br />
 	Email Address: <INPUT type="text" name="email"><br />
-	{*Phone Number: <INPUT type="text" name="phone"><br />*}
-	
+	{$recaptcha}<br />	
 	{*<INPUT type="hidden" name="key" value="{php}echo secureform_add('register', 4){/php}">*}
 	<input type="hidden" name="action" value="register">
 	<INPUT type="submit" value="Send">
