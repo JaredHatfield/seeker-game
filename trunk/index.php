@@ -109,9 +109,7 @@ else if($_GET['page'] == "process"){
 		}
 		else{
 			$_SESSION['userid'] = register($username, $password1, $fullname, $emailaddress);
-			
-			// TODO: Send a welcome email to the user
-			
+			send_welcome_email($_SESSION['userid']);
 			$smarty->assign("url","./index.php?page=register_zeep");
 			$smarty->display('redirect.tpl');
 			exit();
@@ -197,7 +195,7 @@ else if($_GET['page'] == "process_contract"){
 }
 else if($_GET['page'] == "test"){
 	// Debuging information here
-	assign_new_contracts();
+	echo get_user_short_target(2);
 }
 else{
 	$smarty->display('notfound.tpl');

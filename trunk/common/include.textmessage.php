@@ -49,17 +49,14 @@ function get_user_short_score($userid){
 
 function get_user_short_target($userid){
 	$contracts = get_user_contract_id($userid);
-	if(sizeof($contracts) == 1){
+	if($contracts != -1){
 		$contract_info = get_contract_information($contracts[0]);
 		$contract_hours_left = floor($contract_info['seconds_remaining']/60/60);
 		$contract_minutes_left =  floor(($contract_info['seconds_remaining'] - $contract_hours_left*60*60)/60);
 		return "Target: " . $contract_info['target_name'] . " Time Remaining: " . $contract_hours_left . " hours and " . $contract_minutes_left . " minutes";
 	}
-	else if(sizeof($contracts) == 0){
-		return "You have no outstanding contracts.";
-	}
 	else{
-		return "There was an error processing your request.";
+		return "You have no outstanding contracts.";
 	}
 }
 

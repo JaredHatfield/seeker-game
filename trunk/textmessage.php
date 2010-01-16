@@ -71,7 +71,7 @@ switch ($event){
 		}
 		else if(strtolower($parameters[0]) == "confirm"){
 			$contracts = get_user_contract_id($userid);
-			if(sizeof($contracts) == 1){
+			if($contracts != -1){
 				$result = kill_attempt($contracts[0], $key);
 				if($result){
 					$message = "Your contract has been completed successfully.";
@@ -81,7 +81,7 @@ switch ($event){
 				}
 			}
 			else{
-				$message = "Your contract could not be found.";
+				$message = "You have no outstanding contracts.";
 			}
 		}
 		insert_zeep_mo($userid, $msg, $message);
