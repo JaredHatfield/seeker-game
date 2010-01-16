@@ -195,7 +195,7 @@ else if($_GET['page'] == "process_contract"){
 }
 else if($_GET['page'] == "test"){
 	// Debuging information here
-	echo get_user_short_target(2);
+	
 }
 else{
 	$smarty->display('notfound.tpl');
