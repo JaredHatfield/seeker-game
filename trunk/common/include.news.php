@@ -38,7 +38,7 @@ function post_news_item_failed($contract_id, $type){
 		post_news_item($message);
 	}
 	else if($type == "killed"){
-		$message = "<a href=\"./index.php?page=user&id=" . $info['assassin'] . "\">" . $info['assassin_name'] . "</a> was found and their contract on <a href=\"./index.php?page=user&id=" . $info['target'] . "\">" . $info['target_name'] . "</a> was nullified.";
+		$message = "<a href=\"./index.php?page=user&id=" . $info['assassin'] . "\">" . $info['assassin_name'] . "</a> was found and the contract on <a href=\"./index.php?page=user&id=" . $info['target'] . "\">" . $info['target_name'] . "</a> was nullified.";
 		post_news_item($message);
 	}
 	else if($type == "expired"){
