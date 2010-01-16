@@ -84,6 +84,9 @@ switch ($event){
 				$message = "You have no outstanding contracts.";
 			}
 		}
+		else{
+			$message = "You have entered an invalid command.";
+		}
 		insert_zeep_mo($userid, $msg, $message);
 		echo $message;
 		break;
