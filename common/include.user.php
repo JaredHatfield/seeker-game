@@ -36,7 +36,7 @@ function get_active_users(){
 }
 
 function get_user_information($user_id){
-	$query = "SELECT `id`, `username`, `name`, `email`, `phone`, `secret`, `active`, `spawn`, IF(NOW()<u.`spawn`,0,1), UNIX_TIMESTAMP(`spawn`) spawn_unix status FROM users WHERE `id` = " . $user_id . ";";
+	$query = 'SELECT `id`, `username`, `name`, `email`, `phone`, `secret`, `active`, `spawn`, IF(NOW() < spawn,0,1) status, UNIX_TIMESTAMP(`spawn`) spawn_unix FROM users WHERE `id` = ' . $user_id . ";";
 	$result = mysql_query($query);
 	$row = mysql_fetch_assoc($result);
 	return $row;
@@ -65,7 +65,10 @@ function register($username, $password, $name, $email){
 	$query = "INSERT INTO users (`username`, `password`, `name`, `email`, `phone`, `secret`, `active`, `spawn`) ";
 	$query .= "VALUES('" . $username . "', '" . sha1($password) . "', '" . $name . "', '" . $email . "', '0000000000', '" . generate_secret() . "',  1, NOW());";
 	$result = mysql_query($query);
-	return mysql_insert_id ();
+	$id = mysql_insert_id ();
+	$message = "<a href=\"./index.php?page=user&id=" . $id . "\">" . $name . "</a> has joined the game.";
+	post_news_item($message);
+	return $id;
 }
 
 function set_user_phone($userid, $phone){

@@ -28,7 +28,7 @@
 function send_message($to, $subject, $body){
 	global $_CONFIG;
 	if($_CONFIG['sendemail']){
-		// TODO: add the code to send the actual email;
+		mail($to, $subject, $body);
 	}
 	$query = "INSERT INTO mail (`to`, `subject`, `body`, `when`) VALUES(\"" . mysql_real_escape_string($to);
 	$query .= "\", \"" . mysql_real_escape_string($subject) . "\", \"" . mysql_real_escape_string($body) . "\", NOW());";
