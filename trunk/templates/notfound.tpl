@@ -17,7 +17,7 @@
  * http://www.gnu.org/licenses/.
  *
  * @link http://code.google.com/p/seeker-game/
- * @copyright 2009 Speed School Student Council
+ * @copyright 2010 Speed School Student Council
  * @author Jared Hatfield
  * @package seeker-game
  * @version 1.0
