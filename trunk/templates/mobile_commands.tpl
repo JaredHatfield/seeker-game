@@ -24,10 +24,11 @@
  *}
 {include file="header.tpl" title=Seeker}
 
+<h2>Playing Seeker from a Mobile Phone</h2>
 Seeker can be played entirely by using text messages.  After you register you have the option of linking your cell phone number to your seeker account.  While the game can be played using email and the website, the ability to play via text messages is an attempt to make the game easier to play more fun for everyone.<br /><br />
 <b>How to use:</b> Send a text message to the shortcode 88147.  All messages must start with the word "seeker" to indicate they are for this website.<br /><br />
 
-<h2>List of Commands</h2>
+<h2>List of Mobile Commands</h2>
 
 <table>
 	<tr bgcolor="#cccccc" style="font-weight : bold;">

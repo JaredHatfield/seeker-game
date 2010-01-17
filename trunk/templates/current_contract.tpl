@@ -23,8 +23,9 @@
  * @version 1.0
  *}
 {include file="header.tpl" title=Seeker}
+<h2>Current Contract</h2>
 {if $contract_id eq -1}
-    <h2>No active contracts.</h2>
+    <h3>You have no contract assigned to you at the moment.</h3>
 {else}
     <h3>Current Contracts</h3>
 	<b>Current Target:</b> {$contract_info.target_name}<br />

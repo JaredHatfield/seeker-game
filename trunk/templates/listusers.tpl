@@ -23,11 +23,13 @@
  * @version 1.0
  *}
 {include file="header.tpl" title=Seeker}
-
+<h2>Active Players</h2>
 <table>
 {strip}
 	<tr bgcolor="#cccccc" style="font-weight : bold;">
 		<td>Name</td>
+		<td>Successful Contracts</td>
+		<td>Total Contracts</td>
 		<td>Status</td>
 	</tr>
 {/strip}
@@ -35,6 +37,8 @@
 {strip}
 	<tr bgcolor="{cycle values="#eeeeee,#dddddd"}">
 		<td><a href="./index.php?page=user&id={$all_users[mysec].id}">{$all_users[mysec].name}</a></td>
+		<td>{$all_users[mysec].successful}</td>
+		<td>{$all_users[mysec].total}</td>
 		<td>
 			{if $all_users[mysec].alive eq 1}
 				Alive
@@ -42,6 +46,26 @@
 				Respawn in {$all_users[mysec].delay}
 			{/if}
 		</td>
+	</tr>
+{/strip}
+{/section}
+</table>
+
+<h2>Inactive Players</h2>
+<table>
+{strip}
+	<tr bgcolor="#cccccc" style="font-weight : bold;">
+		<td>Name</td>
+		<td>Successful Contracts</td>
+		<td>Total Contracts</td>
+	</tr>
+{/strip}
+{section name=mysec loop=$all_users_inactive}
+{strip}
+	<tr bgcolor="{cycle values="#eeeeee,#dddddd"}">
+		<td><a href="./index.php?page=user&id={$all_users_inactive[mysec].id}">{$all_users_inactive[mysec].name}</a></td>
+		<td>{$all_users[mysec].successful}</td>
+		<td>{$all_users[mysec].total}</td>
 	</tr>
 {/strip}
 {/section}

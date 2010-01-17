@@ -72,4 +72,11 @@ function get_live_member_count(){
 	return $row[0];
 }
 
+function get_if_contracts_are_being_issued(){
+	$query = "SELECT `value` FROM config WHERE `name` = 'open';";
+	$result = mysql_query($query);
+	$row = mysql_fetch_row($result);
+	return $row[0];
+}
+
 ?>
