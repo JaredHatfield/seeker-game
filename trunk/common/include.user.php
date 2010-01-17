@@ -76,7 +76,23 @@ function set_user_phone($userid, $phone){
 	$result = mysql_query($query);
 }
 
-
+function toggle_user_account_status($userid){
+	$query = "SELECT `active` FROM users WHERE `id` = " . $userid . ";";
+	$result = mysql_query($query);
+	$row = mysql_fetch_row($result);
+	if($row[0] == "1"){
+		$query = "UPDATE users SET `active` = 0 WHERE `id` = " . $userid . ";";
+		$result = mysql_query($query);
+		$query = "INSERT INTO audit_status (`userid`, `previous`, `new`, `time`) VALUES(" . $userid . ", 1, 0, NOW());";
+		$result = mysql_query($query);
+	}
+	else if($row[0] == "0"){
+		$query = "UPDATE users SET `active` = 1 WHERE `id` = " . $userid . ";";
+		$result = mysql_query($query);
+		$query = "INSERT INTO audit_status (`userid`, `previous`, `new`, `time`) VALUES(" . $userid . ", 0, 1, NOW());";
+		$result = mysql_query($query);
+	}
+}
 
 
 

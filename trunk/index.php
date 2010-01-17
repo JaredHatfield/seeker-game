@@ -52,7 +52,9 @@ else{
 
 // Process the page
 if(!isset($_GET['page'])){
-	// Main page
+	/*******************************************************************************************************
+	 * Main page
+	 ******************************************************************************************************/
 	$smarty->assign("open_contract_count", get_open_contract_count());
 	$smarty->assign("successful_contract_count", get_successful_contract_count());
 	$smarty->assign("total_contract_count", get_total_contract_count());
@@ -62,12 +64,18 @@ if(!isset($_GET['page'])){
 	$smarty->display('index.tpl');
 }
 else if($_GET['page'] == "logoff"){
+	/*******************************************************************************************************
+	 * Log off
+	 ******************************************************************************************************/
 	$_SESSION['userid'] = -1;
 	$smarty->assign("url","./index.php");
 	$smarty->display('redirect.tpl');
 	exit();
 }
 else if($_GET['page'] == "process"){
+	/*******************************************************************************************************
+	 * Process a submitted form
+	 ******************************************************************************************************/
 	// This is special, this is where stuff is actually executed and then redirected
 	if(!isset($_POST['action'])){
 		$smarty->assign("url","./index.php");
@@ -75,10 +83,12 @@ else if($_GET['page'] == "process"){
 		exit();
 	}
 	
-	$action = mysql_real_escape_string($_POST['action']);
-	
 	// Process the input
+	$action = mysql_real_escape_string($_POST['action']);
 	if($action == "login"){
+		/********************************
+		* process user login
+		********************************/
 		if(authenticate(mysql_real_escape_string($_POST['uname']), mysql_real_escape_string($_POST['passwd']))){
 			// The user is logged in
 			$_SESSION['userid'] = get_user_id(mysql_real_escape_string($_POST['uname']));
@@ -92,6 +102,9 @@ else if($_GET['page'] == "process"){
 		exit();
 	}
 	else if($action == "register"){
+		/********************************
+		* process user registration
+		********************************/
 		$username = mysql_real_escape_string($_POST['uname']);
 		$password1 = mysql_real_escape_string($_POST['passwd1']);
 		$password2 = mysql_real_escape_string($_POST['passwd2']);
@@ -136,7 +149,10 @@ else if($_GET['page'] == "process"){
 		}
 	}
 	else if($action == "killtarget"){
-		$outcome = kill_attempt(mysql_real_escape_string($_POST['contract_id']), mysql_real_escape_string($_POST['secret']));
+		/********************************
+		* process kill attempt
+		********************************/
+		$outcome = kill_attempt(mysql_real_escape_string($_POST['contract_id']), mysql_real_escape_string($_POST['secret']), "web");
 		if($outcome){
 			// The kill was successful
 			$smarty->assign("url","./index.php?page=process_contract&outcome=1");
@@ -148,28 +164,49 @@ else if($_GET['page'] == "process"){
 		$smarty->display('redirect.tpl');
 		exit();
 	}
+	else if($action == "togglestatus"){
+		/********************************
+		* process toggle status
+		********************************/
+		toggle_user_account_status($_SESSION['userid']);
+		$smarty->assign("url","./index.php?page=myaccount");
+		$smarty->display('redirect.tpl');
+		exit();
+	}
 }
 else if($_GET['page'] == "login"){
+	/*******************************************************************************************************
+	 * Login page
+	 ******************************************************************************************************/
 	$smarty->display('login.tpl');
 }
 else if($_GET['page'] == "register"){
+	/*******************************************************************************************************
+	 * Register page
+	 ******************************************************************************************************/
 	$error = "";
 	$smarty->assign("recaptcha", recaptcha_get_html($_CONFIG['recaptcha_public'], $error));
 	$smarty->display('register.tpl');
 }
 else if($_GET['page'] == "register_zeep"){
+	/*******************************************************************************************************
+	 * Zeepmobile registration page
+	 ******************************************************************************************************/
 	if(isset($_SESSION['userid']) && $_SESSION['userid'] != -1){
 		$smarty->assign("api_key", $_CONFIG['zeep_api']);
 		$smarty->assign("userid", $_SESSION['userid']);
 		$smarty->display('register_zeep.tpl');
 	}
 	else {
-		$smarty->assign("message","Error: There has been an error in the registration process.");
+		$smarty->assign("message","Error: You must be logged in to view this page.");
 		$smarty->display('error.tpl');
 		exit();
 	}
 }
 else if($_GET['page'] == "user"){
+	/*******************************************************************************************************
+	 * Public User information page
+	 ******************************************************************************************************/
 	$page_userid = mysql_real_escape_string($_GET['id']);
 	$page_user = get_user_information($page_userid);
 	$smarty->assign("fullname", $page_user['name']);
@@ -177,6 +214,9 @@ else if($_GET['page'] == "user"){
 	$smarty->display('user.tpl');
 }
 else if($_GET['page'] == "listusers"){
+	/*******************************************************************************************************
+	 * public list of users
+	 ******************************************************************************************************/
 	$users = get_active_users();
 	for($i = 0; $i < sizeof($users); $i++){
 		if(date(time()) > $users[$i]['spawn']){
@@ -194,19 +234,57 @@ else if($_GET['page'] == "listusers"){
 	$smarty->display('listusers.tpl');
 }
 else if($_GET['page'] == "current_contract"){
-	$contract_id = get_user_contract_id($_SESSION['userid']);
-	$smarty->assign("contract_id", $contract_id);
-	if($contract_id != -1){
-		$contract_info = get_contract_information($contract_id);
-		$contract_hours_left = floor($contract_info['seconds_remaining']/60/60);
-		$contract_minutes_left =  floor(($contract_info['seconds_remaining'] - $contract_hours_left*60*60)/60);
-		$smarty->assign("contract_hours_left", $contract_hours_left);
-		$smarty->assign("contract_minutes_left", $contract_minutes_left);
-		$smarty->assign("contract_info",$contract_info);
+	/*******************************************************************************************************
+	 * Private current contract page
+	 ******************************************************************************************************/
+	if(isset($_SESSION['userid']) && $_SESSION['userid'] != -1){
+		$contract_id = get_user_contract_id($_SESSION['userid']);
+		$smarty->assign("contract_id", $contract_id);
+		if($contract_id != -1){
+			$contract_info = get_contract_information($contract_id);
+			$contract_hours_left = floor($contract_info['seconds_remaining']/60/60);
+			$contract_minutes_left =  floor(($contract_info['seconds_remaining'] - $contract_hours_left*60*60)/60);
+			$smarty->assign("contract_hours_left", $contract_hours_left);
+			$smarty->assign("contract_minutes_left", $contract_minutes_left);
+			$smarty->assign("contract_info",$contract_info);
+		}
+		$smarty->display('current_contract.tpl');
 	}
-	$smarty->display('current_contract.tpl');
+	else{
+		$smarty->assign("message","Error: You must be logged in to view this page.");
+		$smarty->display('error.tpl');
+		exit();
+	}
+}
+else if($_GET['page'] == "myaccount"){
+	/*******************************************************************************************************
+	 * private my account page
+	 ******************************************************************************************************/
+	if(isset($_SESSION['userid']) && $_SESSION['userid'] != -1){
+		$page_user = get_user_information($_SESSION['userid']);
+		$smarty->assign("fullname", $page_user['name']);
+		$smarty->assign("secret", $page_user['secret']);
+		$smarty->assign("active", $page_user['active']);
+		//$smarty->assign("contracts", get_users_contracts($page_userid));
+		$smarty->display('myaccount.tpl');
+	}
+	else{
+		$smarty->assign("message","Error: You must be logged in to view this page.");
+		$smarty->display('error.tpl');
+		exit();
+	}
+}
+else if($_GET['page'] == "mobile_commands"){
+	/*******************************************************************************************************
+	 * mobile commands
+	 ******************************************************************************************************/
+	$smarty->assign("sample_secert", generate_secret());
+	$smarty->display('mobile_commands.tpl');
 }
 else if($_GET['page'] == "process_contract"){
+	/*******************************************************************************************************
+	 * Results page after a contract has been submitted
+	 ******************************************************************************************************/
 	if(isset($_GET['outcome']) && $_GET['outcome'] == "1"){
 		$smarty->assign("success", 1);
 	}
@@ -216,9 +294,15 @@ else if($_GET['page'] == "process_contract"){
 	$smarty->display('process_contract.tpl');
 }
 else if($_GET['page'] == "test"){
+	/*******************************************************************************************************
+	 * A test page used when testing
+	 ******************************************************************************************************/
 	// Debuging information here
 }
 else{
+	/*******************************************************************************************************
+	 * Page not found
+	 ******************************************************************************************************/
 	$smarty->display('notfound.tpl');
 }
 
