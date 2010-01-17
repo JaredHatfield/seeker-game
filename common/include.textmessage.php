@@ -82,7 +82,7 @@ function get_user_short_score($userid){
 	$result = mysql_query($query);
 	$row = mysql_fetch_row($result);
 	$total = $row[0];
-	return "Successfully completed " . $successful . " of " . $total . " contracts.";
+	return "You have successfully completed " . $successful . " of " . $total . " contracts.";
 }
 
 function get_user_short_target($userid){
@@ -91,10 +91,10 @@ function get_user_short_target($userid){
 		$contract_info = get_contract_information($contracts[0]);
 		$contract_hours_left = floor($contract_info['seconds_remaining']/60/60);
 		$contract_minutes_left =  floor(($contract_info['seconds_remaining'] - $contract_hours_left*60*60)/60);
-		return "Target: " . $contract_info['target_name'] . " Time Remaining: " . $contract_hours_left . " hours and " . $contract_minutes_left . " minutes";
+		return "Your target is " . $contract_info['target_name'] . " and you have " . $contract_hours_left . " hours and " . $contract_minutes_left . " minutes left on your contract.";
 	}
 	else{
-		return "You have no outstanding contracts.";
+		return "You have no active contracts at the moment.";
 	}
 }
 
@@ -104,7 +104,7 @@ function get_user_short_status($userid){
 		$diff = $users[$i]['spawn_unix'] - date(time());
 		$contract_hours_left = floor($diff/60/60);
 		$contract_minutes_left =  floor(($diff - $contract_hours_left*60*60)/60);
-		return "Respawn in " . $contract_hours_left . " hours and " . $contract_minutes_left . " minutes";
+		return "You will respawn in " . $contract_hours_left . " hours and " . $contract_minutes_left . " minutes.";
 	}
 	else{
 		return get_user_short_target($userid);

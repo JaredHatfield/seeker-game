@@ -57,7 +57,7 @@ function send_contract_notification($contract_id){
 	$body .= ".  You have just under " . $hours . " hours to complete your objective before the contract expires.\n\n Good luck!";
 	send_message($to, $subject, $body);
 	
-	send_message_to_user($info['assassin'], "New Contract lasting " . $hours . " hours! Target: " . $info['target_name'], "Automatic notification of new contract.");
+	send_message_to_user($info['assassin'], "You have been issued a new contract on " . $info['target_name'] . " lasting " . $hours . " hours!", "Automatic notification of new contract.");
 }
 
 function send_contract_success($contract_id){
@@ -83,11 +83,12 @@ function send_contract_missed($contract_id, $actual_assassin_id){
 	$body .= $actual_assassin['name'] . " made it to the target before you did.  Better luck next time.";
 	send_message($to, $subject, $body);
 	
-	send_message_to_user($info['assassin'], "Contract on " . $info['target_name'] . " failed! " . $actual_assassin['name'] . " got there first.", "Automatic notification of contract missed.");
+	send_message_to_user($info['assassin'], "You failed your contract on " . $info['target_name'] . " because " . $actual_assassin['name'] . " got there first.", "Automatic notification of contract missed.");
 }
 
 
 function send_contract_failed_by_death($user_id, $actual_assassin_id, $contract_id){
+	global $_CONFIG;
 	$user_info = get_user_information($user_id);
 	$actual_assassin = get_user_information($actual_assassin_id);
 	$subject = "[Seeker] You Have Been Eliminated!";
@@ -101,7 +102,7 @@ function send_contract_failed_by_death($user_id, $actual_assassin_id, $contract_
 	$body .= "As a result of your elimination, your secret has been changed to " . $user_info['secret'] . ".";
 	send_message($to, $subject, $body);
 	
-	send_message_to_user($user_id, "You have been eliminated by " . $actual_assassin['name'] . "! Respawn: " . $user_info['spawn'] . " New Secret: " . $user_info['secret'], "Automatic notification of death.");
+	send_message_to_user($user_id, "You have been eliminated by " . $actual_assassin['name'] . " and will respawn in " . $_CONFIG['respawntime'] . " hours.  New Secret: " . $user_info['secret'], "Automatic notification of death.");
 }
 
 function send_contract_failed_by_expiration($contract_id){
