@@ -71,10 +71,13 @@ function is_valid_contract_id($contract_id){
 }
 
 function kill_attempt($contract_id, $key){
+	global $_CONFIG;
 	// Check to see if the contract even exists, if it is not we are stopping here
+	/*
 	if(!is_valid_contract_id($contract_id)){
 		return false;
 	}
+	*/
 	
 	// Get the contract status and information
 	$contract_info = get_contract_information($contract_id);
@@ -120,7 +123,7 @@ function kill_attempt($contract_id, $key){
 		$result = mysql_query($query);
 		
 		// Set the targets respawn time for the target
-		$query = "UPDATE users SET `spawn` = ADDDATE(NOW(), INTERVAL 1 DAY) WHERE `id` = " . $contract_info['target'] . ";";
+		$query = "UPDATE users SET `spawn` = ADDDATE(NOW(), INTERVAL " . $_CONFIG['respawntime'] . " HOUR) WHERE `id` = " . $contract_info['target'] . ";";
 		$result = mysql_query($query);
 		
 		// Assign a new secret for the member that was killed

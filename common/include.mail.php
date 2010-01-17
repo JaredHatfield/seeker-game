@@ -101,7 +101,7 @@ function send_contract_failed_by_death($user_id, $actual_assassin_id, $contract_
 	$body .= "As a result of your elimination, your secret has been changed to " . $user_info['secret'] . ".";
 	send_message($to, $subject, $body);
 	
-	send_message_to_user($info['assassin'], "You have been eliminated by  " . $actual_assassin['name'] . "! Respawn: " . $user_info['spawn'] . " New Secret: " . $user_info['secret'], "Automatic notification of death.");
+	send_message_to_user($user_id, "You have been eliminated by " . $actual_assassin['name'] . "! Respawn: " . $user_info['spawn'] . " New Secret: " . $user_info['secret'], "Automatic notification of death.");
 }
 
 function send_contract_failed_by_expiration($contract_id){
@@ -114,7 +114,7 @@ function send_contract_failed_by_expiration($contract_id){
 	$body .= "Failed: " . $info['updated'] . "\n";
 	send_message($to, $subject, $body);
 	
-	send_message_to_user($info['assassin'], "Your contract on " . $info['target_name'] . " has expired.", "Automatic notification of death.");
+	send_message_to_user($info['assassin'], "Your contract on " . $info['target_name'] . " has expired.", "Automatic notification of expired contract.");
 }
 
 

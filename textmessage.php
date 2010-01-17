@@ -72,7 +72,7 @@ switch ($event){
 		else if(strtolower($parameters[0]) == "confirm"){
 			$contracts = get_user_contract_id($userid);
 			if($contracts != -1){
-				$result = kill_attempt($contracts[0], $key);
+				$result = kill_attempt($contracts, $parameters[1]);
 				if($result){
 					$message = "Your contract has been completed successfully.";
 				}
