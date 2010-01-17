@@ -37,6 +37,10 @@ $_CONFIG['database'] = 'seeker';
 $_CONFIG['username'] = 'username';
 $_CONFIG['password'] = 'password';
 
+$_CONFIG['respawntime'] = 24;
+$_CONFIG['contractlength'] = 72;
+$_CONFIG['contracthistoryrestriction'] = 1;
+
 $_CONFIG['sendemail'] = TRUE;
 
 $_CONFIG['secretlength'] = 4;

@@ -48,23 +48,27 @@ function expire_contracts(){
 }
  
 function assign_new_contracts(){
-	// Find all of the students that do not have a contract
+	global $_CONFIG;
+	// Find all of the users that do not have a contract and are eligible to have one assigned to them
 	$query = "SELECT `id` FROM users u WHERE `id` NOT IN (SELECT `assassin` FROM contract WHERE `status` = 1) AND `spawn` < NOW();";
 	$result = mysql_query($query);
 	$val = array();
 	while($row = mysql_fetch_assoc($result)){
-		$val[] = $row;
+		$val[] = $row['id'];
 	}
+	
+	// Shuffel the list of users so they are not always assigned contracts in the same order
+	shuffle($val);
 	
 	// Assign contracts to those students
 	$count = 0;
 	for($i = 0; $i < sizeof($val); $i++){
-		$assassin = $val[$i]['id'];
+		$assassin = $val[$i];
 		$target = get_target_for($assassin);
 		// There is a potential target
 		if($target != -1){
 			// The message notifying the user about their contract is sent in the add_contract function
-			add_contract($assassin, $target, 12);
+			add_contract($assassin, $target, $_CONFIG['contractlength']);
 			$count++;
 		}
 	}
@@ -77,20 +81,22 @@ function assign_new_contracts(){
 }
 
 function get_target_for($assassin){
+	global $_CONFIG;
 	$query  = "SELECT `id`, IFNULL(`weight`,0) weight ";
 	$query .= "FROM users u ";
 	$query .= "LEFT JOIN (SELECT `target`, count(*) weight FROM contract WHERE `status` = 1 GROUP BY `target`) p ON u.`id` = p.`target` ";
 	$query .= "WHERE `spawn` < NOW() AND `id` != " . $assassin . " ";
-	$query .= "AND `id` NOT IN (SELECT `assassin` FROM contract WHERE `target` = " . $assassin . " AND `status` = 1);";
+	$query .= "AND `id` NOT IN (SELECT `assassin` FROM contract WHERE `target` = " . $assassin . " AND `status` = 1) ";
+	$query .= "AND `id` NOT IN (SELECT `target` FROM contract WHERE `assassin` = " . $assassin . " ORDER BY assigned DESC LIMIT " . $_CONFIG['contracthistoryrestriction'] . ");";
 	$result = mysql_query($query);
 	$val = array();
 	while($row = mysql_fetch_assoc($result)){
-		$val[] = $row;
+		$val[] = $row['id'];
 	}
 	
 	// Pick someone randomly from the list of possible targets
 	if(sizeof($val) > 0){
-		return $val[rand(0, sizeof($val) - 1)]['id'];
+		return $val[rand(0, sizeof($val) - 1)];
 	}
 	else{
 		return -1;
