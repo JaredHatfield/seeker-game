@@ -78,7 +78,7 @@ function get_user_short_score($userid){
 	$result = mysql_query($query);
 	$row = mysql_fetch_row($result);
 	$successful = $row[0];
-	$query = "SELECT COUNT(*) number FROM contract WHERE `assassin` = 6;";
+	$query = "SELECT COUNT(*) number FROM contract WHERE `assassin` = " . $userid . ";";
 	$result = mysql_query($query);
 	$row = mysql_fetch_row($result);
 	$total = $row[0];
