@@ -22,6 +22,58 @@ CREATE DATABASE IF NOT EXISTS seeker;
 USE seeker;
 
 --
+-- Definition of table `audit_contract`
+--
+
+DROP TABLE IF EXISTS `audit_contract`;
+CREATE TABLE `audit_contract` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `contractid` int(10) unsigned NOT NULL,
+  `submitted` varchar(30) NOT NULL,
+  `actual` varchar(30) NOT NULL,
+  `source` varchar(20) NOT NULL,
+  `time` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+--
+-- Definition of table `audit_status`
+--
+
+DROP TABLE IF EXISTS `audit_status`;
+CREATE TABLE `audit_status` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `userid` int(10) unsigned NOT NULL,
+  `previous` tinyint(1) NOT NULL,
+  `new` tinyint(1) NOT NULL,
+  `time` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+--
+-- Definition of table `config`
+--
+
+DROP TABLE IF EXISTS `config`;
+CREATE TABLE `config` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `value` varchar(45) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `config`
+--
+
+/*!40000 ALTER TABLE `config` DISABLE KEYS */;
+INSERT INTO `config` (`id`,`name`,`value`,`description`) VALUES 
+ (1,'open','yes','Are new contracts being issued?  (yes, no)');
+/*!40000 ALTER TABLE `config` ENABLE KEYS */;
+
+
+--
 -- Definition of table `contract`
 --
 
@@ -43,7 +95,6 @@ CREATE TABLE `contract` (
   CONSTRAINT `FK_contract_3` FOREIGN KEY (`status`) REFERENCES `status` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-
 --
 -- Definition of table `mail`
 --
@@ -56,7 +107,7 @@ CREATE TABLE `mail` (
   `body` text NOT NULL,
   `when` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 --
 -- Definition of table `news`
@@ -79,7 +130,7 @@ CREATE TABLE `status` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `value` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `status`
@@ -127,6 +178,20 @@ CREATE TABLE `zeep_mo` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
+--
+-- Definition of table `zeep_out`
+--
+
+DROP TABLE IF EXISTS `zeep_out`;
+CREATE TABLE `zeep_out` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(10) unsigned NOT NULL,
+  `message` varchar(255) NOT NULL,
+  `response` varchar(255) NOT NULL,
+  `time` datetime NOT NULL,
+  `notes` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 --
 -- Definition of table `zeep_sub`
@@ -141,7 +206,6 @@ CREATE TABLE `zeep_sub` (
   `time` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
-
 
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
