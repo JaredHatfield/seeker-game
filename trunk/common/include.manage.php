@@ -87,7 +87,7 @@ function get_target_for($assassin){
 	$query .= "LEFT JOIN (SELECT `target`, count(*) weight FROM contract WHERE `status` = 1 GROUP BY `target`) p ON u.`id` = p.`target` ";
 	$query .= "WHERE `spawn` < NOW() AND `id` != " . $assassin . " ";
 	$query .= "AND `id` NOT IN (SELECT `assassin` FROM contract WHERE `target` = " . $assassin . " AND `status` = 1) ";
-	$query .= "AND `id` NOT IN (SELECT `target` FROM contract WHERE `assassin` = " . $assassin . " ORDER BY assigned DESC LIMIT " . $_CONFIG['contracthistoryrestriction'] . ");";
+	$query .= "AND `id` NOT IN (SELECT `target` FROM contract WHERE `assassin` = " . $assassin . " AND `assigned` = (SELECT MAX(`assigned`) FROM contract WHERE `assassin` = " . $assassin . "))";
 	$result = mysql_query($query);
 	$val = array();
 	while($row = mysql_fetch_assoc($result)){
