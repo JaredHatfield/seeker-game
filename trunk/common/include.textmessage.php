@@ -88,7 +88,7 @@ function get_user_short_score($userid){
 function get_user_short_target($userid){
 	$contracts = get_user_contract_id($userid);
 	if($contracts != -1){
-		$contract_info = get_contract_information($contracts[0]);
+		$contract_info = get_contract_information($contracts);
 		$contract_hours_left = floor($contract_info['seconds_remaining']/60/60);
 		$contract_minutes_left =  floor(($contract_info['seconds_remaining'] - $contract_hours_left*60*60)/60);
 		return "Your target is " . $contract_info['target_name'] . " and you have " . $contract_hours_left . " hours and " . $contract_minutes_left . " minutes left on your contract.";
