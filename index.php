@@ -60,6 +60,7 @@ if(!isset($_GET['page'])){
 	$smarty->assign("total_contract_count", get_total_contract_count());
 	$smarty->assign("active_member_count", get_active_member_count());
 	$smarty->assign("live_member_count", get_live_member_count());
+	$smarty->assign("new_contracts", get_if_contracts_are_being_issued());
 	$smarty->assign("news", get_recent_news_items());
 	$smarty->display('index.tpl');
 }
@@ -78,8 +79,8 @@ else if($_GET['page'] == "process"){
 	 ******************************************************************************************************/
 	// This is special, this is where stuff is actually executed and then redirected
 	if(!isset($_POST['action'])){
-		$smarty->assign("url","./index.php");
-		$smarty->display('redirect.tpl');
+		$smarty->assign("message","Error: Something went very wrong.");
+			$smarty->display('error.tpl');
 		exit();
 	}
 	
@@ -231,6 +232,7 @@ else if($_GET['page'] == "listusers"){
 		}
 	}
 	$smarty->assign("all_users", $users);
+	$smarty->assign("all_users_inactive", get_inactive_users());
 	$smarty->display('listusers.tpl');
 }
 else if($_GET['page'] == "current_contract"){

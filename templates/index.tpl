@@ -23,28 +23,27 @@
  * @version 1.0
  *}
 {include file="header.tpl" title=Seeker}
-<br />
-<br />
-<br />
 
-Seeker is a online game that is played in real life.  
-The concept is simple, you are given a contract to find a specific person in a given amount of time.
-When you find them, you enter their secret key into the website or via text message to complete the contract.
-More than one person could have the same person, and if someone else reaches your target first you fail your contract.
-If someone find you, you are eliminated and lose your current contract.  
-Additionally, you can not rejoin the game and get a new contract for a certain amount of time.
-
-<br /><br />
-
-Right now there are <b>{$active_member_count}</b> registered players with <b>{$live_member_count}</b> still alive.
-<br /><br />
-A total of <b>{$total_contract_count}</b> contracts have been issued.
-<br /><br />
-<b>{$successful_contract_count}</b> contracts have been successfully completed.
-<br /><br />
-Right now there are <b>{$open_contract_count}</b> open contracts.
+<h2>How to Play</h2>
+Seeker is a online game that is played in real life.  The rules are as follows: You are given a contract lasting  <b>{$contract_length}</b> hours to find a specific person that is also playing the game.  When you find them, they give you their secret you enter it into the website or via text message to complete your contract.  Contracts are assigned randomly so more than one person could have the same target.  If someone else reaches your target before you do, you fail your current contract.  When someone completes a contract where you are the target, you lose your current contract and will need to wait for <b>{$spawn_time}</b> hours before you rejoin the game.  Contracts are given out to eligible players every hour between 10:00 AM and 10:00 PM every day.
 
 <br />
+
+<h2>Game Status</h2>
+<ul>
+	{strip}
+		{if $new_contracts eq "yes"}
+			<li>New contracts are being issued to players.</li>
+		{else}
+		<li>No new contracts are being issued to players.</li>
+		{/if}
+	{/strip}
+	<li>There are currently <b>{$active_member_count}</b> registered players with <b>{$live_member_count}</b> players still alive.</li>
+	<li>A total of <b>{$total_contract_count}</b> contracts have been issued.</li>
+	<li><b>{$successful_contract_count}</b> contracts have been successfully completed by all of the players.</li>
+	<li>Right now there are <b>{$open_contract_count}</b> open contracts.</li>
+</ul>
+
 <h2>News</h2>
 <table>
 {section name=mysec loop=$news}

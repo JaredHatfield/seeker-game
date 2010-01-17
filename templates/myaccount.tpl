@@ -24,6 +24,7 @@
  *}
 {include file="header.tpl" title=Seeker}
 
+<h2>My Account</h2>
 <h3>{$fullname}</h3>
 
 <b>Your Current Secret:</b> {$secret}<br /><br />

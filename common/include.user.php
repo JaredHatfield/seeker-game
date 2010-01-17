@@ -26,7 +26,23 @@
  */
 
 function get_active_users(){
-	$query = "SELECT `id`, `username`, `name`, `email`, `phone`, UNIX_TIMESTAMP(`spawn`) spawn FROM users u WHERE `active` = 1 ORDER BY `name`;";
+	$query  = "SELECT `id`, `username`, `name`, `email`, `phone`, UNIX_TIMESTAMP(`spawn`) spawn, ";
+	$query .= "(SELECT COUNT(*) FROM contract WHERE `assassin` = u.`id` AND `status` = 2) successful, ";
+	$query .= "(SELECT COUNT(*) FROM contract WHERE `assassin` = u.`id` AND `status` != 1) total ";
+	$query .= "FROM users u WHERE `active` = 1 ORDER BY `name`;";
+	$result = mysql_query($query);
+	$val = array();
+	while($row = mysql_fetch_assoc($result)){
+		$val[] = $row;
+	}
+	return $val;
+}
+
+function get_inactive_users(){
+	$query  = "SELECT `id`, `username`, `name`, `email`, `phone`, UNIX_TIMESTAMP(`spawn`) spawn, ";
+	$query .= "(SELECT COUNT(*) FROM contract WHERE `assassin` = u.`id` AND `status` = 2) successful, ";
+	$query .= "(SELECT COUNT(*) FROM contract WHERE `assassin` = u.`id` AND `status` != 1) total ";
+	$query .= "FROM users u WHERE `active` = 0 ORDER BY `name`;";
 	$result = mysql_query($query);
 	$val = array();
 	while($row = mysql_fetch_assoc($result)){
