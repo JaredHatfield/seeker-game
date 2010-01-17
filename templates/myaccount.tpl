@@ -1,6 +1,6 @@
 {**
  * Project:     Seeker
- * File:        listusers.tpl
+ * File:        myaccount.tpl
  *
  * Seeker is free software: you can redistribute it and/or modify it 
  * under the terms of the GNU General Public License as published 
@@ -24,27 +24,27 @@
  *}
 {include file="header.tpl" title=Seeker}
 
-<table>
-{strip}
-	<tr bgcolor="#cccccc" style="font-weight : bold;">
-		<td>Name</td>
-		<td>Status</td>
-	</tr>
-{/strip}
-{section name=mysec loop=$all_users}
-{strip}
-	<tr bgcolor="{cycle values="#eeeeee,#dddddd"}">
-		<td><a href="./index.php?page=user&id={$all_users[mysec].id}">{$all_users[mysec].name}</a></td>
-		<td>
-			{if $all_users[mysec].alive eq 1}
-				Alive
-			{else}
-				Respawn in {$all_users[mysec].delay}
-			{/if}
-		</td>
-	</tr>
-{/strip}
-{/section}
-</table>
+<h3>{$fullname}</h3>
+
+<b>Your Current Secret:</b> {$secret}<br /><br />
+<b>Current Status:</b>
+{if $active eq 1}
+	Active / Accepting contracts  
+	<FORM action="./index.php?page=process" method="post">
+		{*<INPUT type="hidden" name="key" value="{php}echo secureform_add('togglestatus', 4){/php}">*}
+		<input type="hidden" name="action" value="togglestatus">
+		<INPUT type="submit" value="Change Acount Status to Inactive">
+	</FORM>
+{else}
+	Inactive / Not accepting contracts  
+	<FORM action="./index.php?page=process" method="post">
+		{*<INPUT type="hidden" name="key" value="{php}echo secureform_add('togglestatus', 4){/php}">*}
+		<input type="hidden" name="action" value="togglestatus">
+		<INPUT type="submit" value="Change Account Status to Active">
+	</FORM>
+{/if}
+<br /><br />
+
+<b>Manage Phone Settings:</b> <a href="./index.php?page=register_zeep">Zeepmobile Settings</a>
 
 {include file="footer.tpl"}

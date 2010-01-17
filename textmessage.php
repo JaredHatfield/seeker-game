@@ -72,7 +72,7 @@ switch ($event){
 		else if(strtolower($parameters[0]) == "confirm"){
 			$contracts = get_user_contract_id($userid);
 			if($contracts != -1){
-				$result = kill_attempt($contracts, $parameters[1]);
+				$result = kill_attempt($contracts, $parameters[1], "textmessage");
 				if($result){
 					$message = "Your contract has been completed successfully.";
 				}
@@ -84,8 +84,16 @@ switch ($event){
 				$message = "You have no outstanding contracts.";
 			}
 		}
+		else if(trim(strtolower($msg)) == "help"){
+			$samplepass = generate_secret();
+			$hiddenpass = "";
+			for($i = 0; $i < strlen($samplepass); $i++){
+				$hiddenpass .= "X";
+			}
+			$message = "Valid Commands: target, secret, confirm " . $hiddenpass . ", status, score";
+		}
 		else{
-			$message = "You have entered an invalid command.";
+			$message = "You have entered an invalid command.  Reply with help for a list of commands.";
 		}
 		insert_zeep_mo($userid, $msg, $message);
 		echo $message;

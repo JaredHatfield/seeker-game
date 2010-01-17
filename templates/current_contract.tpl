@@ -38,7 +38,7 @@
 		{*<INPUT type="hidden" name="key" value="{php}echo secureform_add('killtarget', 4){/php}">*}
 		<input type="hidden" name="action" value="killtarget">
 		<INPUT type="submit" value="Send">
- </FORM>
+	</FORM>
 {/if}
 
 {include file="footer.tpl"}

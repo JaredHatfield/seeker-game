@@ -70,7 +70,7 @@ function is_valid_contract_id($contract_id){
 	}
 }
 
-function kill_attempt($contract_id, $key){
+function kill_attempt($contract_id, $key, $source){
 	global $_CONFIG;
 	// Check to see if the contract even exists, if it is not we are stopping here
 	/*
@@ -82,6 +82,12 @@ function kill_attempt($contract_id, $key){
 	// Get the contract status and information
 	$contract_info = get_contract_information($contract_id);
 	$target_info = get_user_information($contract_info['target']);
+	
+	// Log this attempt in the audit table
+	$query = "INSERT INTO audit_contract (`contractid`, `submitted`, `actual`, `source`, `time`) VALUES(" . $contract_id . ", '" . $key . "', '" . $target_info['secret'] . "', '" . $source . "', NOW());";
+	$result = mysql_query($query);
+	
+	// Determine if the key was valid
 	if($key == strtolower($target_info['secret'])){
 		// The secrets match, the kill was a success so update the game state
 		
