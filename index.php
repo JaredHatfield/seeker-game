@@ -148,8 +148,24 @@ else if($_GET['page'] == "process"){
 			$smarty->display('error.tpl');
 			exit();
 		}
-		else if(strlen($password1) <= 6){
+		else if(strlen($password1) < 6){
 			$smarty->assign("message","Error: Your password must be at least 6 characters long.");
+			$smarty->display('error.tpl');
+			exit();
+		}
+		else if(strlen($username) < 4){
+			$smarty->assign("message","Error: Your username must be at least 4 characters long.");
+			$smarty->display('error.tpl');
+			exit();
+		}
+		else if(strlen($fullname) < 6){
+			$smarty->assign("message","Error: Your full name must be at least 6 characters long.");
+			$smarty->display('error.tpl');
+			exit();
+		}
+		else if(strlen($emailaddress) < 9){
+			// This could be enhanced some more
+			$smarty->assign("message","Error: Your email address is not valid.");
 			$smarty->display('error.tpl');
 			exit();
 		}
