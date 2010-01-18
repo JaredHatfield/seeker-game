@@ -79,4 +79,11 @@ function get_if_contracts_are_being_issued(){
 	return $row[0];
 }
 
+
+function convert_seconds_to_human_time($seconds){
+	$contract_hours_left = floor($seconds/60/60);
+	$contract_minutes_left =  floor(($seconds - $contract_hours_left*60*60)/60);
+	return $contract_hours_left . " hours and " . $contract_minutes_left . " minutes";
+}
+
 ?>

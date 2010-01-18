@@ -41,6 +41,7 @@ $_CONFIG['password'] = 'password';
 // Game Play Settings
 $_CONFIG['respawntime'] = 24;
 $_CONFIG['contractlength'] = 72;
+$_CONFIG['inactivedelay'] = 48;
 
 // Message Settings
 $_CONFIG['sendemail'] = TRUE;

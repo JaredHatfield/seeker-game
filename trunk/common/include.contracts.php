@@ -39,7 +39,7 @@ function get_user_contract_id($user_id){
 
 function get_contract_information($contract_id){
 	$query  = "SELECT c.id, c.assassin, ua.name assassin_name, ua.email assassin_email, c.target, ut.name target_name, ";
-	$query .= "assigned, expiration, time_to_sec(timediff(expiration, NOW())) seconds_remaining, updated, status FROM contract c ";
+	$query .= "assigned, expiration, UNIX_TIMESTAMP(timediff(expiration, NOW())) seconds_remaining, updated, status FROM contract c ";
 	$query .= "JOIN users ua ON c.assassin = ua.id JOIN users ut ON c.target = ut.id WHERE c.`id` = " . $contract_id . ";";
 	$result = mysql_query($query);
 	$row = mysql_fetch_assoc($result);
