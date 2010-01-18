@@ -37,6 +37,17 @@ header("content-type: text/plain");
 
 $event = trim($_POST['event']);
 
+// Verify that the request is from the correct source
+if(!isset($_GET['id'])){
+	echo "The server could not authenticate your request.";
+	exit();
+}
+else if($_GET['id'] != $_CONFIG['zeep_custom_authenticator']){
+	echo "The server could not authenticate your request.";
+	exit();
+}
+
+
 switch ($event){
 	case 'SUBSCRIPTION_UPDATE':
 		$userid = intval($_POST['uid']);
