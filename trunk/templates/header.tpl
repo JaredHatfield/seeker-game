@@ -24,83 +24,15 @@
  *}
 <html>
 <head>
-<title>{$title} - {$pagename}</title>
-{literal}
-<style type="text/css">
-	body
-	{
-		background-color:black;
-		color: green;
-		font-family: 'Courier New', monospace;
-	}
-	
-	img{
-		border:none;
-	}
-	
-	a{
-		text-decoration: none;
-		color: white;
-	}
-
-	form{
-		display: inline;
-	}
-	
-	table{
-		width: 100%;
-		//border: 5px dotted green;
-	}
-	
-	h2{
-		border-bottom: 3px dotted green;
-		padding: 10px;
-		text-align: center;
-	}
-	table.maintable{
-		width: 800px;
-		//border-width: 1px;
-		border-spacing: 10px;
-		//border-style: outset;
-	}
-	
-	table.maintable tr.header{
-		//background-color: lightblue;
-		
-	}
-	
-	table.maintable tr.header h1{
-		text-align:center;
-		font-weight:bold;
-		border-bottom: 3px solid green;
-		padding: 10px;
-		font-size:50;
-	}
-	
-	table.data td{
-		border-bottom: green dotted 1px;
-		padding: 5px;
-		font-size:12;
-	}
-	table.data tr.theading{
-		text-align:center;
-	}
-	input { 
-		color:green; 
-		font-family: 'Courier New', monospace;
-		font-weight: bold;
-		font-size:16;
-		background-color:#1F1F1F; 
-		border:3px solid; 
-		border-color: #696 #363 #363 #696; 
-	} 
-</style>
-{/literal}
+	<title>{$title} - {$pagename}</title>
+	<link rel="stylesheet" type="text/css" href="./static/style.css" />
 </head>
 <body bgcolor="#ffffff">
 <table class="maintable" align="center">
 	<tr class="header">
-		<td><h1>SEEKER</h1></td>
+		<td>
+			<img src="./static/header.png" width=500 height=150 style=" class="display" />
+		</td>
 	</tr>
 	<tr>
 		<td>
