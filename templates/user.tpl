@@ -24,20 +24,20 @@
  *}
 {include file="header.tpl" title=Seeker}
 
-<h3>{$fullname}</h3>
+<h2>{$fullname}</h2>
 
-<table>
+<table class="data">
 {strip}
-	<tr bgcolor="#cccccc">
-		<td>Target</td>
-		<td>Assigned</td>
-		<td>Updated</td>
+	<tr class="theading">
+		<td style="width:180px;">Target</td>
+		<td style="width:180px;">Assigned</td>
+		<td style="width:180px;">Updated</td>
 		<td>Status</td>
 	</tr>
 {/strip}
 {section name=mysec loop=$contracts}
 {strip}
-	<tr bgcolor="{cycle values="#eeeeee,#dddddd"}">
+	<tr>
 		<td><a href="./index.php?page=user&id={$contracts[mysec].target}">{$contracts[mysec].target_name}</a></td>
 		<td>{$contracts[mysec].assigned}</td>
 		<td>{$contracts[mysec].updated}</td>

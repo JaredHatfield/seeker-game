@@ -45,11 +45,11 @@ Seeker is a online game that is played in real life.  The rules are as follows: 
 </ul>
 
 <h2>News</h2>
-<table>
+<table class="data">
 {section name=mysec loop=$news}
 {strip}
-	<tr bgcolor="{cycle values="#eeeeee,#dddddd"}">
-		<td>{$news[mysec].message}</a></td>
+	<tr>
+		<td style="width: 550px;">{$news[mysec].message}</a></td>
 		<td>{$news[mysec].timestamp}</a></td>
 	</tr>
 {/strip}

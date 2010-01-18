@@ -27,12 +27,20 @@
 <title>{$title} - {$pagename}</title>
 {literal}
 <style type="text/css">
+	body
+	{
+		background-color:black;
+		color: green;
+		font-family: 'Courier New', monospace;
+	}
+	
 	img{
 		border:none;
 	}
 	
 	a{
 		text-decoration: none;
+		color: white;
 	}
 
 	form{
@@ -41,41 +49,59 @@
 	
 	table{
 		width: 100%;
+		//border: 5px dotted green;
 	}
 	
 	h2{
-		background-color: lightgray;
-		color: black;
+		border-bottom: 3px dotted green;
 		padding: 10px;
 		text-align: center;
 	}
-	
 	table.maintable{
 		width: 800px;
-		border-width: 1px;
+		//border-width: 1px;
 		border-spacing: 10px;
-		border-style: outset;
+		//border-style: outset;
 	}
 	
 	table.maintable tr.header{
-		background-color: lightblue;
+		//background-color: lightblue;
+		
 	}
 	
 	table.maintable tr.header h1{
-		color: black;
+		text-align:center;
+		font-weight:bold;
+		border-bottom: 3px solid green;
+		padding: 10px;
+		font-size:50;
+	}
+	
+	table.data td{
+		border-bottom: green dotted 1px;
+		padding: 5px;
+		font-size:12;
+	}
+	table.data tr.theading{
 		text-align:center;
 	}
+	input { 
+		color:green; 
+		font-family: 'Courier New', monospace;
+		font-weight: bold;
+		font-size:16;
+		background-color:#1F1F1F; 
+		border:3px solid; 
+		border-color: #696 #363 #363 #696; 
+	} 
 </style>
 {/literal}
 </head>
 <body bgcolor="#ffffff">
 <table class="maintable" align="center">
-	{strip}
 	<tr class="header">
-		<td><h1>Seeker</h1></td>
+		<td><h1>SEEKER</h1></td>
 	</tr>
-	{/strip}
-	{strip}
 	<tr>
 		<td>
 			<center>
@@ -86,10 +112,8 @@
 			{else}
 				Welcome, {$user_name} | <a href="./index.php?page=current_contract">Current Contract</a> | <a href="./index.php?page=myaccount">My Account</a> | <a href="./index.php?page=logoff">Log off</a>
 			{/if}
-			
 			</center>
 		</td>
 	</tr>
-	{/strip}
 	<tr>
 		<td>

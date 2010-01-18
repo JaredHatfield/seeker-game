@@ -55,6 +55,8 @@ if(!isset($_GET['page'])){
 	/*******************************************************************************************************
 	 * Main page
 	 ******************************************************************************************************/
+	$smarty->assign("contract_length", $_CONFIG['contractlength']);
+	$smarty->assign("spawn_time", $_CONFIG['respawntime']);
 	$smarty->assign("open_contract_count", get_open_contract_count());
 	$smarty->assign("successful_contract_count", get_successful_contract_count());
 	$smarty->assign("total_contract_count", get_total_contract_count());

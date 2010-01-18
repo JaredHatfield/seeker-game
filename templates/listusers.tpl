@@ -24,21 +24,21 @@
  *}
 {include file="header.tpl" title=Seeker}
 <h2>Active Players</h2>
-<table>
+<table class="data">
 {strip}
-	<tr bgcolor="#cccccc" style="font-weight : bold;">
-		<td>Name</td>
-		<td>Successful Contracts</td>
-		<td>Total Contracts</td>
+	<tr class="theading">
+		<td style="width:180px;">Name</td>
+		<td style="width:100px;">Successful Contracts</td>
+		<td style="width:100px;">Total Contracts</td>
 		<td>Status</td>
 	</tr>
 {/strip}
 {section name=mysec loop=$all_users}
 {strip}
-	<tr bgcolor="{cycle values="#eeeeee,#dddddd"}">
+	<tr>
 		<td><a href="./index.php?page=user&id={$all_users[mysec].id}">{$all_users[mysec].name}</a></td>
-		<td>{$all_users[mysec].successful}</td>
-		<td>{$all_users[mysec].total}</td>
+		<td style="text-align:center;">{$all_users[mysec].successful}</td>
+		<td style="text-align:center;">{$all_users[mysec].total}</td>
 		<td>
 			{if $all_users[mysec].alive eq 1}
 				Alive
@@ -52,20 +52,22 @@
 </table>
 
 <h2>Inactive Players</h2>
-<table>
+<table class="data">
 {strip}
-	<tr bgcolor="#cccccc" style="font-weight : bold;">
-		<td>Name</td>
-		<td>Successful Contracts</td>
-		<td>Total Contracts</td>
+	<tr class="theading">
+		<td style="width:180px;">Name</td>
+		<td style="width:100px;">Successful Contracts</td>
+		<td style="width:100px;">Total Contracts</td>
+		<td></td>
 	</tr>
 {/strip}
 {section name=mysec loop=$all_users_inactive}
 {strip}
-	<tr bgcolor="{cycle values="#eeeeee,#dddddd"}">
+	<tr>
 		<td><a href="./index.php?page=user&id={$all_users_inactive[mysec].id}">{$all_users_inactive[mysec].name}</a></td>
-		<td>{$all_users[mysec].successful}</td>
-		<td>{$all_users[mysec].total}</td>
+		<td style="text-align:center;">{$all_users[mysec].successful}</td>
+		<td style="text-align:center;">{$all_users[mysec].total}</td>
+		<td></td>
 	</tr>
 {/strip}
 {/section}
