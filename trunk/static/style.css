@@ -56,7 +56,7 @@ table.data tr.theading{
 }
 
 input { 
-	color:#18B14C; 
+	color:#18B14C !important; 
 	font-family: 'Courier New', monospace;
 	font-weight: bold;
 	font-size:16;
