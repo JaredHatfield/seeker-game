@@ -55,6 +55,7 @@ if(!isset($_GET['page'])){
 	/*******************************************************************************************************
 	 * Main page
 	 ******************************************************************************************************/
+	$smarty->assign("pagename", "Home");
 	$smarty->assign("contract_length", $_CONFIG['contractlength']);
 	$smarty->assign("spawn_time", $_CONFIG['respawntime']);
 	$smarty->assign("open_contract_count", get_open_contract_count());
@@ -79,6 +80,7 @@ else if($_GET['page'] == "process"){
 	/*******************************************************************************************************
 	 * Process a submitted form
 	 ******************************************************************************************************/
+	$smarty->assign("pagename", "Processing...");
 	// This is special, this is where stuff is actually executed and then redirected
 	if(!isset($_POST['action'])){
 		$smarty->assign("message","Error: Something went very wrong.");
@@ -118,7 +120,8 @@ else if($_GET['page'] == "process"){
 		$recaptcha_fail = true;
 		$recaptcha_error = "";
 		if (isset($_POST["recaptcha_response_field"])) {
-			$resp = recaptcha_check_answer ($_CONFIG['recaptcha_private'], $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
+			// The post variables are not escaped here, but since they don't touch the database we should be safe
+			$resp = recaptcha_check_answer($_CONFIG['recaptcha_private'], $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
 			if ($resp->is_valid) {
                 $recaptcha_fail = false;
 			} else {
@@ -155,14 +158,20 @@ else if($_GET['page'] == "process"){
 		/********************************
 		* process kill attempt
 		********************************/
-		$outcome = kill_attempt(mysql_real_escape_string($_POST['contract_id']), mysql_real_escape_string($_POST['secret']), "web");
-		if($outcome){
-			// The kill was successful
-			$smarty->assign("url","./index.php?page=process_contract&outcome=1");
+		if(isset($_SESSION['userid']) && $_SESSION['userid'] != -1){
+			$outcome = kill_attempt(mysql_real_escape_string($_POST['contract_id']), mysql_real_escape_string($_POST['secret']), "web");
+			if($outcome){
+				// The kill was successful
+				$smarty->assign("url","./index.php?page=process_contract&outcome=1");
+			}
+			else{
+				// The kill was not successful
+				$smarty->assign("url","./index.php?page=process_contract&outcome=0");
+			}
 		}
 		else{
-			// The kill was not successful
-			$smarty->assign("url","./index.php?page=process_contract&outcome=0");
+			// User not authenticated, send them to the home page
+			$smarty->assign("url","./index.php");
 		}
 		$smarty->display('redirect.tpl');
 		exit();
@@ -171,8 +180,14 @@ else if($_GET['page'] == "process"){
 		/********************************
 		* process toggle status
 		********************************/
-		toggle_user_account_status($_SESSION['userid']);
-		$smarty->assign("url","./index.php?page=myaccount");
+		if(isset($_SESSION['userid']) && $_SESSION['userid'] != -1){
+			toggle_user_account_status($_SESSION['userid']);
+			$smarty->assign("url","./index.php?page=myaccount");
+		}
+		else{
+			// User not authenticated, send them to the home page
+			$smarty->assign("url","./index.php");
+		}
 		$smarty->display('redirect.tpl');
 		exit();
 	}
@@ -181,12 +196,14 @@ else if($_GET['page'] == "login"){
 	/*******************************************************************************************************
 	 * Login page
 	 ******************************************************************************************************/
+	$smarty->assign("pagename", "Login");
 	$smarty->display('login.tpl');
 }
 else if($_GET['page'] == "register"){
 	/*******************************************************************************************************
 	 * Register page
 	 ******************************************************************************************************/
+	$smarty->assign("pagename", "Register");
 	$error = "";
 	$smarty->assign("recaptcha", recaptcha_get_html($_CONFIG['recaptcha_public'], $error));
 	$smarty->display('register.tpl');
@@ -195,6 +212,7 @@ else if($_GET['page'] == "register_zeep"){
 	/*******************************************************************************************************
 	 * Zeepmobile registration page
 	 ******************************************************************************************************/
+	$smarty->assign("pagename", "Register Zeep");
 	if(isset($_SESSION['userid']) && $_SESSION['userid'] != -1){
 		$smarty->assign("api_key", $_CONFIG['zeep_api']);
 		$smarty->assign("userid", $_SESSION['userid']);
@@ -210,9 +228,10 @@ else if($_GET['page'] == "user"){
 	/*******************************************************************************************************
 	 * Public User information page
 	 ******************************************************************************************************/
-	$page_userid = mysql_real_escape_string($_GET['id']);
+	$page_userid = intval(mysql_real_escape_string($_GET['id']));
 	$page_user = get_user_information($page_userid);
 	$smarty->assign("fullname", $page_user['name']);
+	$smarty->assign("pagename", $page_user['name']);
 	$smarty->assign("contracts", get_users_contracts($page_userid));
 	$smarty->display('user.tpl');
 }
@@ -220,6 +239,7 @@ else if($_GET['page'] == "listusers"){
 	/*******************************************************************************************************
 	 * public list of users
 	 ******************************************************************************************************/
+	$smarty->assign("pagename", "List of Players");
 	$users = get_active_users();
 	for($i = 0; $i < sizeof($users); $i++){
 		if(date(time()) > $users[$i]['spawn']){
@@ -241,6 +261,7 @@ else if($_GET['page'] == "current_contract"){
 	/*******************************************************************************************************
 	 * Private current contract page
 	 ******************************************************************************************************/
+	$smarty->assign("pagename", "Current Contract");
 	if(isset($_SESSION['userid']) && $_SESSION['userid'] != -1){
 		$contract_id = get_user_contract_id($_SESSION['userid']);
 		$smarty->assign("contract_id", $contract_id);
@@ -264,6 +285,7 @@ else if($_GET['page'] == "myaccount"){
 	/*******************************************************************************************************
 	 * private my account page
 	 ******************************************************************************************************/
+	$smarty->assign("pagename", "My Account");
 	if(isset($_SESSION['userid']) && $_SESSION['userid'] != -1){
 		$page_user = get_user_information($_SESSION['userid']);
 		$smarty->assign("fullname", $page_user['name']);
@@ -282,6 +304,7 @@ else if($_GET['page'] == "mobile_commands"){
 	/*******************************************************************************************************
 	 * mobile commands
 	 ******************************************************************************************************/
+	$smarty->assign("pagename", "Mobile Commands");
 	$smarty->assign("sample_secert", generate_secret());
 	$smarty->display('mobile_commands.tpl');
 }
@@ -289,6 +312,7 @@ else if($_GET['page'] == "process_contract"){
 	/*******************************************************************************************************
 	 * Results page after a contract has been submitted
 	 ******************************************************************************************************/
+	$smarty->assign("pagename", "Process Contract");
 	if(isset($_GET['outcome']) && $_GET['outcome'] == "1"){
 		$smarty->assign("success", 1);
 	}
@@ -297,20 +321,13 @@ else if($_GET['page'] == "process_contract"){
 	}
 	$smarty->display('process_contract.tpl');
 }
-else if($_GET['page'] == "test"){
-	/*******************************************************************************************************
-	 * A test page used when testing
-	 ******************************************************************************************************/
-	// Debuging information here
-}
 else{
 	/*******************************************************************************************************
 	 * Page not found
 	 ******************************************************************************************************/
+	$smarty->assign("pagename", "Page Not Found");
 	$smarty->display('notfound.tpl');
 }
-
-
 
 
 ?>
