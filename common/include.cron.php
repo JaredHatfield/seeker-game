@@ -40,7 +40,7 @@ function contract_can_be_issued(){
 	$time = $row[0];
 	
 	// Contracts are only issued if they were not issued in the pay 55 minutes
-	$query = "SELECT IF(UNIX_TIMESTAMP(TIMEDIFF(NOW(),MAX(assigned)))>3300,1,0) valid FROM contract;";
+	$query = "SELECT IF(time_to_sec(TIMEDIFF(NOW(),MAX(assigned)))>3300,1,0) valid FROM contract;";
 	$result = mysql_query($query);
 	$row = mysql_fetch_row($result);
 	$past = $row[0];
