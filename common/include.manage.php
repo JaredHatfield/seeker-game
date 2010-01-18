@@ -50,7 +50,7 @@ function expire_contracts(){
 function assign_new_contracts(){
 	global $_CONFIG;
 	// Find all of the users that do not have a contract and are eligible to have one assigned to them
-	$query = "SELECT `id` FROM users u WHERE `id` NOT IN (SELECT `assassin` FROM contract WHERE `status` = 1) AND `spawn` < NOW();";
+	$query = "SELECT `id` FROM users u WHERE `id` NOT IN (SELECT `assassin` FROM contract WHERE `status` = 1) AND `spawn` < NOW() AND `active` = 1;";
 	$result = mysql_query($query);
 	$val = array();
 	while($row = mysql_fetch_assoc($result)){
@@ -85,7 +85,7 @@ function get_target_for($assassin){
 	$query  = "SELECT `id`, IFNULL(`weight`,0) weight ";
 	$query .= "FROM users u ";
 	$query .= "LEFT JOIN (SELECT `target`, count(*) weight FROM contract WHERE `status` = 1 GROUP BY `target`) p ON u.`id` = p.`target` ";
-	$query .= "WHERE `spawn` < NOW() AND `id` != " . $assassin . " ";
+	$query .= "WHERE `spawn` < NOW() AND `id` != " . $assassin . "  AND `active` = 1 ";
 	$query .= "AND `id` NOT IN (SELECT `assassin` FROM contract WHERE `target` = " . $assassin . " AND `status` = 1) ";
 	$query .= "AND `id` NOT IN (SELECT `target` FROM contract WHERE `assassin` = " . $assassin . " AND `assigned` = (SELECT MAX(`assigned`) FROM contract WHERE `assassin` = " . $assassin . "))";
 	$result = mysql_query($query);
