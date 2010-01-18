@@ -55,4 +55,13 @@
 
 <b>Manage Phone Settings:</b> <a href="./index.php?page=register_zeep">Zeepmobile Settings</a>
 
+<h2>New User Registration</h2>
+
+In order for new players to register, they are required to enter a game password.  Existing players, such as you, are able to access that password here.
+<br /><br />
+
+<b>Game Password:</b> {$gamepassword}
+<br /><br />
+
+
 {include file="footer.tpl"}

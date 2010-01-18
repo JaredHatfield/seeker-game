@@ -110,6 +110,8 @@ else if($_GET['page'] == "process"){
 		/********************************
 		* process user registration
 		********************************/
+		//
+		$gamepassword = mysql_real_escape_string($_POST['gpassword']);
 		$username = mysql_real_escape_string($_POST['uname']);
 		$password1 = mysql_real_escape_string($_POST['passwd1']);
 		$password2 = mysql_real_escape_string($_POST['passwd2']);
@@ -131,7 +133,12 @@ else if($_GET['page'] == "process"){
 		}
 		
 		// Determine what page to display or action to take
-		if($recaptcha_fail){
+		if(strtolower($_CONFIG['registrationpassword']) != strtolower($gamepassword)){
+			$smarty->assign("message","Error: The game password you entered was incorrect.  You can get the password from any player that is already playing the game.");
+			$smarty->display('error.tpl');
+			exit();
+		}
+		else if($recaptcha_fail){
 			$smarty->assign("message","Recaptcha Error: " . $recaptcha_error);
 			$smarty->display('error.tpl');
 			exit();
@@ -288,6 +295,7 @@ else if($_GET['page'] == "myaccount"){
 	$smarty->assign("pagename", "My Account");
 	if(isset($_SESSION['userid']) && $_SESSION['userid'] != -1){
 		$page_user = get_user_information($_SESSION['userid']);
+		$smarty->assign("gamepassword", $_CONFIG['registrationpassword']);
 		$smarty->assign("isinactivedelay", can_user_become_active($_SESSION['userid']));
 		$smarty->assign("inactivetimeleft", time_left_till_user_can_become_active($_SESSION['userid']));
 		$smarty->assign("inactivedelay", $_CONFIG['inactivedelay']);

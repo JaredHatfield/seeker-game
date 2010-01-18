@@ -43,6 +43,9 @@ $_CONFIG['respawntime'] = 24;
 $_CONFIG['contractlength'] = 72;
 $_CONFIG['inactivedelay'] = 48;
 
+// Registration Settings
+$_CONFIG['registrationpassword'] = "seeker";
+
 // Message Settings
 $_CONFIG['sendemail'] = TRUE;
 $_CONFIG['sendtext'] = TRUE;
