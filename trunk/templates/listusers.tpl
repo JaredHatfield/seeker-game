@@ -65,8 +65,8 @@
 {strip}
 	<tr>
 		<td><a href="./index.php?page=user&id={$all_users_inactive[mysec].id}">{$all_users_inactive[mysec].name}</a></td>
-		<td style="text-align:center;">{$all_users[mysec].successful}</td>
-		<td style="text-align:center;">{$all_users[mysec].total}</td>
+		<td style="text-align:center;">{$all_users_inactive[mysec].successful}</td>
+		<td style="text-align:center;">{$all_users_inactive[mysec].total}</td>
 		<td></td>
 	</tr>
 {/strip}
