@@ -30,38 +30,38 @@ Seeker can be played entirely by using text messages.  After you register you ha
 
 <h2>List of Mobile Commands</h2>
 
-<table>
-	<tr bgcolor="#cccccc" style="font-weight : bold;">
-		<td>Command</td>
-		<td>What this command does</td>
+<table class="data">
+	<tr class="theading">
+		<td style="width:150px;">Command</td>
+		<td style="width:100px;">What this command does</td>
 		<td>Example</td>
 	</tr>
-	<tr bgcolor="#eeeeee">
+	<tr>
 		<td>target</td>
 		<td>Responds with your current target if you have one</td>
 		<td>seeker target</td>
 	</tr>
-	<tr bgcolor="#dddddd">
+	<tr>
 		<td>secret</td>
 		<td>Responds with your current secret</td>
-		<td>seeker secert</td>
+		<td>seeker secret</td>
 	</tr>
-	<tr bgcolor="#eeeeee">
+	<tr>
 		<td>confirm</td>
 		<td>Attempt to complete a target by providing a secert</td>
 		<td>seeker confirm {$sample_secert}</td>
 	</tr>
-	<tr bgcolor="#dddddd">
+	<tr>
 		<td>status</td>
 		<td>Responds with your current status in the game</td>
 		<td>seeker status</td>
 	</tr>
-	<tr bgcolor="#eeeeee">
+	<tr>
 		<td>score</td>
 		<td>Responds with your lifetime contract score</td>
 		<td>seeker score</td>
 	</tr>
-	<tr bgcolor="#dddddd">
+	<tr>
 		<td>help</td>
 		<td>Responds with a list of valid commands</td>
 		<td>seeker help</td>

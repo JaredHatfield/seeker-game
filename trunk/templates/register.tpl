@@ -23,7 +23,7 @@
  * @version 1.0
  *}
 {include file="header.tpl" title=Seeker}
-<h3>Register</h3>
+<h2>Register</h2>
 <FORM action="./index.php?page=process" method="post">
 	<P>
 	Username: <INPUT type="text" name="uname"><br />
@@ -34,7 +34,7 @@
 	{$recaptcha}<br />	
 	{*<INPUT type="hidden" name="key" value="{php}echo secureform_add('register', 4){/php}">*}
 	<input type="hidden" name="action" value="register">
-	<INPUT type="submit" value="Send">
+	<INPUT type="submit" value="Register">
 	</P>
  </FORM>
 {include file="footer.tpl"}

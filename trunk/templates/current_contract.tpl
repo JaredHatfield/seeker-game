@@ -27,7 +27,6 @@
 {if $contract_id eq -1}
     <h3>You have no contract assigned to you at the moment.</h3>
 {else}
-    <h3>Current Contracts</h3>
 	<b>Current Target:</b> {$contract_info.target_name}<br />
 	<b>Contract Issued:</b> {$contract_info.assigned}<br />
 	<b>Contract Expires:</b> {$contract_info.expiration}<br />

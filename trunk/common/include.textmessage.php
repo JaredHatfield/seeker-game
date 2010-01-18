@@ -28,29 +28,34 @@
 function send_message_to_user($userid, $message, $notes){
 	global $_CONFIG;
 	
-	$http_date = gmdate( DATE_RFC822 );
-	$parameters = "user_id=" . $userid . "&body=".urlencode($message);
-	$canonical_string = $_CONFIG['zeep_api'] . $http_date . $parameters;
-	$b64_mac = base64_encode(hash_hmac("sha1", $canonical_string,$_CONFIG['zeep_secret'], TRUE));
-	$authentication = "Zeep " . $_CONFIG['zeep_api'] . ":$b64_mac";
-
-	$header = array(
-	  "Authorization: ".$authentication,
-	  "Date: ".$http_date,
-	  "Content-Type: application/x-www-form-urlencoded",
-	  "Content-Length: " . strval(strlen($parameters))
-	);
-
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $_CONFIG['zeep_api_url'] );
-	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-	curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt($ch, CURLOPT_POST, true);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $parameters );
-	$response = curl_exec($ch);
-	curl_close($ch);
+	if($_CONFIG['sendtext']){
+		$http_date = gmdate( DATE_RFC822 );
+		$parameters = "user_id=" . $userid . "&body=".urlencode($message);
+		$canonical_string = $_CONFIG['zeep_api'] . $http_date . $parameters;
+		$b64_mac = base64_encode(hash_hmac("sha1", $canonical_string,$_CONFIG['zeep_secret'], TRUE));
+		$authentication = "Zeep " . $_CONFIG['zeep_api'] . ":$b64_mac";
+		
+		$header = array(
+		  "Authorization: ".$authentication,
+		  "Date: ".$http_date,
+		  "Content-Type: application/x-www-form-urlencoded",
+		  "Content-Length: " . strval(strlen($parameters))
+		);
+		
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $_CONFIG['zeep_api_url'] );
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $parameters );
+		$response = curl_exec($ch);
+		curl_close($ch);
+	}
+	else{
+		$response = "Message not sent based on application configuration.";
+	}
 	
 	$query = "INSERT INTO zeep_out (`uid`, `message`, `response`, `notes`, `time`) VALUES(" . $userid . ", '" . mysql_real_escape_string($message) . "', '" . mysql_real_escape_string($response) . "', '" . mysql_real_escape_string($notes) . "', NOW());";
 	$result = mysql_query($query);

@@ -42,8 +42,9 @@ $_CONFIG['password'] = 'password';
 $_CONFIG['respawntime'] = 24;
 $_CONFIG['contractlength'] = 72;
 
-// Email Settings
+// Message Settings
 $_CONFIG['sendemail'] = TRUE;
+$_CONFIG['sendtext'] = TRUE;
 
 // Contract Settings
 $_CONFIG['secretlength'] = 4;
