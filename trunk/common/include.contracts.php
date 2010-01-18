@@ -88,7 +88,7 @@ function kill_attempt($contract_id, $key, $source){
 	$result = mysql_query($query);
 	
 	// Determine if the key was valid
-	if($key == strtolower($target_info['secret'])){
+	if(strtolower($key) == strtolower($target_info['secret'])){
 		// The secrets match, the kill was a success so update the game state
 		
 		// Mark this contract as successful
