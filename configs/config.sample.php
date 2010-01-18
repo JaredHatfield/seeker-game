@@ -48,7 +48,7 @@ $_CONFIG['sendtext'] = TRUE;
 
 // Contract Settings
 $_CONFIG['secretlength'] = 4;
-$_CONFIG['secretalphabet'] = "23456789bcdfghjkmnpqrstvwxyz"; 
+$_CONFIG['secretalphabet'] = "23456789bcdfghjkmnpqrstvwxyz";
 
 // Home page settings
 $_CONFIG['newslength'] = 10;
@@ -56,6 +56,8 @@ $_CONFIG['newslength'] = 10;
 // http://www.zeepmobile.com settings
 $_CONFIG['zeep_api'] = "";
 $_CONFIG['zeep_secret'] = "";
+$_CONFIG['zeep_api_url'] = 'https://api.zeepmobile.com/messaging/2008-07-14/send_message';
+$_CONFIG['zeep_custom_authenticator'] = "ABCD"; // The callback url: http://domain.com/textmessage.php?id=ABCD
 
 // http://recaptcha.net/ settings
 $_CONFIG['recaptcha_public'] = "";
