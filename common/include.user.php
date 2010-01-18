@@ -96,7 +96,11 @@ function toggle_user_account_status($userid){
 	$query = "SELECT `active` FROM users WHERE `id` = " . $userid . ";";
 	$result = mysql_query($query);
 	$row = mysql_fetch_row($result);
-	if($row[0] == "1"){
+	
+	if(!can_user_become_active($userid)){
+		// The user is not allowed to toggel their status
+	}
+	else if($row[0] == "1"){
 		$query = "UPDATE users SET `active` = 0 WHERE `id` = " . $userid . ";";
 		$result = mysql_query($query);
 		$query = "INSERT INTO audit_status (`userid`, `previous`, `new`, `time`) VALUES(" . $userid . ", 1, 0, NOW());";
@@ -110,7 +114,27 @@ function toggle_user_account_status($userid){
 	}
 }
 
+function can_user_become_active($userid){
+	global $_CONFIG;
+	$query = "SELECT IF(DATE_ADD(MAX(`time`), INTERVAL " . $_CONFIG['inactivedelay'] . " HOUR)<NOW(),1,0) canrejoin FROM audit_status WHERE `userid` = " . $userid . " AND previous = 1 AND `new` = 0;";
+	$result = mysql_query($query);
+	$row = mysql_fetch_row($result);
+	if($row[0] == 1){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
 
+function time_left_till_user_can_become_active($userid){
+	global $_CONFIG;
+	$query = "SELECT IFNULL((UNIX_TIMESTAMP(DATE_ADD(MAX(`time`), INTERVAL " . $_CONFIG['inactivedelay'] . " HOUR)) - UNIX_TIMESTAMP(NOW())),0) timeleft FROM audit_status
+WHERE `userid` = " . $userid . " AND previous = 1 AND `new` = 0;";
+	$result = mysql_query($query);
+	$row = mysql_fetch_row($result);
+	return convert_seconds_to_human_time($row[0]);
+}
 
 
 

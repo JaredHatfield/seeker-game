@@ -288,6 +288,9 @@ else if($_GET['page'] == "myaccount"){
 	$smarty->assign("pagename", "My Account");
 	if(isset($_SESSION['userid']) && $_SESSION['userid'] != -1){
 		$page_user = get_user_information($_SESSION['userid']);
+		$smarty->assign("isinactivedelay", can_user_become_active($_SESSION['userid']));
+		$smarty->assign("inactivetimeleft", time_left_till_user_can_become_active($_SESSION['userid']));
+		$smarty->assign("inactivedelay", $_CONFIG['inactivedelay']);
 		$smarty->assign("fullname", $page_user['name']);
 		$smarty->assign("secret", $page_user['secret']);
 		$smarty->assign("active", $page_user['active']);
