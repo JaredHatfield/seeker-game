@@ -116,6 +116,15 @@ function toggle_user_account_status($userid){
 
 function can_user_become_active($userid){
 	global $_CONFIG;
+	// There is nothing in the audit_status table so this user can change their status
+	$query = "SELECT COUNT(*) number FROM `audit_status` WHERE `userid` = " . $userid . ";";
+	$result = mysql_query($query);
+	$row = mysql_fetch_row($result);
+	if($row[0] == 0){
+		return true;
+	}
+	
+	// See if the user has not changed their status in the given period of time that they are allowed to change their status
 	$query = "SELECT IF(DATE_ADD(MAX(`time`), INTERVAL " . $_CONFIG['inactivedelay'] . " HOUR)<NOW(),1,0) canrejoin FROM audit_status WHERE `userid` = " . $userid . " AND previous = 1 AND `new` = 0;";
 	$result = mysql_query($query);
 	$row = mysql_fetch_row($result);
