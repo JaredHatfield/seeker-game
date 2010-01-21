@@ -58,6 +58,17 @@ function get_users_contracts($user_id){
 	return $val;
 }
 
+function get_user_enemies($userid){
+	$query = "SELECT u.`name`, u.`id`, COUNT(*) number FROM contract c JOIN users u ON c.`assassin` = u.`id` WHERE `target` = " . $userid . " ";
+	$query .= "AND `status` = 2 GROUP BY `assassin` ORDER BY COUNT(*) DESC";
+	$result = mysql_query($query);
+	$val = array();
+	while($row = mysql_fetch_assoc($result)){
+		$val[] = $row;
+	}
+	return $val;
+}
+
 function is_valid_contract_id($contract_id){
 	$query = "SELECT COUNT(*) number FROM contract WHERE `id` = 3;";
 	$result = mysql_query($query);

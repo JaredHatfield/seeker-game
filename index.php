@@ -252,10 +252,12 @@ else if($_GET['page'] == "user"){
 	 * Public User information page
 	 ******************************************************************************************************/
 	$page_userid = intval(mysql_real_escape_string($_GET['id']));
+	$smarty->assign("past_contract_chart", get_user_contract_pie_chart($page_userid));
 	$page_user = get_user_information($page_userid);
 	$smarty->assign("fullname", $page_user['name']);
 	$smarty->assign("pagename", $page_user['name']);
 	$smarty->assign("contracts", get_users_contracts($page_userid));
+	$smarty->assign("enemies", get_user_enemies($page_userid));
 	$smarty->display('user.tpl');
 }
 else if($_GET['page'] == "listusers"){
