@@ -37,7 +37,7 @@
 	<tr>
 		<td>
 			<center>
-			<a href="./index.php">Home</a> | <a href="./index.php?page=listusers">List of Players</a> | <a href="./index.php?page=mobile_commands">Mobile Commands</a>
+			<a href="./index.php">Home</a> | <a href="./index.php?page=listusers">List of Players</a> | <a href="./index.php?page=leaderboard">Leaderboard</a> | <a href="./index.php?page=mobile_commands">Mobile Commands</a>
 			<br />
 			{if $logged_in eq 0}
 				<a href="./index.php?page=login">Login</a> | <a href="./index.php?page=register">Register</a>

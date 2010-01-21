@@ -337,6 +337,14 @@ else if($_GET['page'] == "mobile_commands"){
 	$smarty->assign("sample_secert", generate_secret());
 	$smarty->display('mobile_commands.tpl');
 }
+else if($_GET['page'] == "leaderboard"){
+	/*******************************************************************************************************
+	 * mobile commands
+	 ******************************************************************************************************/
+	$smarty->assign("pagename", "Leaderboard");
+	$smarty->assign("leaderboard", get_leaderboard());
+	$smarty->display('leaderboard.tpl');
+}
 else if($_GET['page'] == "process_contract"){
 	/*******************************************************************************************************
 	 * Results page after a contract has been submitted
