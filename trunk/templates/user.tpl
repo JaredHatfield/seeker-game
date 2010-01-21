@@ -26,6 +26,32 @@
 
 <h2>{$fullname}</h2>
 
+
+{if $enemies|@count > 0}
+<h2>Your Seekers</h2>
+<table class="data">
+{strip}
+	<tr class="theading">
+		<td style="width:300px;">Seeker Name</td>
+		<td>Number of Contracts Completed</td>
+	</tr>
+{/strip}
+{section name=mysec loop=$enemies}
+{strip}
+	<tr>
+		<td><a href="./index.php?page=user&id={$enemies[mysec].id}">{$enemies[mysec].name}</a></td>
+		<td>{$enemies[mysec].number}</td>
+	</tr>
+{/strip}
+{/section}
+</table>
+{/if}
+
+
+<h2>Contract History</h2>
+{if $contracts|@count > 0}
+<center>{$past_contract_chart}</center>
+<h2>Past Contracts</h2>
 <table class="data">
 {strip}
 	<tr class="theading">
@@ -46,5 +72,8 @@
 {/strip}
 {/section}
 </table>
+{else}
+This user has no contracts that have concluded.
+{/if}
 
 {include file="footer.tpl"}

@@ -33,6 +33,7 @@ include_once("./common/include.manage.php");
 include_once("./common/include.mail.php");
 include_once("./common/include.news.php");
 include_once("./common/include.textmessage.php");
+include_once("./common/include.chart.php");
 
 $conn = mysql_connect($_CONFIG['host'], $_CONFIG['username'] , $_CONFIG['password'] ) or die ('Error connecting to mysql');
 $selected = mysql_select_db($_CONFIG['database'], $conn) or die ('Database unavailable');
