@@ -40,7 +40,7 @@
 {strip}
 	<tr>
 		<td><a href="./index.php?page=user&id={$enemies[mysec].id}">{$enemies[mysec].name}</a></td>
-		<td>{$enemies[mysec].number}</td>
+		<td style="text-align:center;">{$enemies[mysec].number}</td>
 	</tr>
 {/strip}
 {/section}
