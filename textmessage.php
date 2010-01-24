@@ -67,7 +67,10 @@ switch ($event){
 		$message = "";
 		$parameters = explode(" ", $msg);
 		
-		if(trim(strtolower($msg)) == "target"){
+		if($userid == 0){
+			$message = "Your mobile device is not registered with seeker.";
+		}
+		else if(trim(strtolower($msg)) == "target"){
 			$message = get_user_short_target($userid);
 		}
 		else if(trim(strtolower($msg)) == "secret"){
