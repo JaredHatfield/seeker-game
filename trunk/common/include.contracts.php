@@ -143,6 +143,9 @@ function kill_attempt($contract_id, $key, $source){
 		$query = "UPDATE users SET `spawn` = ADDDATE(NOW(), INTERVAL " . $_CONFIG['respawntime'] . " HOUR) WHERE `id` = " . $contract_info['target'] . ";";
 		$result = mysql_query($query);
 		
+		// Mark the target as still playing the game
+		update_user_date($contract_info['target']);
+		
 		// Assign a new secret for the member that was killed
 		$query = "UPDATE users SET `secret` = \"" . generate_secret() . "\" WHERE `id` = " . $contract_info['target'] . ";";
 		$result = mysql_query($query);

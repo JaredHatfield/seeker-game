@@ -86,6 +86,16 @@ function send_contract_missed($contract_id, $actual_assassin_id){
 	send_message_to_user($info['assassin'], "You failed your contract on " . $info['target_name'] . " because " . $actual_assassin['name'] . " got there first.", "Automatic notification of contract missed.");
 }
 
+function send_user_switch_to_inactive($user_id){
+	$user_info = get_user_information($user_id);
+	$subject = "[Seeker] You Have Changed to Inactive";
+	$to = $user_info['email'];
+	$body = $user_info['name'] . ",\n\n" . "Your status has automatically changed to inactive based off of your inactivity in the game.\n\n";
+	$body .= "To rejoin the game simply log into the web interface and change your status to active on the My Account page.\n\n";
+	send_message($to, $subject, $body);
+	
+	send_message_to_user($user_id, "Status changed to inactive due to lack of participation.", "Automatic inactive notice.");
+}
 
 function send_contract_failed_by_death($user_id, $actual_assassin_id, $contract_id){
 	global $_CONFIG;
