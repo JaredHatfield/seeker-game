@@ -53,5 +53,22 @@ function contract_can_be_issued(){
 	}
 }
 
+function automatic_user_deactivate(){
+	global $_CONFIG;
+	// Identify the users that need to be changed to inactive
+	$query = "SELECT `id` FROM `users` WHERE ADDDATE(`uupdated`, INTERVAL " . ($_CONFIG['contractlength'] * 3) . " HOUR) < NOW() AND `active` = 1;";
+	$result = mysql_query($query);
+	$val = array();
+	while($row = mysql_fetch_row($result)){
+		$val[] = $row[0];
+	}
+	
+	// Change users to inactive and send them messages
+	for($i = 0; $i < sizeof($val); $i++){
+		switch_user_to_inactive($val[$i]);
+		send_user_switch_to_inactive($val[$i]);
+	}
+}
+
 
 ?>

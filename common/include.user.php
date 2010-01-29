@@ -25,6 +25,11 @@
  * @version 1.0
  */
 
+function update_user_date($user_id){
+	$query = "UPDATE `users` SET `uupdated` = NOW() WHERE `id` = " . $user_id . ";";
+	$result = mysql_query($query);
+}
+
 function get_active_users(){
 	$query  = "SELECT `id`, `username`, `name`, `email`, `phone`, UNIX_TIMESTAMP(`spawn`) spawn, ";
 	$query .= "(SELECT COUNT(*) FROM contract WHERE `assassin` = u.`id` AND `status` = 2) successful, ";
@@ -78,8 +83,8 @@ function authenticate($username, $password){
 }
 
 function register($username, $password, $name, $email){
-	$query = "INSERT INTO users (`username`, `password`, `name`, `email`, `phone`, `secret`, `active`, `spawn`) ";
-	$query .= "VALUES('" . $username . "', '" . sha1($password) . "', '" . $name . "', '" . $email . "', '0000000000', '" . generate_secret() . "',  1, NOW());";
+	$query = "INSERT INTO users (`username`, `password`, `name`, `email`, `phone`, `secret`, `active`, `spawn`, `updated`) ";
+	$query .= "VALUES('" . $username . "', '" . sha1($password) . "', '" . $name . "', '" . $email . "', '0000000000', '" . generate_secret() . "',  1, NOW(), NOW());";
 	$result = mysql_query($query);
 	$id = mysql_insert_id ();
 	$message = "<a href=\"./index.php?page=user&id=" . $id . "\">" . $name . "</a> has joined the game.";
@@ -145,6 +150,9 @@ WHERE `userid` = " . $userid . " AND previous = 1 AND `new` = 0;";
 	return convert_seconds_to_human_time($row[0]);
 }
 
-
+function switch_user_to_inactive($userid){
+	$query = "UPDATE `users` SET `active` = 0 WHERE `id` = " . $userid . ";";
+	$result = mysql_query($query);
+}
 
 ?>

@@ -62,7 +62,8 @@ switch ($event){
 	case 'MO':
 		$userid = intval($_POST['uid']);
 		$msg = mysql_escape_string(trim($_POST['body']));
-
+		update_user_date($userid);
+		
 		// User query
 		$message = "";
 		$parameters = explode(" ", $msg);

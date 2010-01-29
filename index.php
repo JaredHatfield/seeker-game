@@ -97,6 +97,7 @@ else if($_GET['page'] == "process"){
 		if(authenticate(mysql_real_escape_string($_POST['uname']), mysql_real_escape_string($_POST['passwd']))){
 			// The user is logged in
 			$_SESSION['userid'] = get_user_id(mysql_real_escape_string($_POST['uname']));
+			update_user_date($_SESSION['userid']);
 			$smarty->assign("url","./index.php");
 		}
 		else{
@@ -196,6 +197,7 @@ else if($_GET['page'] == "process"){
 			// User not authenticated, send them to the home page
 			$smarty->assign("url","./index.php");
 		}
+		update_user_date($_SESSION['userid']);
 		$smarty->display('redirect.tpl');
 		exit();
 	}

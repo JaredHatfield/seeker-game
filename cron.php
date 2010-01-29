@@ -36,6 +36,7 @@ expire_contracts();
 
 
 if(contract_can_be_issued()){
+	automatic_user_deactivate();
 	assign_new_contracts();
 }
 

@@ -34,7 +34,7 @@ CREATE TABLE `audit_contract` (
   `source` varchar(20) NOT NULL,
   `time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Definition of table `audit_status`
@@ -48,7 +48,7 @@ CREATE TABLE `audit_status` (
   `new` tinyint(1) NOT NULL,
   `time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Definition of table `config`
@@ -93,7 +93,7 @@ CREATE TABLE `contract` (
   CONSTRAINT `FK_contract_1` FOREIGN KEY (`assassin`) REFERENCES `users` (`id`),
   CONSTRAINT `FK_contract_2` FOREIGN KEY (`target`) REFERENCES `users` (`id`),
   CONSTRAINT `FK_contract_3` FOREIGN KEY (`status`) REFERENCES `status` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
 
 --
 -- Definition of table `mail`
@@ -107,7 +107,7 @@ CREATE TABLE `mail` (
   `body` text NOT NULL,
   `when` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
 
 --
 -- Definition of table `news`
@@ -119,7 +119,7 @@ CREATE TABLE `news` (
   `message` text NOT NULL,
   `timestamp` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
 --
 -- Definition of table `status`
@@ -161,8 +161,12 @@ CREATE TABLE `users` (
   `secret` varchar(10) NOT NULL,
   `active` tinyint(1) NOT NULL,
   `spawn` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+  `uupdated` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `Index_username` (`username`),
+  UNIQUE KEY `Index_email` (`email`),
+  UNIQUE KEY `Index_name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Definition of table `zeep_mo`
@@ -176,7 +180,7 @@ CREATE TABLE `zeep_mo` (
   `return` varchar(255) NOT NULL,
   `time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Definition of table `zeep_out`
@@ -191,7 +195,7 @@ CREATE TABLE `zeep_out` (
   `time` datetime NOT NULL,
   `notes` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Definition of table `zeep_sub`
@@ -205,7 +209,9 @@ CREATE TABLE `zeep_sub` (
   `return` varchar(255) NOT NULL,
   `time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+
 
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
