@@ -35,6 +35,17 @@ chtt=Contract+Results&
 
 */
 
+function get_user_target_pie_chart($userid){
+	$query  = "SELECT s.`value`, COUNT(*) number FROM contract c JOIN status s ON `status` = s.id WHERE `target` = " . $userid . " ";
+	$query .= "AND `status` != 1 GROUP BY `status` ORDER BY c.`status`";
+	$result = mysql_query($query);
+	$val = array();
+	while($row = mysql_fetch_assoc($result)){
+		$val[$row['value']] = $row['number'];
+	}
+	
+	return "<img src=\"" . generate_google_pie_chart_url($val) . "\" />";
+}
 
 function get_user_contract_pie_chart($userid){
 	$query  = "SELECT s.`value`, COUNT(*) number FROM contract c JOIN status s ON `status` = s.id WHERE `assassin` = " . $userid . " ";

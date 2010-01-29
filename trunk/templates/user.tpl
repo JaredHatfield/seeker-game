@@ -27,37 +27,81 @@
 <h2>{$fullname}</h2>
 
 
+{if $contract_summary|@count > 0}
+<h2>Contract Summary</h2>
+<table class="data">
+{strip}
+	<tr class="theading">
+		<td style="width:300px;">Target Name</td>
+		<td>Successful</td>
+		<td>Expired</td>
+		<td>Failed</td>
+		<td>Missed</td>
+		<td>Total</td>
+	</tr>
+{/strip}
+{section name=mysec loop=$contract_summary}
+{strip}
+	<tr>
+		<td><a href="./index.php?page=user&id={$contract_summary[mysec].target}">{$contract_summary[mysec].name}</a></td>
+		<td style="text-align:center;">{$contract_summary[mysec].success}</td>
+		<td style="text-align:center;">{$contract_summary[mysec].expired}</td>
+		<td style="text-align:center;">{$contract_summary[mysec].failed}</td>
+		<td style="text-align:center;">{$contract_summary[mysec].missed}</td>
+		<td style="text-align:center;">{$contract_summary[mysec].total}</td>
+	</tr>
+{/strip}
+{/section}
+</table>
+<center>{$past_contract_chart}</center>
+<center>Contracts issued to {$fullname}</center>
+<br />
+<br />
+{/if}
+
+
 {if $enemies|@count > 0}
-<h2>Your Seekers</h2>
+<h2>Seekers Summary</h2
 <table class="data">
 {strip}
 	<tr class="theading">
 		<td style="width:300px;">Seeker Name</td>
-		<td>Number of Contracts Completed</td>
+		<td>Successful</td>
+		<td>Expired</td>
+		<td>Failed</td>
+		<td>Missed</td>
+		<td>Total</td>
 	</tr>
 {/strip}
 {section name=mysec loop=$enemies}
 {strip}
 	<tr>
-		<td><a href="./index.php?page=user&id={$enemies[mysec].id}">{$enemies[mysec].name}</a></td>
-		<td style="text-align:center;">{$enemies[mysec].number}</td>
+		<td><a href="./index.php?page=user&id={$enemies[mysec].assassin}">{$enemies[mysec].name}</a></td>
+		<td style="text-align:center;">{$enemies[mysec].success}</td>
+		<td style="text-align:center;">{$enemies[mysec].expired}</td>
+		<td style="text-align:center;">{$enemies[mysec].failed}</td>
+		<td style="text-align:center;">{$enemies[mysec].missed}</td>
+		<td style="text-align:center;">{$enemies[mysec].total}</td>
 	</tr>
 {/strip}
 {/section}
 </table>
+<center>{$past_target_chart}</center>
+<center>Contracts issued with {$fullname} as the target</center>
+<br />
+<br />
 {/if}
 
 
-<h2>Contract History</h2>
+
 {if $contracts|@count > 0}
-<center>{$past_contract_chart}</center>
-<h2>Past Contracts</h2>
+<h2>Recent Contracts</h2>
 <table class="data">
 {strip}
 	<tr class="theading">
 		<td style="width:180px;">Target</td>
 		<td style="width:180px;">Assigned</td>
-		<td style="width:180px;">Updated</td>
+		<td style="width:180px;">Closed</td>
 		<td>Status</td>
 	</tr>
 {/strip}
@@ -72,8 +116,13 @@
 {/strip}
 {/section}
 </table>
+	{if $contracts|@count == 30}
+		<br />
+		<center>Only showing the most recent 30 contracts</center>
+	{/if}
 {else}
 This user has no contracts that have concluded.
 {/if}
+<br />
 
 {include file="footer.tpl"}
