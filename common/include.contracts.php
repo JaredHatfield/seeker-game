@@ -49,7 +49,7 @@ function get_contract_information($contract_id){
 function get_users_contracts($user_id){
 	$query  = "SELECT c.`id`, c.`target`, ut.`name` target_name, c.`assigned`, c.`expiration`, c.`updated`, c.`status`, s.`value` status_name ";
 	$query .= "FROM contract c JOIN status s ON c.status = s.id JOIN users ut ON c.target = ut.id WHERE `assassin` = " . $user_id . " ";
-	$query .= "AND c.`status` != 1 ORDER BY `assigned` DESC;";
+	$query .= "AND c.`status` != 1 ORDER BY `assigned` DESC LIMIT 30;";
 	$result = mysql_query($query);
 	$val = array();
 	while($row = mysql_fetch_assoc($result)){
@@ -59,8 +59,21 @@ function get_users_contracts($user_id){
 }
 
 function get_user_enemies($userid){
-	$query = "SELECT u.`name`, u.`id`, COUNT(*) number FROM contract c JOIN users u ON c.`assassin` = u.`id` WHERE `target` = " . $userid . " ";
-	$query .= "AND `status` = 2 GROUP BY `assassin` ORDER BY COUNT(*) DESC";
+	$query  = "SELECT c.`assassin`, u.`name`, SUM(IF(c.`status`=2,1,0)) success, SUM(IF(c.`status`=3,1,0)) expired, SUM(IF(c.`status`=4,1,0)) ";
+	$query .= "failed, SUM(IF(c.`status`=5,1,0)) missed, COUNT(c.`status`) total FROM `contract` c JOIN `users` u ON c.`assassin` = u.`id` ";
+	$query .= "WHERE c.`target` = " . $userid . " AND c.`status` != 1 GROUP BY c.`assassin` ORDER BY u.`name`;";
+	$result = mysql_query($query);
+	$val = array();
+	while($row = mysql_fetch_assoc($result)){
+		$val[] = $row;
+	}
+	return $val;
+}
+
+function get_user_contract_summary($userid){
+	$query  = "SELECT c.`target`, u.`name`, SUM(IF(c.`status`=2,1,0)) success, SUM(IF(c.`status`=3,1,0)) expired, SUM(IF(c.`status`=4,1,0)) ";
+	$query .= "failed, SUM(IF(c.`status`=5,1,0)) missed, COUNT(c.`status`) total FROM `contract` c JOIN `users` u ON c.`target` = u.`id` ";
+	$query .= "WHERE c.`assassin` = " . $userid . " AND c.`status` != 1 GROUP BY c.`target` ORDER BY u.`name`;";
 	$result = mysql_query($query);
 	$val = array();
 	while($row = mysql_fetch_assoc($result)){
