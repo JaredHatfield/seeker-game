@@ -208,6 +208,7 @@ else if($_GET['page'] == "process"){
 		if(isset($_SESSION['userid']) && $_SESSION['userid'] != -1){
 			toggle_user_account_status($_SESSION['userid']);
 			$smarty->assign("url","./index.php?page=myaccount");
+			update_user_date($_SESSION['userid']);
 		}
 		else{
 			// User not authenticated, send them to the home page
