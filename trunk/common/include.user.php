@@ -83,7 +83,7 @@ function authenticate($username, $password){
 }
 
 function register($username, $password, $name, $email){
-	$query = "INSERT INTO users (`username`, `password`, `name`, `email`, `phone`, `secret`, `active`, `spawn`, `updated`) ";
+	$query = "INSERT INTO users (`username`, `password`, `name`, `email`, `phone`, `secret`, `active`, `spawn`, `uupdated`) ";
 	$query .= "VALUES('" . $username . "', '" . sha1($password) . "', '" . $name . "', '" . $email . "', '0000000000', '" . generate_secret() . "',  1, NOW(), NOW());";
 	$result = mysql_query($query);
 	$id = mysql_insert_id ();
