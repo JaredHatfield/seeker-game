@@ -350,6 +350,14 @@ else if($_GET['page'] == "leaderboard"){
 	$smarty->assign("leaderboard", get_leaderboard());
 	$smarty->display('leaderboard.tpl');
 }
+else if($_GET['page'] == "feed"){
+	$news = get_recent_news_items();
+	for($i = 0; $i < sizeof($news); $i++){
+		$news[$i]['message'] = strip_tags ($news[$i]['message']);
+	}
+	$smarty->assign("news", $news);
+	$smarty->display('feed.tpl');
+}
 else if($_GET['page'] == "process_contract"){
 	/*******************************************************************************************************
 	 * Results page after a contract has been submitted

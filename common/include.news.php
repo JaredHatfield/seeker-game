@@ -49,7 +49,7 @@ function post_news_item_failed($contract_id, $type){
 
 function get_recent_news_items(){
 	global $_CONFIG;
-	$query = "SELECT `message`, `timestamp` FROM news ORDER BY `timestamp` DESC, `id` DESC LIMIT " . $_CONFIG['newslength'] . ";";
+	$query = "SELECT `id`, `message`, `timestamp` FROM news ORDER BY `timestamp` DESC, `id` DESC LIMIT " . $_CONFIG['newslength'] . ";";
 	$result = mysql_query($query);
 	$val = array();
 	while($row = mysql_fetch_assoc($result)){
