@@ -61,7 +61,7 @@
 
 
 {if $enemies|@count > 0}
-<h2>Seekers Summary</h2
+<h2>Seekers Summary</h2>
 <table class="data">
 {strip}
 	<tr class="theading">
