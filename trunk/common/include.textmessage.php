@@ -106,7 +106,7 @@ function get_user_short_target($userid){
 function get_user_short_status($userid){
 	$user_info = get_user_information($userid);
 	if($user_info['status'] == 0){
-		$diff = $users[$i]['spawn_unix'] - date(time());
+		$diff = $user_info['spawn_unix'] - date(time());
 		$contract_hours_left = floor($diff/60/60);
 		$contract_minutes_left =  floor(($diff - $contract_hours_left*60*60)/60);
 		return "You will respawn in " . $contract_hours_left . " hours and " . $contract_minutes_left . " minutes.";
