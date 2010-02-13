@@ -54,6 +54,7 @@
 <table class="data">
 {strip}
 	<tr class="theading">
+		<td style="width:100px;">Position</td>
 		<td style="width:180px;">Name</td>
 		<td>Successful Contracts</td>
 	</tr>
@@ -61,6 +62,7 @@
 {section name=mysec loop=$leaderboard}
 {strip}
 	<tr>
+		<td style="text-align:center;">{$leaderboard[mysec].position}</td>
 		<td><a href="./index.php?page=user&id={$leaderboard[mysec].id}">{$leaderboard[mysec].name}</a></td>
 		<td style="text-align:center;">{$leaderboard[mysec].number}</td>
 	</tr>

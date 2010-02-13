@@ -26,6 +26,17 @@
  */
 
 
+function add_leaderboard_places($list){
+	$place = 1;
+	for($i = 0; $i < sizeof($list); $i++){
+		if($i > 0 && $list[$i]['number'] < $list[$i - 1]['number']){
+			$place = $i + 1;
+		}
+		$list[$i]['position'] = $place;
+	}
+	return $list;
+}
+
 function get_all_time_leaderboard(){
 	$query  = "SELECT `assassin` id, u.`name`, COUNT(*) number FROM contract c JOIN users u ON c.`assassin` = u.`id` ";
 	$query .= "WHERE `status` = 2 GROUP BY `assassin` ORDER BY COUNT(*) DESC, u.`name` ASC;";
@@ -34,7 +45,7 @@ function get_all_time_leaderboard(){
 	while($row = mysql_fetch_assoc($result)){
 		$val[] = $row;
 	}
-	return $val;
+	return add_leaderboard_places($val);
 }
 
 function get_leaderboard_past_days($numberofdays){
@@ -46,7 +57,7 @@ function get_leaderboard_past_days($numberofdays){
 	while($row = mysql_fetch_assoc($result)){
 		$val[] = $row;
 	}
-	return $val;
+	return add_leaderboard_places($val);
 }
 
 function get_leaderboard_current_semester(){
@@ -76,7 +87,7 @@ function get_leaderboard_current_semester(){
 	while($row = mysql_fetch_assoc($result)){
 		$val[] = $row;
 	}
-	return $val;
+	return add_leaderboard_places($val);
 }
 
 ?>
