@@ -23,7 +23,34 @@
  * @version 1.0
  *}
 {include file="header.tpl" title=Seeker}
-<h2>All Time Leaderboard</h2>
+<br />
+<center>
+	{if $boardlink == 0}
+		This Week | 
+	{else}
+		<a href="./index.php?page=leaderboard&thisweek">This Week</a> | 
+	{/if}
+	
+	{if $boardlink == 1}
+		This Month | 
+	{else}
+		<a href="./index.php?page=leaderboard&thismonth">This Month</a> | 
+	{/if}
+	
+	{if $boardlink == 2}
+		This Semester | 
+	{else}
+		<a href="./index.php?page=leaderboard&thissemester">This Semester</a> | 
+	{/if}
+	
+	{if $boardlink == 3}
+		All Time
+	{else}
+		<a href="./index.php?page=leaderboard">All Time</a>
+	{/if}
+</center>
+<h2>{$board} Leaderboard</h2>
+{if $leaderboard|@count > 0}
 <table class="data">
 {strip}
 	<tr class="theading">
@@ -40,5 +67,8 @@
 {/strip}
 {/section}
 </table>
-
+{else}
+<center>No Contracts have Been Completed</center>
+{/if}
+<br />
 {include file="footer.tpl"}

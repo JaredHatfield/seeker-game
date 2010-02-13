@@ -111,7 +111,6 @@ else if($_GET['page'] == "process"){
 		/********************************
 		* process user registration
 		********************************/
-		//
 		$gamepassword = mysql_real_escape_string($_POST['gpassword']);
 		$username = mysql_real_escape_string($_POST['uname']);
 		$password1 = mysql_real_escape_string($_POST['passwd1']);
@@ -336,7 +335,7 @@ else if($_GET['page'] == "myaccount"){
 }
 else if($_GET['page'] == "mobile_commands"){
 	/*******************************************************************************************************
-	 * mobile commands
+	 * Mobile Commands
 	 ******************************************************************************************************/
 	$smarty->assign("pagename", "Mobile Commands");
 	$smarty->assign("sample_secert", generate_secret());
@@ -344,13 +343,38 @@ else if($_GET['page'] == "mobile_commands"){
 }
 else if($_GET['page'] == "leaderboard"){
 	/*******************************************************************************************************
-	 * mobile commands
+	 * Leaderboard
 	 ******************************************************************************************************/
-	$smarty->assign("pagename", "Leaderboard");
-	$smarty->assign("leaderboard", get_leaderboard());
+	if(isset($_GET['thisweek'])){
+		$smarty->assign("pagename", "Leaderboard - This Week");
+		$smarty->assign("board", "This Week's");
+		$smarty->assign("boardlink", 0);
+		$smarty->assign("leaderboard", get_leaderboard_past_days(7));
+	}
+	else if(isset($_GET['thismonth'])){
+		$smarty->assign("pagename", "Leaderboard - This Month");
+		$smarty->assign("board", "This Month's");
+		$smarty->assign("boardlink", 1);
+		$smarty->assign("leaderboard", get_leaderboard_past_days(30));
+	}
+	else if(isset($_GET['thissemester'])){
+		$smarty->assign("pagename", "Leaderboard - This Semester");
+		$smarty->assign("board", "This Semesters's");
+		$smarty->assign("boardlink", 2);
+		$smarty->assign("leaderboard", get_leaderboard_current_semester());
+	}
+	else{
+		$smarty->assign("pagename", "Leaderboard - All Time");
+		$smarty->assign("board", "All Time");
+		$smarty->assign("boardlink", 3);
+		$smarty->assign("leaderboard", get_all_time_leaderboard());
+	}
 	$smarty->display('leaderboard.tpl');
 }
 else if($_GET['page'] == "feed"){
+	/*******************************************************************************************************
+	 * News RSS Feed
+	 ******************************************************************************************************/
 	$news = get_recent_news_items();
 	for($i = 0; $i < sizeof($news); $i++){
 		$news[$i]['message'] = strip_tags ($news[$i]['message']);
