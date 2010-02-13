@@ -26,8 +26,9 @@
  */
 
 
-function get_leaderboard(){
-	$query = "SELECT `assassin` id, u.`name`, COUNT(*) number FROM contract c JOIN users u ON c.`assassin` = u.`id` WHERE `status` = 2 GROUP BY `assassin` ORDER BY COUNT(*) DESC, u.`name` ASC;";
+function get_all_time_leaderboard(){
+	$query  = "SELECT `assassin` id, u.`name`, COUNT(*) number FROM contract c JOIN users u ON c.`assassin` = u.`id` ";
+	$query .= "WHERE `status` = 2 GROUP BY `assassin` ORDER BY COUNT(*) DESC, u.`name` ASC;";
 	$result = mysql_query($query);
 	$val = array();
 	while($row = mysql_fetch_assoc($result)){
@@ -36,5 +37,46 @@ function get_leaderboard(){
 	return $val;
 }
 
+function get_leaderboard_past_days($numberofdays){
+	$query  = "SELECT `assassin` id, u.`name`, COUNT(*) number FROM contract c JOIN users u ON c.`assassin` = u.`id` ";
+	$query .= "WHERE `status` = 2 AND ADDDATE(c.`updated`, INTERVAL " . $numberofdays . " DAY) > NOW() ";
+	$query .= "GROUP BY `assassin` ORDER BY COUNT(*) DESC, u.`name` ASC;";
+	$result = mysql_query($query);
+	$val = array();
+	while($row = mysql_fetch_assoc($result)){
+		$val[] = $row;
+	}
+	return $val;
+}
+
+function get_leaderboard_current_semester(){
+	$currentmonth = date("n");
+	
+	if($currentmonth < 5){
+		// Spring
+		$start = date("Y") . "-01-01 00:00:00";
+		$end   = date("Y") . "-05-01 00:00:00";
+	}
+	else if($currentmonth < 9){
+		// Summer
+		$start = date("Y") . "-05-01 00:00:00";
+		$end   = date("Y") . "-09-01 00:00:00";
+	}
+	else{
+		// Falls
+		$start = date("Y") . "-09-01 00:00:00";
+		$end   = (date("Y")+1) . "-01-01 00:00:00";
+	}
+	
+	$query  = "SELECT `assassin` id, u.`name`, COUNT(*) number FROM contract c JOIN users u ON c.`assassin` = u.`id` ";
+	$query .= "WHERE `status` = 2 AND c.`updated` > '" . $start . "' AND c.`updated` < '" . $end . "' ";
+	$query .= "GROUP BY `assassin` ORDER BY COUNT(*) DESC, u.`name` ASC;";
+	$result = mysql_query($query);
+	$val = array();
+	while($row = mysql_fetch_assoc($result)){
+		$val[] = $row;
+	}
+	return $val;
+}
 
 ?>
