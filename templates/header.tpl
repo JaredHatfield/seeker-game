@@ -26,6 +26,11 @@
 <head>
 	<title>{$title} - {$pagename}</title>
 	<link rel="stylesheet" type="text/css" href="./static/style.css" />
+	{if isset($xfn) && $contracts|@count > 0}
+	{section name=mysec loop=$xfn}
+	<link href='{$xfn[mysec].link}' rel='{$xfn[mysec].rel}' type='text/html'/> 
+	{/section}
+	{/if}
 </head>
 <body bgcolor="#ffffff">
 <table class="maintable" align="center">
