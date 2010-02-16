@@ -22,7 +22,7 @@
  * @package seeker-game
  * @version 1.0
  *}
-{include file="header.tpl" title=Seeker}
+{include file="header.tpl" title=Seeker xfn=$xfn}
 
 <h2>{$fullname}</h2>
 
@@ -30,7 +30,6 @@
 {if $contract_summary|@count > 0}
 <h2>Contract Summary</h2>
 <table class="data">
-{strip}
 	<tr class="theading">
 		<td style="width:300px;">Target Name</td>
 		<td>Successful</td>
@@ -39,18 +38,23 @@
 		<td>Missed</td>
 		<td>Total</td>
 	</tr>
-{/strip}
 {section name=mysec loop=$contract_summary}
-{strip}
 	<tr>
-		<td><a href="./index.php?page=user&id={$contract_summary[mysec].target}">{$contract_summary[mysec].name}</a></td>
+		{strip}
+		<td>
+			{if $contract_summary[mysec].success > 0}
+				<a href="./index.php?page=user&id={$contract_summary[mysec].target}" rel="met">{$contract_summary[mysec].name}</a>
+			{else}
+				<a href="./index.php?page=user&id={$contract_summary[mysec].target}" >{$contract_summary[mysec].name}</a>
+			{/if}
+		</td>
+		{/strip}
 		<td style="text-align:center;">{$contract_summary[mysec].success}</td>
 		<td style="text-align:center;">{$contract_summary[mysec].expired}</td>
 		<td style="text-align:center;">{$contract_summary[mysec].failed}</td>
 		<td style="text-align:center;">{$contract_summary[mysec].missed}</td>
 		<td style="text-align:center;">{$contract_summary[mysec].total}</td>
 	</tr>
-{/strip}
 {/section}
 </table>
 <center>{$past_contract_chart}</center>
@@ -63,7 +67,6 @@
 {if $enemies|@count > 0}
 <h2>Seekers Summary</h2>
 <table class="data">
-{strip}
 	<tr class="theading">
 		<td style="width:300px;">Seeker Name</td>
 		<td>Successful</td>
@@ -72,18 +75,23 @@
 		<td>Missed</td>
 		<td>Total</td>
 	</tr>
-{/strip}
 {section name=mysec loop=$enemies}
-{strip}
 	<tr>
-		<td><a href="./index.php?page=user&id={$enemies[mysec].assassin}">{$enemies[mysec].name}</a></td>
+		{strip}
+		<td>
+			{if $enemies[mysec].success > 0}
+				<a href="./index.php?page=user&id={$enemies[mysec].assassin}" rel="met">{$enemies[mysec].name}</a>
+			{else}
+				<a href="./index.php?page=user&id={$enemies[mysec].assassin}" >{$enemies[mysec].name}</a>
+			{/if}
+		</td>
+		{/strip}
 		<td style="text-align:center;">{$enemies[mysec].success}</td>
 		<td style="text-align:center;">{$enemies[mysec].expired}</td>
 		<td style="text-align:center;">{$enemies[mysec].failed}</td>
 		<td style="text-align:center;">{$enemies[mysec].missed}</td>
 		<td style="text-align:center;">{$enemies[mysec].total}</td>
 	</tr>
-{/strip}
 {/section}
 </table>
 <center>{$past_target_chart}</center>
@@ -97,23 +105,27 @@
 {if $contracts|@count > 0}
 <h2>Recent Contracts</h2>
 <table class="data">
-{strip}
 	<tr class="theading">
 		<td style="width:180px;">Target</td>
 		<td style="width:180px;">Assigned</td>
 		<td style="width:180px;">Closed</td>
 		<td>Status</td>
 	</tr>
-{/strip}
 {section name=mysec loop=$contracts}
-{strip}
 	<tr>
-		<td><a href="./index.php?page=user&id={$contracts[mysec].target}">{$contracts[mysec].target_name}</a></td>
+		{strip}
+		<td>
+			{if $contracts[mysec].status_name == "Succeeded"}
+				<a href="./index.php?page=user&id={$contracts[mysec].target}" rel="met">{$contracts[mysec].target_name}</a>
+			{else}
+				<a href="./index.php?page=user&id={$contracts[mysec].target}" >{$contracts[mysec].target_name}</a>
+			{/if}
+		</td>
+		{/strip}
 		<td>{$contracts[mysec].assigned}</td>
 		<td>{$contracts[mysec].updated}</td>
 		<td>{$contracts[mysec].status_name}</td>
 	</tr>
-{/strip}
 {/section}
 </table>
 	{if $contracts|@count == 30}

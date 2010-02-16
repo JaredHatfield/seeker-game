@@ -262,6 +262,7 @@ else if($_GET['page'] == "user"){
 	$smarty->assign("contracts", get_users_contracts($page_userid));
 	$smarty->assign("enemies", get_user_enemies($page_userid));
 	$smarty->assign("contract_summary", get_user_contract_summary($page_userid));
+	$smarty->assign("xfn", xfn_relations($page_userid));
 	$smarty->display('user.tpl');
 }
 else if($_GET['page'] == "listusers"){
