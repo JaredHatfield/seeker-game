@@ -47,8 +47,9 @@ while($row = mysql_fetch_assoc($result)){
 $smarty->assign("urls", $val);
 
 $url = "http://" . $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
-$url = str_replace("sitemap.xml.php","index.php?page=user&id=", $url);
+$url = str_replace("sitemap.xml.php","index.php?page=user&amp;id=", $url);
 $smarty->assign("url", $url);
 
 $smarty->display('sitemap.tpl');
+
 ?>
