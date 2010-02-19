@@ -28,25 +28,25 @@
 	{if $boardlink == 0}
 		This Week | 
 	{else}
-		<a href="./index.php?page=leaderboard&thisweek">This Week</a> | 
+		<a href="{$baseurl}leaderboard/thisweek">This Week</a> | 
 	{/if}
 	
 	{if $boardlink == 1}
 		This Month | 
 	{else}
-		<a href="./index.php?page=leaderboard&thismonth">This Month</a> | 
+		<a href="{$baseurl}leaderboard/thismonth">This Month</a> | 
 	{/if}
 	
 	{if $boardlink == 2}
 		This Semester | 
 	{else}
-		<a href="./index.php?page=leaderboard&thissemester">This Semester</a> | 
+		<a href="{$baseurl}leaderboard/thissemester">This Semester</a> | 
 	{/if}
 	
 	{if $boardlink == 3}
 		All Time
 	{else}
-		<a href="./index.php?page=leaderboard">All Time</a>
+		<a href="{$baseurl}leaderboard/">All Time</a>
 	{/if}
 </center>
 <h2>{$board} Leaderboard</h2>
@@ -63,7 +63,7 @@
 {strip}
 	<tr>
 		<td style="text-align:center;">{$leaderboard[mysec].position}</td>
-		<td><a href="./index.php?page=user&id={$leaderboard[mysec].id}">{$leaderboard[mysec].name}</a></td>
+		<td><a href="{$baseurl}user/{$leaderboard[mysec].id}/">{$leaderboard[mysec].name}</a></td>
 		<td style="text-align:center;">{$leaderboard[mysec].number}</td>
 	</tr>
 {/strip}

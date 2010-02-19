@@ -38,6 +38,9 @@ $_CONFIG['database'] = 'seeker';
 $_CONFIG['username'] = 'username';
 $_CONFIG['password'] = 'password';
 
+// Root URL
+$_CONFIG['url'] = "http://example.com/seeker/";
+
 // Game Play Settings
 $_CONFIG['respawntime'] = 24;
 $_CONFIG['contractlength'] = 72;

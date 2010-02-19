@@ -25,7 +25,7 @@
 <urlset xmlns="http://www.google.com/schemas/sitemap/0.84" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.google.com/schemas/sitemap/0.84 http://www.google.com/schemas/sitemap/0.84/sitemap.xsd">
 {section name=mysec loop=$urls}
 	<url> 
-		<loc>{$url}{$urls[mysec].id}</loc> 
+		<loc>{$baseurl}user/{$urls[mysec].id}/</loc> 
 		<lastmod>{$urls[mysec].lastmod}</lastmod> 
 		<changefreq>weekly</changefreq> 
 		<priority>1</priority> 

@@ -25,7 +25,7 @@
 <html>
 <head>
 	<title>{$title} - {$pagename}</title>
-	<link rel="stylesheet" type="text/css" href="./static/style.css" />
+	<link rel="stylesheet" type="text/css" href="{$baseurl}static/style.css" />
 	{if isset($xfn) && $contracts|@count > 0}
 	{section name=mysec loop=$xfn}
 	<link href='{$xfn[mysec].link}' rel='{$xfn[mysec].rel}' type='text/html'/> 
@@ -36,13 +36,13 @@
 <table class="maintable" align="center">
 	<tr class="header">
 		<td>
-			<img src="./static/header.png" width=500 height=150 style=" class="display" />
+			<img src="{$baseurl}static/header.png" width=500 height=150 style=" class="display" />
 		</td>
 	</tr>
 	<tr>
 		<td>
 			<center>
-			<a href="./index.php">Home</a> | <a href="./index.php?page=listusers">List of Players</a> | <a href="./index.php?page=leaderboard&thissemester">Leaderboard</a> | <a href="./index.php?page=mobile_commands">Mobile Commands</a>
+			<a href="{$baseurl}home">Home</a> | <a href="{$baseurl}listusers">List of Players</a> | <a href="{$baseurl}leaderboard/thissemester">Leaderboard</a> | <a href="{$baseurl}mobile_commands">Mobile Commands</a>
 			<br />
 			{if $logged_in eq 0}
 				<a href="./index.php?page=login">Login</a> | <a href="./index.php?page=register">Register</a>

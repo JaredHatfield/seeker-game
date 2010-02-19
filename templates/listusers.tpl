@@ -36,7 +36,7 @@
 {section name=mysec loop=$all_users}
 {strip}
 	<tr>
-		<td><a href="./index.php?page=user&id={$all_users[mysec].id}">{$all_users[mysec].name}</a></td>
+		<td><a href="{$baseurl}user/{$all_users[mysec].id}/">{$all_users[mysec].name}</a></td>
 		<td style="text-align:center;">{$all_users[mysec].successful}</td>
 		<td style="text-align:center;">{$all_users[mysec].total}</td>
 		<td>
@@ -64,7 +64,7 @@
 {section name=mysec loop=$all_users_inactive}
 {strip}
 	<tr>
-		<td><a href="./index.php?page=user&id={$all_users_inactive[mysec].id}">{$all_users_inactive[mysec].name}</a></td>
+		<td><a href="{$baseurl}user/{$all_users_inactive[mysec].id}/">{$all_users_inactive[mysec].name}</a></td>
 		<td style="text-align:center;">{$all_users_inactive[mysec].successful}</td>
 		<td style="text-align:center;">{$all_users_inactive[mysec].total}</td>
 		<td></td>
