@@ -38,6 +38,7 @@ $smarty = new Smarty;
 $smarty->compile_check = true;
 //$smarty->debugging = true;
 $smarty->assign("pagename", "");
+$smarty->assign("baseurl", $_CONFIG['url']);
 
 
 // User management

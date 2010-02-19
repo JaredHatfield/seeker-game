@@ -55,9 +55,21 @@ function get_recent_news_items(){
 	while($row = mysql_fetch_assoc($result)){
 		$val[] = $row;
 	}
+	
+	for($i = 0; $i < sizeof($val); $i++){
+		$val[$i]['message'] = prett_up_news_url($val[$i]['message']);
+	}
+	
 	return $val;
 }
 
+
+function prett_up_news_url($url){
+	global $_CONFIG;
+	// Replace the ugly urls with nice looking ones
+	return preg_replace('/.\/index.php\?page=user&id=(\d+)/', $_CONFIG['url'] . 'user/$1/', $url);
+	
+}
 
 
 ?>

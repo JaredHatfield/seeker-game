@@ -33,6 +33,7 @@ include_once("./common/include.index.php");
 $smarty = new Smarty;
 $smarty->compile_check = true;
 //$smarty->debugging = true;
+$smarty->assign("baseurl", $_CONFIG['url']);
 
 
 $query = "SELECT `id`, `uupdated` FROM users;";
@@ -45,11 +46,6 @@ while($row = mysql_fetch_assoc($result)){
 	$i++;
 }
 $smarty->assign("urls", $val);
-
-$url = "http://" . $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
-$url = str_replace("sitemap.xml.php","index.php?page=user&amp;id=", $url);
-$smarty->assign("url", $url);
-
 $smarty->display('sitemap.tpl');
 
 ?>

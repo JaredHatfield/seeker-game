@@ -43,9 +43,9 @@
 		{strip}
 		<td>
 			{if $contract_summary[mysec].success > 0}
-				<a href="./index.php?page=user&id={$contract_summary[mysec].target}" rel="met">{$contract_summary[mysec].name}</a>
+				<a href="{$baseurl}user/{$contract_summary[mysec].target}/" rel="met">{$contract_summary[mysec].name}</a>
 			{else}
-				<a href="./index.php?page=user&id={$contract_summary[mysec].target}" >{$contract_summary[mysec].name}</a>
+				<a href="{$baseurl}user/{$contract_summary[mysec].target}/" >{$contract_summary[mysec].name}</a>
 			{/if}
 		</td>
 		{/strip}
@@ -80,9 +80,9 @@
 		{strip}
 		<td>
 			{if $enemies[mysec].success > 0}
-				<a href="./index.php?page=user&id={$enemies[mysec].assassin}" rel="met">{$enemies[mysec].name}</a>
+				<a href="{$baseurl}user/{$enemies[mysec].assassin}/" rel="met">{$enemies[mysec].name}</a>
 			{else}
-				<a href="./index.php?page=user&id={$enemies[mysec].assassin}" >{$enemies[mysec].name}</a>
+				<a href="{$baseurl}user/{$enemies[mysec].assassin}/" >{$enemies[mysec].name}</a>
 			{/if}
 		</td>
 		{/strip}
@@ -116,9 +116,9 @@
 		{strip}
 		<td>
 			{if $contracts[mysec].status_name == "Succeeded"}
-				<a href="./index.php?page=user&id={$contracts[mysec].target}" rel="met">{$contracts[mysec].target_name}</a>
+				<a href="{$baseurl}user/{$contracts[mysec].target}/" rel="met">{$contracts[mysec].target_name}</a>
 			{else}
-				<a href="./index.php?page=user&id={$contracts[mysec].target}" >{$contracts[mysec].target_name}</a>
+				<a href="{$baseurl}user/{$contracts[mysec].target}/" >{$contracts[mysec].target_name}</a>
 			{/if}
 		</td>
 		{/strip}
