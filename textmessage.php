@@ -113,6 +113,9 @@ switch ($event){
 		insert_zeep_mo($userid, $msg, $message);
 		echo $message;
 		break;
+	default:
+		echo "Invalid query from server";
+		break;
 }
 
 ?>
