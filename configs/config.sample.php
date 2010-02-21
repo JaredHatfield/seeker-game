@@ -32,6 +32,9 @@
  * 
  ****************************************************************************/
 
+// Smarty Library
+$_CONFIG['smarty'] = '../libs/Smarty.class.php';
+
 // Database Settings
 $_CONFIG['host'] = 'localhost';
 $_CONFIG['database'] = 'seeker';

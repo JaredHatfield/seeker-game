@@ -24,9 +24,10 @@
  * @package seeker-game
  * @version 1.0
  */
-require_once('./libs/Smarty.class.php');
-require_once('./recaptcha/recaptchalib.php');
+
 include_once("./configs/config.php");
+require_once($_CONFIG['smarty']);
+require_once("./recaptcha/recaptchalib.php");
 include_once("./common/include.index.php");
 
 // Smarty
