@@ -45,9 +45,9 @@
 			<a href="{$baseurl}home">Home</a> | <a href="{$baseurl}listusers">List of Players</a> | <a href="{$baseurl}leaderboard/thissemester">Leaderboard</a> | <a href="{$baseurl}mobile_commands">Mobile Commands</a>
 			<br />
 			{if $logged_in eq 0}
-				<a href="./index.php?page=login">Login</a> | <a href="./index.php?page=register">Register</a>
+				<a href="{$baseurl}index.php?page=login">Login</a> | <a href="{$baseurl}index.php?page=register">Register</a>
 			{else}
-				Welcome, {$user_name} | <a href="./index.php?page=current_contract">Current Contract</a> | <a href="./index.php?page=myaccount">My Account</a> | <a href="./index.php?page=logoff">Log off</a>
+				Welcome, {$user_name} | <a href="{$baseurl}index.php?page=current_contract">Current Contract</a> | <a href="{$baseurl}index.php?page=myaccount">My Account</a> | <a href="{$baseurl}index.php?page=logoff">Log off</a>
 			{/if}
 			</center>
 		</td>
