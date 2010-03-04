@@ -43,6 +43,9 @@ Seeker is a online game that is played in real life.  The rules are as follows: 
 	<li><b>{$successful_contract_count}</b> contracts have been successfully completed by all of the players.</li>
 	<li>Right now there are <b>{$open_contract_count}</b> open contracts.</li>
 </ul>
+<br />
+<center><img src="{$contract_history_chart}" /></center>
+<br />
 
 <h2>News</h2>
 <table class="data">
