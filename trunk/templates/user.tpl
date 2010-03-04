@@ -57,7 +57,7 @@
 	</tr>
 {/section}
 </table>
-<center>{$past_contract_chart}</center>
+<center><img src="{$past_contract_chart}" /></center>
 <center>Contracts issued to {$fullname}</center>
 <br />
 <br />
@@ -94,7 +94,7 @@
 	</tr>
 {/section}
 </table>
-<center>{$past_target_chart}</center>
+<center><img src="{$past_target_chart}" /></center>
 <center>Contracts issued with {$fullname} as the target</center>
 <br />
 <br />

@@ -25,16 +25,6 @@
  * @version 1.0
  */
 
- /*
-
-chd=t:60,40,40,40&
-chl=Successful|Failed|Missed|Expired&
-
-=&
-chtt=Contract+Results&
-
-*/
-
 function get_user_target_pie_chart($userid){
 	$query  = "SELECT s.`value`, COUNT(*) number FROM contract c JOIN status s ON `status` = s.id WHERE `target` = " . $userid . " ";
 	$query .= "AND `status` != 1 GROUP BY `status` ORDER BY c.`status`";
@@ -44,7 +34,7 @@ function get_user_target_pie_chart($userid){
 		$val[$row['value']] = $row['number'];
 	}
 	
-	return "<img src=\"" . generate_google_pie_chart_url($val) . "\" />";
+	return generate_google_pie_chart_url($val);
 }
 
 function get_user_contract_pie_chart($userid){
@@ -56,7 +46,7 @@ function get_user_contract_pie_chart($userid){
 		$val[$row['value']] = $row['number'];
 	}
 	
-	return "<img src=\"" . generate_google_pie_chart_url($val) . "\" />";
+	return generate_google_pie_chart_url($val);
 }
 
 function generate_google_pie_chart_url($values){
@@ -93,6 +83,87 @@ function generate_google_pie_chart_url($values){
 	
 	return $baseurl;
 }
+
+function get_date_statistics($date){
+	$query  = "SELECT 1 status, count(*) number FROM contract WHERE date(assigned) = '" . $date . "' UNION ";
+	$query .= "SELECT `status`, count(*) number FROM contract c WHERE `status` != 1 AND date(updated) = '" . $date . "' GROUP BY `status`";
+	$result = mysql_query($query);
+	$val = array();
+	for($i = 1; $i <= 5; $i++){
+		$val[$i] = 0;
+	}
+	
+	while($row = mysql_fetch_assoc($result)){
+		$val[$row['status']] = $row['number'];
+	}
+	
+	return $val;
+}
+
+function get_date_chart(){
+	$daycount = 20;
+	$max = 0;
+	$data = array();
+	for($i = 0; $i < 21; $i++){
+		$date = date('Y-m-d', mktime(0, 0, 0, date("m") , date("d") - $daycount + $i, date("Y")));
+		$data[$i] = get_date_statistics($date);
+		$data[$i]['date'] = $date;
+		$data[$i]['shortdate'] = date('n/j', mktime(0, 0, 0, date("m") , date("d") - $daycount + $i, date("Y")));
+		
+		$count = 0;
+		for($j = 1; $j <= 5; $j++){
+			$count += $data[$i][$j];
+		}
+		if($count > $max){
+			$max = $count;
+		}
+	}
+	
+	$baseurl = 'http://chart.apis.google.com/chart?';
+	$parms['cht'] = 'bvs';
+	$parms['chs'] = '600x300';
+	$parms['chf'] = 'bg,s,000000';
+	$parms['chco'] = '18B14C,46C170,74D194,A3E0B8,D1F0DC';
+	$parms['chdl'] = 'Assigned|Succeeded|Expired|Failed|Missed';
+	$parms['chdlp'] = 't';
+	$parms['chds'] = '0,' . $max;
+	$parms['chxt'] = 'x,y';
+	
+	foreach($parms as $key => $value){
+		$baseurl .= $key . "=" . $value . "&";
+	}
+	
+	$baseurl .= "chd=t:";
+	for($i = 1; $i <= 5; $i++){
+		for($j = 0; $j < sizeof($data); $j++){
+			$baseurl .= $data[$j][$i];
+			if(($j + 1) < sizeof($data)){
+				$baseurl .= ",";
+			}
+		}
+		if($i < 5){
+			$baseurl .= "|";
+		}
+	}
+	$baseurl .= "&chxl=1:|0|" . floor($max/3) . "|" . floor(2*$max/3) . "|" . $max . "|0:|";
+	
+	for($i = 0; $i < sizeof($data); $i++){
+		$baseurl .= $data[$i]['shortdate'];
+		if(($i + 1) < sizeof($data)){
+			$baseurl .= "|";
+		}
+	}
+	
+	return $baseurl;
+}
+
+
+
+
+
+
+
+
 
 
 ?>

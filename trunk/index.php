@@ -65,6 +65,7 @@ if(!isset($_GET['page'])){
 	$smarty->assign("live_member_count", get_live_member_count());
 	$smarty->assign("new_contracts", get_if_contracts_are_being_issued());
 	$smarty->assign("news", get_recent_news_items());
+	$smarty->assign("contract_history_chart", get_date_chart());
 	$smarty->display('index.tpl');
 }
 else if($_GET['page'] == "logoff"){
