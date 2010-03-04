@@ -123,8 +123,8 @@ function get_date_chart(){
 	$parms['cht'] = 'bvs';
 	$parms['chs'] = '600x300';
 	$parms['chf'] = 'bg,s,000000';
-	$parms['chco'] = '18B14C,46C170,74D194,A3E0B8,D1F0DC';
-	$parms['chdl'] = 'Assigned|Succeeded|Expired|Failed|Missed';
+	$parms['chco'] = '18B14C,A3E0B8,D1F0DC';
+	$parms['chdl'] = 'Assigned|Succeeded|Unsuccessful';
 	$parms['chdlp'] = 't';
 	$parms['chds'] = '0,' . $max;
 	$parms['chxt'] = 'x,y';
@@ -134,6 +134,7 @@ function get_date_chart(){
 	}
 	
 	$baseurl .= "chd=t:";
+	/*
 	for($i = 1; $i <= 5; $i++){
 		for($j = 0; $j < sizeof($data); $j++){
 			$baseurl .= $data[$j][$i];
@@ -145,6 +146,29 @@ function get_date_chart(){
 			$baseurl .= "|";
 		}
 	}
+	*/
+	for($j = 0; $j < sizeof($data); $j++){
+		$baseurl .= $data[$j][1];
+		if(($j + 1) < sizeof($data)){
+			$baseurl .= ",";
+		}
+	}
+	$baseurl .= "|";
+	for($j = 0; $j < sizeof($data); $j++){
+		$baseurl .= $data[$j][2];
+		if(($j + 1) < sizeof($data)){
+			$baseurl .= ",";
+		}
+	}
+	$baseurl .= "|";
+	for($j = 0; $j < sizeof($data); $j++){
+		$baseurl .= ($data[$j][3] + $data[$j][4] + $data[$j][5]);
+		if(($j + 1) < sizeof($data)){
+			$baseurl .= ",";
+		}
+	}
+	
+	
 	$baseurl .= "&chxl=1:|0|" . floor($max/3) . "|" . floor(2*$max/3) . "|" . $max . "|0:|";
 	
 	for($i = 0; $i < sizeof($data); $i++){
