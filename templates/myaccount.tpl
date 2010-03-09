@@ -30,14 +30,20 @@
 <b>Your Current Secret:</b> {$secret}<br /><br />
 <b>Current Status:</b>
 {if $active eq 1}
-	Active / Accepting contracts  
-	<FORM action="./index.php?page=process" method="post">
-		{*<INPUT type="hidden" name="key" value="{php}echo secureform_add('togglestatus', 4){/php}">*}
-		<input type="hidden" name="action" value="togglestatus">
-		<INPUT type="submit" value="Change Acount Status to Inactive">
-	</FORM>
+	Active / Accepting contracts 
+	{if $isinactivedelay}
+		<FORM action="./index.php?page=process" method="post">
+			{*<INPUT type="hidden" name="key" value="{php}echo secureform_add('togglestatus', 4){/php}">*}
+			<input type="hidden" name="action" value="togglestatus">
+			<INPUT type="submit" value="Change Acount Status to Inactive">
+		</FORM>
+		<br />
+		<p style="margin-left:20px; font-size:11;">Note: If you change your status to inactive you will need to wait {$inactivedelay} hours before you can rejoin the game.  If you decided to become inactive you will no longer receive new contracts and no new contracts will be issued with you as the target.  However, you existing contract and all existing contracts with you as the target will still be eligible for completion, otherwise they will expire when their deadline is reached.  You should change your status to inactive if you will not be able to play Seeker for a period of time such as going out of town.</p>
+	{else}
+		<br />
+		<p style="margin-left:20px; font-size:11;">You must wait for {$inactivetimeleft} before you can become inactive.</p>
+	{/if}
 	<br />
-	<p style="margin-left:20px; font-size:11;">Note: If you change your status to inactive you will need to wait {$inactivedelay} hours before you can rejoin the game.  If you decided to become inactive you will no longer receive new contracts and no new contracts will be issued with you as the target.  However, you existing contract and all existing contracts with you as the target will still be eligible for completion, otherwise they will expire when their deadline is reached.  You should change your status to inactive if you will not be able to play Seeker for a period of time.</p>
 {else}
 	Inactive / Not accepting contracts  
 	{if $isinactivedelay}
@@ -46,9 +52,11 @@
 			<input type="hidden" name="action" value="togglestatus">
 			<INPUT type="submit" value="Change Account Status to Active">
 		</FORM>
+		<br />
+		<p style="margin-left:20px; font-size:11;">Note: After you change your status to active, you will not be able to switch back to inactive for a period of {$inactivedelay} hours.  This is to prevent players for going active to receive a contract and immediately switching to inactive so no contracts can be issued on them.</p>
 	{else}
 		<br />
-		<p style="margin-left:20px; font-size:11;">You must wait for {$inactivetimeleft} before you can become active again.</p>
+		<p style="margin-left:20px; font-size:11;">You must wait for {$inactivetimeleft} before you can become active.</p>
 	{/if}
 {/if}
 <br /><br />
