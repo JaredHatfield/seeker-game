@@ -136,15 +136,13 @@ function can_user_become_active($userid){
 	if($row[0] == 1){
 		return true;
 	}
-	else{
-		return false;
-	}
+	return false;
 }
 
 function time_left_till_user_can_become_active($userid){
 	global $_CONFIG;
 	$query = "SELECT IFNULL((UNIX_TIMESTAMP(DATE_ADD(MAX(`time`), INTERVAL " . $_CONFIG['inactivedelay'] . " HOUR)) - UNIX_TIMESTAMP(NOW())),0) timeleft FROM audit_status
-WHERE `userid` = " . $userid . " AND previous = 1 AND `new` = 0;";
+WHERE `userid` = " . $userid . ";";
 	$result = mysql_query($query);
 	$row = mysql_fetch_row($result);
 	return convert_seconds_to_human_time($row[0]);
