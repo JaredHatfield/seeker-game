@@ -34,9 +34,11 @@ include_once("./common/include.cron.php");
 // Lazy cron to expire contracts
 expire_contracts();
 
+// Disable inactive user accounts
+automatic_user_deactivate();
 
+// Issue contracts if it is allowed
 if(contract_can_be_issued()){
-	automatic_user_deactivate();
 	assign_new_contracts();
 }
 
