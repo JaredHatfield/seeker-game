@@ -281,6 +281,18 @@ else if($_GET['page'] == "register"){
 	$smarty->assign("recaptcha_enabled", $_CONFIG['recaptcha_enabled']);
 	$smarty->display('register.tpl');
 }
+else if($_GET['page'] == "recover_password"){
+	/*******************************************************************************************************
+	 * Recover password page
+	 ******************************************************************************************************/
+	$smarty->assign("pagename", "Recover Password");
+	$error = "";
+	if($_CONFIG['recaptcha_enabled']){
+		$smarty->assign("recaptcha", recaptcha_get_html($_CONFIG['recaptcha_public'], $error));
+	}
+	$smarty->assign("recaptcha_enabled", $_CONFIG['recaptcha_enabled']);
+	$smarty->display('recover_password.tpl');
+}
 else if($_GET['page'] == "register_zeep"){
 	/*******************************************************************************************************
 	 * Zeepmobile registration page
