@@ -38,8 +38,10 @@
 	<p style="margin-left:20px; font-size:11;">This is how other players will identify you in the game</p>
 	Email Address: <INPUT type="text" name="email"><br />
 	<p style="margin-left:20px; font-size:11;">You will receive email notifications as you play the game</p>
+	{if $recaptcha_enabled}
 	{$recaptcha}<br />	
 	<p style="margin-left:20px; font-size:11;">Just making sure that you are human...</p>
+	{/if}
 	{*<INPUT type="hidden" name="key" value="{php}echo secureform_add('register', 4){/php}">*}
 	<input type="hidden" name="action" value="register">
 	<br />
