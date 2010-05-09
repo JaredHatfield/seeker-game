@@ -221,6 +221,46 @@ else if($_GET['page'] == "process"){
 		$smarty->display('redirect.tpl');
 		exit();
 	}
+	else if($action == "changepassword"){
+		/********************************
+		* process change password
+		********************************/
+		if(isset($_SESSION['userid']) && $_SESSION['userid'] != -1){
+			$id = mysql_real_escape_string($_POST['id']);
+			$password = mysql_real_escape_string($_POST['password']);
+			$password1 = mysql_real_escape_string($_POST['passwd1']);
+			$password2 = mysql_real_escape_string($_POST['passwd2']);
+			
+			if($id != $_SESSION['userid']){
+				// The form submitted does not match the authenticated user, send them to the home page
+				$smarty->assign("url","./index.php");
+			}
+			else if($password1 != $password2){
+				$smarty->assign("message","Error: The passwords you entered did not match, try changing your password again.");
+				$smarty->display('error.tpl');
+				exit();
+			}
+			else if(strlen($password1) < 6){
+				$smarty->assign("message","Error: Your new password must be at least 6 characters long.");
+				$smarty->display('error.tpl');
+				exit();
+			}
+			else{
+				// All systems go!  Change that password...
+				change_password($id, $password1);
+				update_user_date($_SESSION['userid']);
+			}
+			
+			$smarty->assign("url","./index.php?page=myaccount");
+		}
+		else{
+			// User not authenticated, send them to the home page
+			$smarty->assign("url","./index.php");
+		}
+		$smarty->display('redirect.tpl');
+		exit();
+	}
+	
 }
 else if($_GET['page'] == "login"){
 	/*******************************************************************************************************
@@ -330,6 +370,7 @@ else if($_GET['page'] == "myaccount"){
 		$smarty->assign("isinactivedelay", can_user_become_active($_SESSION['userid']));
 		$smarty->assign("inactivetimeleft", time_left_till_user_can_become_active($_SESSION['userid']));
 		$smarty->assign("inactivedelay", $_CONFIG['inactivedelay']);
+		$smarty->assign("id", $page_user['id']);
 		$smarty->assign("fullname", $page_user['name']);
 		$smarty->assign("secret", $page_user['secret']);
 		$smarty->assign("active", $page_user['active']);

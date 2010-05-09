@@ -92,6 +92,11 @@ function register($username, $password, $name, $email){
 	return $id;
 }
 
+function change_password($id, $password){
+	$query = "UPDATE `users` SET  `password` = '" . sha1($password) . "' WHERE  `id` = " . $id . " LIMIT 1 ;";
+	mysql_query($query);
+}
+
 function set_user_phone($userid, $phone){
 	$query = "UPDATE users SET `phone` = '" . $phone . "' WHERE `id` = " . $userid . " LIMIT 1;";
 	$result = mysql_query($query);
