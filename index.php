@@ -122,7 +122,11 @@ else if($_GET['page'] == "process"){
 		// Determine if the captcha was entered in correctly
 		$recaptcha_fail = true;
 		$recaptcha_error = "";
-		if (isset($_POST["recaptcha_response_field"])) {
+		if(!$_CONFIG['recaptcha_enabled']){
+			// Recaptcha is not enabled so we do not need to validate the field.
+			$recaptcha_fail = false;
+		}
+		else if (isset($_POST["recaptcha_response_field"])) {
 			// The post variables are not escaped here, but since they don't touch the database we should be safe
 			$resp = recaptcha_check_answer($_CONFIG['recaptcha_private'], $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
 			if ($resp->is_valid) {
@@ -231,7 +235,10 @@ else if($_GET['page'] == "register"){
 	 ******************************************************************************************************/
 	$smarty->assign("pagename", "Register");
 	$error = "";
-	$smarty->assign("recaptcha", recaptcha_get_html($_CONFIG['recaptcha_public'], $error));
+	if($_CONFIG['recaptcha_enabled']){
+		$smarty->assign("recaptcha", recaptcha_get_html($_CONFIG['recaptcha_public'], $error));
+	}
+	$smarty->assign("recaptcha_enabled", $_CONFIG['recaptcha_enabled']);
 	$smarty->display('register.tpl');
 }
 else if($_GET['page'] == "register_zeep"){

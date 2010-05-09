@@ -70,6 +70,7 @@ $_CONFIG['zeep_api_url'] = 'https://api.zeepmobile.com/messaging/2008-07-14/send
 $_CONFIG['zeep_custom_authenticator'] = "ABCD"; // The callback url: http://domain.com/textmessage.php?id=ABCD
 
 // http://recaptcha.net/ settings
+$_CONFIG['recaptcha_enabled'] = TRUE;
 $_CONFIG['recaptcha_public'] = "";
 $_CONFIG['recaptcha_private'] = "";
 
