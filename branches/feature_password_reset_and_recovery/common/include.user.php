@@ -82,6 +82,18 @@ function authenticate($username, $password){
 	}
 }
 
+function authenticate_id($id, $password){
+	$query = "SELECT COUNT(*) number FROM users WHERE `id` = '" . $id . "' AND `password` = '" . sha1($password) . "';";
+	$result = mysql_query($query);
+	$row = mysql_fetch_assoc($result);
+	if($row['number'] == 1){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
 function register($username, $password, $name, $email){
 	$query = "INSERT INTO users (`username`, `password`, `name`, `email`, `phone`, `secret`, `active`, `spawn`, `uupdated`) ";
 	$query .= "VALUES('" . $username . "', '" . sha1($password) . "', '" . $name . "', '" . $email . "', '0000000000', '" . generate_secret() . "',  1, NOW(), NOW());";

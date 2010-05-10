@@ -246,9 +246,17 @@ else if($_GET['page'] == "process"){
 				exit();
 			}
 			else{
-				// All systems go!  Change that password...
-				change_password($id, $password1);
-				update_user_date($_SESSION['userid']);
+				// Validate the current password
+				if(authenticate_id($id, $password)){
+					// All systems go!  Change that password...
+					change_password($id, $password1);
+					update_user_date($_SESSION['userid']);
+				}
+				else{
+					$smarty->assign("message","Error: Your old password did not match.");
+					$smarty->display('error.tpl');
+					exit();
+				}
 			}
 			
 			$smarty->assign("url","./index.php?page=myaccount");
