@@ -268,7 +268,60 @@ else if($_GET['page'] == "process"){
 		$smarty->display('redirect.tpl');
 		exit();
 	}
-	
+	else if($action == "recoverpassword"){
+		/********************************
+		* process recover password
+		********************************/
+		$username = mysql_real_escape_string($_POST['uname']);
+		$fullname = mysql_real_escape_string($_POST['fname']);
+		$emailaddress = mysql_real_escape_string($_POST['email']);
+		
+		// Determine if the captcha was entered in correctly
+		$recaptcha_fail = true;
+		$recaptcha_error = "";
+		if(!$_CONFIG['recaptcha_enabled']){
+			// Recaptcha is not enabled so we do not need to validate the field.
+			$recaptcha_fail = false;
+		}
+		else if (isset($_POST["recaptcha_response_field"])) {
+			// The post variables are not escaped here, but since they don't touch the database we should be safe
+			$resp = recaptcha_check_answer($_CONFIG['recaptcha_private'], $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
+			if ($resp->is_valid) {
+                $recaptcha_fail = false;
+			} else {
+                # set the error code so that we can display it
+                $recaptcha_error = $resp->error;
+			}
+		}
+		
+		if($recaptcha_fail){
+			$smarty->assign("message","Recaptcha Error: " . $recaptcha_error);
+			$smarty->display('error.tpl');
+			exit();
+		}
+		else if(authenticate_password_reset($username, $fullname, $emailaddress)){
+			// Generate the new password for the user
+			$newPassword = generate_secret() . generate_secret() . generate_secret();
+			
+			// Change the user's password
+			change_password(get_user_id($username), $newPassword);
+			
+			// Send the new password to the user's email address
+			send_password_changed(get_user_id($username), $newPassword);
+			
+			// Display the page that tells the user their password was reset
+			$smarty->assign("message","A new password was sent to your email address.");
+			$smarty->display('error.tpl');
+			exit();
+		}
+		else{
+			$smarty->assign("message","Error: Password could not be recovered.");
+			$smarty->display('error.tpl');
+			exit();
+		}
+		
+		exit();
+	}
 }
 else if($_GET['page'] == "login"){
 	/*******************************************************************************************************

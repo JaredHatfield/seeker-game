@@ -128,6 +128,13 @@ function send_contract_failed_by_expiration($contract_id){
 	send_message_to_user($info['assassin'], "Your contract on " . $info['target_name'] . " has expired.", "Automatic notification of expired contract.");
 }
 
-
+function send_password_changed($userid, $newPassword){
+	$info = get_user_information($userid);
+	$subject = "[Seeker] Password Reset";
+	$to = $info['email'];
+	$body  = $info['name'] . ",\n\n" . "Your password has been reset to: $newPassword \n\n";
+	$body .= "It is highly recommended you change your password immediately after you log in.\n";
+	send_message($to, $subject, $body);
+}
 
 ?>
