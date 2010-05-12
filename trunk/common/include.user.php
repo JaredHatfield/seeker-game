@@ -139,12 +139,14 @@ function toggle_user_account_status($userid){
 		$result = mysql_query($query);
 		$query = "INSERT INTO audit_status (`userid`, `previous`, `new`, `time`) VALUES(" . $userid . ", 1, 0, NOW());";
 		$result = mysql_query($query);
+		post_news_status_change($userid, false);
 	}
 	else if($row[0] == "0"){
 		$query = "UPDATE users SET `active` = 1 WHERE `id` = " . $userid . ";";
 		$result = mysql_query($query);
 		$query = "INSERT INTO audit_status (`userid`, `previous`, `new`, `time`) VALUES(" . $userid . ", 0, 1, NOW());";
 		$result = mysql_query($query);
+		post_news_status_change($userid, true);
 	}
 }
 
@@ -180,6 +182,7 @@ WHERE `userid` = " . $userid . ";";
 function switch_user_to_inactive($userid){
 	$query = "UPDATE `users` SET `active` = 0 WHERE `id` = " . $userid . ";";
 	$result = mysql_query($query);
+	post_news_automatic_inactive($userid);
 }
 
 ?>
