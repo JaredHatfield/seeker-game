@@ -221,6 +221,107 @@ else if($_GET['page'] == "process"){
 		$smarty->display('redirect.tpl');
 		exit();
 	}
+	else if($action == "changepassword"){
+		/********************************
+		* process change password
+		********************************/
+		if(isset($_SESSION['userid']) && $_SESSION['userid'] != -1){
+			$id = mysql_real_escape_string($_POST['id']);
+			$password = mysql_real_escape_string($_POST['password']);
+			$password1 = mysql_real_escape_string($_POST['passwd1']);
+			$password2 = mysql_real_escape_string($_POST['passwd2']);
+			
+			if($id != $_SESSION['userid']){
+				// The form submitted does not match the authenticated user, send them to the home page
+				$smarty->assign("url","./index.php");
+			}
+			else if($password1 != $password2){
+				$smarty->assign("message","Error: The passwords you entered did not match, try changing your password again.");
+				$smarty->display('error.tpl');
+				exit();
+			}
+			else if(strlen($password1) < 6){
+				$smarty->assign("message","Error: Your new password must be at least 6 characters long.");
+				$smarty->display('error.tpl');
+				exit();
+			}
+			else{
+				// Validate the current password
+				if(authenticate_id($id, $password)){
+					// All systems go!  Change that password...
+					change_password($id, $password1);
+					update_user_date($_SESSION['userid']);
+				}
+				else{
+					$smarty->assign("message","Error: Your old password did not match.");
+					$smarty->display('error.tpl');
+					exit();
+				}
+			}
+			
+			$smarty->assign("url","./index.php?page=myaccount");
+		}
+		else{
+			// User not authenticated, send them to the home page
+			$smarty->assign("url","./index.php");
+		}
+		$smarty->display('redirect.tpl');
+		exit();
+	}
+	else if($action == "recoverpassword"){
+		/********************************
+		* process recover password
+		********************************/
+		$username = mysql_real_escape_string($_POST['uname']);
+		$fullname = mysql_real_escape_string($_POST['fname']);
+		$emailaddress = mysql_real_escape_string($_POST['email']);
+		
+		// Determine if the captcha was entered in correctly
+		$recaptcha_fail = true;
+		$recaptcha_error = "";
+		if(!$_CONFIG['recaptcha_enabled']){
+			// Recaptcha is not enabled so we do not need to validate the field.
+			$recaptcha_fail = false;
+		}
+		else if (isset($_POST["recaptcha_response_field"])) {
+			// The post variables are not escaped here, but since they don't touch the database we should be safe
+			$resp = recaptcha_check_answer($_CONFIG['recaptcha_private'], $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
+			if ($resp->is_valid) {
+                $recaptcha_fail = false;
+			} else {
+                # set the error code so that we can display it
+                $recaptcha_error = $resp->error;
+			}
+		}
+		
+		if($recaptcha_fail){
+			$smarty->assign("message","Recaptcha Error: " . $recaptcha_error);
+			$smarty->display('error.tpl');
+			exit();
+		}
+		else if(authenticate_password_reset($username, $fullname, $emailaddress)){
+			// Generate the new password for the user
+			$newPassword = generate_secret() . generate_secret() . generate_secret();
+			
+			// Change the user's password
+			change_password(get_user_id($username), $newPassword);
+			
+			// Send the new password to the user's email address
+			send_password_changed(get_user_id($username), $newPassword);
+			
+			// Display the page that tells the user their password was reset
+			$smarty->assign("message","A new password was sent to your email address.");
+			$smarty->display('error.tpl');
+			exit();
+		}
+		else{
+			$smarty->assign("message","Error: Password could not be recovered.");
+			$smarty->display('error.tpl');
+			exit();
+		}
+		
+		exit();
+	}
 }
 else if($_GET['page'] == "login"){
 	/*******************************************************************************************************
@@ -240,6 +341,18 @@ else if($_GET['page'] == "register"){
 	}
 	$smarty->assign("recaptcha_enabled", $_CONFIG['recaptcha_enabled']);
 	$smarty->display('register.tpl');
+}
+else if($_GET['page'] == "recover_password"){
+	/*******************************************************************************************************
+	 * Recover password page
+	 ******************************************************************************************************/
+	$smarty->assign("pagename", "Recover Password");
+	$error = "";
+	if($_CONFIG['recaptcha_enabled']){
+		$smarty->assign("recaptcha", recaptcha_get_html($_CONFIG['recaptcha_public'], $error));
+	}
+	$smarty->assign("recaptcha_enabled", $_CONFIG['recaptcha_enabled']);
+	$smarty->display('recover_password.tpl');
 }
 else if($_GET['page'] == "register_zeep"){
 	/*******************************************************************************************************
@@ -330,6 +443,7 @@ else if($_GET['page'] == "myaccount"){
 		$smarty->assign("isinactivedelay", can_user_become_active($_SESSION['userid']));
 		$smarty->assign("inactivetimeleft", time_left_till_user_can_become_active($_SESSION['userid']));
 		$smarty->assign("inactivedelay", $_CONFIG['inactivedelay']);
+		$smarty->assign("id", $page_user['id']);
 		$smarty->assign("fullname", $page_user['name']);
 		$smarty->assign("secret", $page_user['secret']);
 		$smarty->assign("active", $page_user['active']);

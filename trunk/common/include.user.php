@@ -82,6 +82,30 @@ function authenticate($username, $password){
 	}
 }
 
+function authenticate_id($id, $password){
+	$query = "SELECT COUNT(*) number FROM users WHERE `id` = '" . $id . "' AND `password` = '" . sha1($password) . "';";
+	$result = mysql_query($query);
+	$row = mysql_fetch_assoc($result);
+	if($row['number'] == 1){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+function authenticate_password_reset($username, $name, $email){
+	$query = "SELECT COUNT(*) number FROM users WHERE `username` = '" . $username . "' AND `name` = '" . $name . "'  AND `email` = '" . $email . "';";
+	$result = mysql_query($query);
+	$row = mysql_fetch_assoc($result);
+	if($row['number'] == 1){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
 function register($username, $password, $name, $email){
 	$query = "INSERT INTO users (`username`, `password`, `name`, `email`, `phone`, `secret`, `active`, `spawn`, `uupdated`) ";
 	$query .= "VALUES('" . $username . "', '" . sha1($password) . "', '" . $name . "', '" . $email . "', '0000000000', '" . generate_secret() . "',  1, NOW(), NOW());";
@@ -90,6 +114,11 @@ function register($username, $password, $name, $email){
 	$message = "<a href=\"./index.php?page=user&id=" . $id . "\">" . $name . "</a> has joined the game.";
 	post_news_item($message);
 	return $id;
+}
+
+function change_password($id, $password){
+	$query = "UPDATE `users` SET  `password` = '" . sha1($password) . "' WHERE  `id` = " . $id . " LIMIT 1 ;";
+	mysql_query($query);
 }
 
 function set_user_phone($userid, $phone){

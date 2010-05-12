@@ -1,6 +1,6 @@
 {**
  * Project:     Seeker
- * File:        login.tpl
+ * File:        recover_password.tpl
  *
  * Seeker is free software: you can redistribute it and/or modify it 
  * under the terms of the GNU General Public License as published 
@@ -23,18 +23,25 @@
  * @version 1.0
  *}
 {include file="header.tpl" title=Seeker}
-<h3>Login</h3>
+
+<h2>Recover Password</h2>
 <FORM action="./index.php?page=process" method="post">
 	<P>
 	Username: <INPUT type="text" name="uname"><br />
-	Password: <INPUT type="password" name="passwd"><br />
-	{*<INPUT type="hidden" name="key" value="{php}echo secureform_add('login', 4){/php}">*}
-	<input type="hidden" name="action" value="login">
-	<INPUT type="submit" value="Send">
+	<p style="margin-left:20px; font-size:11;">The username that was used when registering for Seeker.</p>
+	Full Name: <INPUT type="text" name="fname"><br />
+	<p style="margin-left:20px; font-size:11;">The name used when you registered for Seeker.</p>
+	Email Address: <INPUT type="text" name="email"><br />
+	<p style="margin-left:20px; font-size:11;">The email address that was used when you registered for Seeker.</p>
+	{if $recaptcha_enabled}
+	{$recaptcha}<br />	
+	<p style="margin-left:20px; font-size:11;">Just making sure that you are human...</p>
+	{/if}
+	{*<INPUT type="hidden" name="key" value="{php}echo secureform_add('recoverpassword', 4){/php}">*}
+	<input type="hidden" name="action" value="recoverpassword">
+	<br />
+	<INPUT type="submit" value="Recover Password">
 	</P>
  </FORM>
- <br />
- 
- <a href="{$baseurl}recover_password">Recover Password</a>
- 
+
 {include file="footer.tpl"}

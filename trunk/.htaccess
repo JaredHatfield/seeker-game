@@ -2,5 +2,6 @@ RewriteEngine On
 RewriteRule ^home$ index.php
 RewriteRule ^listusers index.php?page=listusers
 RewriteRule ^mobile_commands index.php?page=mobile_commands
+RewriteRule ^recover_password index.php?page=recover_password
 RewriteRule ^leaderboard/(.*)$ index.php?page=leaderboard&$1
 RewriteRule ^user/([0-9]*)/$ index.php?page=user&id=$1

@@ -62,7 +62,22 @@
 <br /><br />
 
 <b>Manage Phone Settings:</b> <a href="./index.php?page=register_zeep">Zeepmobile Settings</a>
+<br /><br /><br />
 
+<b>Reset Password</b>
+<br />
+<FORM action="./index.php?page=process" method="post">
+	Old Password: <INPUT type="password" name="password"><br />
+	New Password: <INPUT type="password" name="passwd1"><br />
+	Confirm Password: <INPUT type="password" name="passwd2"><br />
+	<p style="margin-left:20px; font-size:11;">Your password must be at least 6 characters long</p>
+	<input type="hidden" name="id" value="{$id}">
+	{*<INPUT type="hidden" name="key" value="{php}echo secureform_add('change_password', 4){/php}">*}
+	<input type="hidden" name="action" value="changepassword">
+	<INPUT type="submit" value="Change Password">
+	</P>
+</FORM>
+ 
 <h2>New User Registration</h2>
 
 In order for new players to register, they are required to enter a game password.  Existing players, such as you, are able to access that password here.
