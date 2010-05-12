@@ -32,7 +32,7 @@ function post_news_item($message){
 
 // missed, killed, expired
 function post_news_item_failed($contract_id, $type){
-	$info = get_contract_information($contract_id);
+ 	$info = get_contract_information($contract_id);
 	if($type == "missed"){
 		$message = "<a href=\"./index.php?page=user&id=" . $info['assassin'] . "\">" . $info['assassin_name'] . "</a> failed a contract because someone got to <a href=\"./index.php?page=user&id=" . $info['target'] . "\">" . $info['target_name'] . "</a> first.";
 		post_news_item($message);
@@ -45,6 +45,27 @@ function post_news_item_failed($contract_id, $type){
 		$message = "<a href=\"./index.php?page=user&id=" . $info['assassin'] . "\">" . $info['assassin_name'] . "</a> failed a contract because <a href=\"./index.php?page=user&id=" . $info['target'] . "\">" . $info['target_name'] . "</a> managed to avoid them for the length of the contract.";
 		post_news_item($message);
 	}
+}
+
+function post_news_status_change($userid, $active){
+	$info = get_user_information($userid);
+	
+	if($active){
+		// User switched to active
+		$message = "<a href=\"./index.php?page=user&id=" . $info['id'] . "\">" . $info['name'] . "</a> switched to active.";
+		post_news_item($message);
+	}
+	else{
+		// User switched to inactive
+		$message = "<a href=\"./index.php?page=user&id=" . $info['id'] . "\">" . $info['name'] . "</a> switched to inactive.";
+		post_news_item($message);
+	}
+}
+
+function post_news_automatic_inactive($userid){
+	$info = get_user_information($userid);
+	$message = "<a href=\"./index.php?page=user&id=" . $info['id'] . "\">" . $info['name'] . "</a> has not been playing and was automatically switched to inactive.";
+	post_news_item($message);
 }
 
 function get_recent_news_items(){
