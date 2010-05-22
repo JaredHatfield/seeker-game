@@ -468,30 +468,69 @@ else if($_GET['page'] == "leaderboard"){
 	/*******************************************************************************************************
 	 * Leaderboard
 	 ******************************************************************************************************/
-	if(isset($_GET['thisweek'])){
-		$smarty->assign("pagename", "Leaderboard - This Week");
-		$smarty->assign("board", "This Week's");
-		$smarty->assign("boardlink", 0);
-		$smarty->assign("leaderboard", get_leaderboard_past_days(7));
-	}
-	else if(isset($_GET['thismonth'])){
-		$smarty->assign("pagename", "Leaderboard - This Month");
-		$smarty->assign("board", "This Month's");
-		$smarty->assign("boardlink", 1);
-		$smarty->assign("leaderboard", get_leaderboard_past_days(30));
-	}
-	else if(isset($_GET['thissemester'])){
-		$smarty->assign("pagename", "Leaderboard - This Semester");
-		$smarty->assign("board", "This Semesters's");
-		$smarty->assign("boardlink", 2);
-		$smarty->assign("leaderboard", get_leaderboard_current_semester());
+	if(isset($_GET['time'])){
+		if($_GET['time'] == "month"){
+			if(isset($_GET['year']) && isset($_GET['month'])){
+				// Display the specified month
+				$thismonth['year'] = $_GET['year'];
+				$thismonth['month'] = $_GET['month'];
+			}
+			else{
+				// Display current month
+				$thismonth = get_current_month();
+			}
+			
+			$monthdates = get_month_date($thismonth['year'], $thismonth['month']);
+			$nextmonth = get_next_month($thismonth['year'], $thismonth['month']);
+			$previousmonth = get_previous_month($thismonth['year'], $thismonth['month']);
+			$smarty->assign("board", date("F Y", mktime(0, 0, 0, $thismonth['month'], 1, $thismonth['year'])));
+			$smarty->assign("pagename", "Leaderboard - Monthly");
+			$smarty->assign("boardlink", 1);
+			$smarty->assign("previouspage", "leaderboard/month/" . $previousmonth['year'] . "/" . $previousmonth['month'] . "/");
+			$smarty->assign("nextpage", "leaderboard/month/" . $nextmonth['year'] . "/" . $nextmonth['month'] . "/");
+			
+			$smarty->assign("leaderboard", get_leaderboard_for_range($monthdates['start'], $monthdates['end']));
+		}
+		else if($_GET['time'] == "semester"){
+			if(isset($_GET['year']) && isset($_GET['semester'])){
+				// Display the specified semester
+				$thissemester['year'] = $_GET['year'];
+				$thissemester['number'] = $_GET['semester'];
+			}
+			else{
+				// Display current semester
+				$thissemester = get_current_semester();
+			}
+			
+			$semesterdates = get_semester_date($thissemester['year'], $thissemester['number']);
+			$nextsemester = get_next_semester($thissemester['year'], $thissemester['number']);
+			$previoussemester = get_previous_semester($thissemester['year'], $thissemester['number']);
+			
+			if($thissemester['number'] == 1){
+				$smarty->assign("board", "Spring " . $thissemester['year']);
+			}
+			else if($thissemester['number'] == 2){
+				$smarty->assign("board", "Summer " . $thissemester['year']);
+			}
+			else if($thissemester['number'] == 3){
+				$smarty->assign("board", "Fall " . $thissemester['year']);
+			}
+				
+			$smarty->assign("pagename", "Leaderboard - Semesterly");
+			$smarty->assign("boardlink", 2);
+			$smarty->assign("previouspage", "leaderboard/semester/" . $previoussemester['year'] . "/" . $previoussemester['number'] . "/");
+			$smarty->assign("nextpage", "leaderboard/semester/" . $nextsemester['year'] . "/" . $nextsemester['number'] . "/");
+			$smarty->assign("leaderboard", get_leaderboard_for_range($semesterdates['start'], $semesterdates['end']));
+		}	
 	}
 	else{
+		// All time
 		$smarty->assign("pagename", "Leaderboard - All Time");
 		$smarty->assign("board", "All Time");
 		$smarty->assign("boardlink", 3);
 		$smarty->assign("leaderboard", get_all_time_leaderboard());
 	}
+	
 	$smarty->display('leaderboard.tpl');
 }
 else if($_GET['page'] == "feed"){

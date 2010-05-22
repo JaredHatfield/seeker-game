@@ -42,7 +42,7 @@
 	<tr>
 		<td>
 			<center>
-			<a href="{$baseurl}home">Home</a> | <a href="{$baseurl}listusers">List of Players</a> | <a href="{$baseurl}leaderboard/thissemester">Leaderboard</a> | <a href="{$baseurl}mobile_commands">Mobile Commands</a>
+			<a href="{$baseurl}home">Home</a> | <a href="{$baseurl}listusers">List of Players</a> | <a href="{$baseurl}leaderboard/semester/">Leaderboard</a> | <a href="{$baseurl}mobile_commands">Mobile Commands</a>
 			<br />
 			{if $logged_in eq 0}
 				<a href="{$baseurl}index.php?page=login">Login</a> | <a href="{$baseurl}index.php?page=register">Register</a>

@@ -25,22 +25,16 @@
 {include file="header.tpl" title=Seeker}
 <br />
 <center>
-	{if $boardlink == 0}
-		This Week | 
-	{else}
-		<a href="{$baseurl}leaderboard/thisweek">This Week</a> | 
-	{/if}
-	
 	{if $boardlink == 1}
-		This Month | 
+		Monthly | 
 	{else}
-		<a href="{$baseurl}leaderboard/thismonth">This Month</a> | 
+		<a href="{$baseurl}leaderboard/month/">Monthly</a> | 
 	{/if}
 	
 	{if $boardlink == 2}
-		This Semester | 
+		Semesterly | 
 	{else}
-		<a href="{$baseurl}leaderboard/thissemester">This Semester</a> | 
+		<a href="{$baseurl}leaderboard/semester/">Semesterly</a> | 
 	{/if}
 	
 	{if $boardlink == 3}
@@ -50,6 +44,10 @@
 	{/if}
 </center>
 <h2>{$board} Leaderboard</h2>
+{if $boardlink != 3}
+	<a href="{$baseurl}{$previouspage}" style="float:left; margin-top:-50px;">Previous</a>
+	<a href="{$baseurl}{$nextpage}" style="float:right; margin-top:-50px;">Next</a>
+{/if}
 {if $leaderboard|@count > 0}
 <table class="data">
 {strip}
