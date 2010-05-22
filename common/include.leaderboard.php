@@ -60,25 +60,137 @@ function get_leaderboard_past_days($numberofdays){
 	return add_leaderboard_places($val);
 }
 
-function get_leaderboard_current_semester(){
+function get_current_month(){
+	$val['year'] = date("Y");
+	$val['month'] = date("n");
+	return $val;
+}
+
+function get_month_date($year, $month){
+	$val['start'] = date("Y-m-d H:i:s", mktime(0, 0, 0, $month, 1, $year));
+	$val['end'] = date("Y-m-d H:i:s", mktime(0, 0, 0, $month + 1, 1, $year));
+	
+	if($month == 12){
+		$val['end'] = date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, $year+1));
+	}
+	
+	return $val;
+}
+
+function get_previous_month($year, $month){
+	$val['year'] = $year;
+	$val['month'] = $month;
+	
+	if($month == 1){
+		$val['year'] = $year - 1;
+		$val['month'] = 12;
+	}
+	else{
+		$val['year'] = $year;
+		$val['month'] = $month - 1;
+	}
+	
+	return $val;
+}
+
+function get_next_month($year, $month){
+	$val['year'] = $year;
+	$val['month'] = $month;
+	
+	if($month == 12){
+		$val['year'] = $year + 1;
+		$val['month'] = 1;
+	}
+	else{
+		$val['year'] = $year;
+		$val['month'] = $month + 1;
+	}
+	
+	return $val;
+}
+
+function get_current_semester(){
+	$val['year'] = date("Y");
+	$val['number'] = "";
 	$currentmonth = date("n");
 	
 	if($currentmonth < 5){
-		// Spring
-		$start = date("Y") . "-01-01 00:00:00";
-		$end   = date("Y") . "-05-01 00:00:00";
+		$val['number'] = 1;
 	}
 	else if($currentmonth < 9){
-		// Summer
-		$start = date("Y") . "-05-01 00:00:00";
-		$end   = date("Y") . "-09-01 00:00:00";
+		$val['number'] = 2;
 	}
 	else{
-		// Falls
-		$start = date("Y") . "-09-01 00:00:00";
-		$end   = (date("Y")+1) . "-01-01 00:00:00";
+		$val['number'] = 3;
 	}
 	
+	return $val;
+}
+
+function get_semester_date($year, $number){
+	$val['start'] = "";
+	$val['end'] = "";
+	
+	if($number == 1){
+		// Spring
+		$val['start'] = $year . "-01-01 00:00:00";
+		$val['end']   = $year . "-05-01 00:00:00";
+	}
+	else if($number  == 2){
+		// Summer
+		$val['start'] = $year . "-05-01 00:00:00";
+		$val['end']   = $year . "-09-01 00:00:00";
+	}
+	else if($number == 3){
+		// Falls
+		$val['start'] =  $year. "-09-01 00:00:00";
+		$val['end']   = $year + 1 . "-01-01 00:00:00";
+	}
+	
+	return $val;
+}
+
+function get_previous_semester($year, $number){
+	$val['year'] = "";
+	$val['number'] = "";
+	
+	if($number == 1){
+		$val['year'] = $year - 1;
+		$val['number'] = 3;
+	}
+	else if($number == 2){
+		$val['year'] = $year;
+		$val['number'] = 1;
+	}
+	else if($number == 3){
+		$val['year'] = $year;
+		$val['number'] = 2;
+	}
+	
+	return $val;
+}
+
+function get_next_semester($year, $number){
+	$val['year'] = "";
+	$val['number'] = "";
+	
+	if($number == 1){
+		$val['year'] = $year;
+		$val['number'] = 2;
+	}
+	else if($number == 2){
+		$val['year'] = $year;
+		$val['number'] = 3;
+	}
+	else if($number == 3){
+		$val['year'] = $year + 1;
+		$val['number'] = 1;
+	}
+	
+	return $val;
+}
+
+function get_leaderboard_for_range($start, $end){
 	$query  = "SELECT `assassin` id, u.`name`, COUNT(*) number FROM contract c JOIN users u ON c.`assassin` = u.`id` ";
 	$query .= "WHERE `status` = 2 AND c.`updated` > '" . $start . "' AND c.`updated` < '" . $end . "' ";
 	$query .= "GROUP BY `assassin` ORDER BY COUNT(*) DESC, u.`name` ASC;";

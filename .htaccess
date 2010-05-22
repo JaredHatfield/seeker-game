@@ -3,5 +3,9 @@ RewriteRule ^home$ index.php
 RewriteRule ^listusers index.php?page=listusers
 RewriteRule ^mobile_commands index.php?page=mobile_commands
 RewriteRule ^recover_password index.php?page=recover_password
-RewriteRule ^leaderboard/(.*)$ index.php?page=leaderboard&$1
+RewriteRule ^leaderboard/month/([0-9]*)/([0-9]*)/ index.php?page=leaderboard&time=month&year=$1&month=$2
+RewriteRule ^leaderboard/month/ index.php?page=leaderboard&time=month
+RewriteRule ^leaderboard/semester/([0-9]*)/([0-9]*)/ index.php?page=leaderboard&time=semester&year=$1&semester=$2
+RewriteRule ^leaderboard/semester/ index.php?page=leaderboard&time=semester
+RewriteRule ^leaderboard/ index.php?page=leaderboard
 RewriteRule ^user/([0-9]*)/$ index.php?page=user&id=$1
