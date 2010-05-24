@@ -57,21 +57,28 @@ function assign_new_contracts(){
 		$val[] = $row['id'];
 	}
 	
-	// Shuffel the list of users so they are not always assigned contracts in the same order
+	// Shuffle the list of users so they are not always assigned contracts in the same order
 	shuffle($val);
 	
-	// Assign contracts to those students
+	// Assign contracts to the players
 	$count = 0;
 	for($i = 0; $i < sizeof($val); $i++){
 		$assassin = $val[$i];
+		
+		// Get the id of the new target for this person (-1 if no valid target could be found)
 		$target = get_target_for($assassin);
+		
 		// There is a potential target
 		if($target != -1){
-			// The message notifying the user about their contract is sent in the add_contract function
+			// Add the new contract to the database and send the appropriate notifications out
 			add_contract($assassin, $target, $_CONFIG['contractlength']);
+			
+			// We are simply keeping track of the total number of contracts assigned during this run
 			$count++;
 		}
 	}
+	
+	// When we are done assigning contracts, post a news item about the contracts that were assigned.
 	if($count == 1){
 		post_news_item("A new contract has been issued.");
 	}
@@ -82,6 +89,13 @@ function assign_new_contracts(){
 
 function get_target_for($assassin){
 	global $_CONFIG;
+	
+	// Find all of the potential targets for a player
+	// 1) The target must be alive
+	// 2) The player may not have themself as a target
+	// 3) The target must be an active player
+	// 4) The target must not have this player as their target
+	// 5) The player may not have had their target as one of their last 4 contracts
 	$query  = "SELECT `id`, IFNULL(`weight`,0) weight ";
 	$query .= "FROM users u ";
 	$query .= "LEFT JOIN (SELECT `target`, count(*) weight FROM contract WHERE `status` = 1 GROUP BY `target`) p ON u.`id` = p.`target` ";
@@ -94,21 +108,24 @@ function get_target_for($assassin){
 		$val[] = $row['id'];
 	}
 	
-	// Pick someone randomly from the list of possible targets
+	// Pick a player randomly from the list of possible targets
+	// TODO: There is the potential for more intelligent selection of a target from the list of potential targets
 	if(sizeof($val) > 0){
 		return $val[rand(0, sizeof($val) - 1)];
 	}
 	else{
+		// Returning -1 indicates that not potential target could be located
 		return -1;
 	}
 }
 
 function add_contract($assassin, $target, $hour){
+	// Add the actual contract to the database!
 	$query  = "INSERT INTO contract (`assassin`, `target`, `assigned`, `expiration`, `updated`, `status`) ";
 	$query .= "VALUE (" . $assassin . "," . $target . ",NOW(),ADDDATE(NOW(), INTERVAL " . $hour . " HOUR),NOW(), 1);";
 	$result = mysql_query($query);
 	
-	// We need to send a message to the user so they know about their contract
+	// Send a message to the user so they know about their contract (email and text message as appropriate)
 	$contract_id = mysql_insert_id();
 	send_contract_notification($contract_id);
 }
