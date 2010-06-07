@@ -30,7 +30,7 @@
 <b>Your Current Secret:</b> {$secret}<br /><br />
 <b>Current Status:</b>
 {if $active eq 1}
-	Active / Accepting contracts 
+	Active
 	{if $isinactivedelay}
 		<FORM action="./index.php?page=process" method="post">
 			{*<INPUT type="hidden" name="key" value="{php}echo secureform_add('togglestatus', 4){/php}">*}
@@ -45,7 +45,7 @@
 	{/if}
 	<br />
 {else}
-	Inactive / Not accepting contracts  
+	Inactive
 	{if $isinactivedelay}
 		<FORM action="./index.php?page=process" method="post">
 			{*<INPUT type="hidden" name="key" value="{php}echo secureform_add('togglestatus', 4){/php}">*}
