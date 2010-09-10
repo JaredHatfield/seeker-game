@@ -484,7 +484,7 @@ else if($_GET['page'] == "leaderboard"){
 			$nextmonth = get_next_month($thismonth['year'], $thismonth['month']);
 			$previousmonth = get_previous_month($thismonth['year'], $thismonth['month']);
 			$smarty->assign("board", date("F Y", mktime(0, 0, 0, $thismonth['month'], 1, $thismonth['year'])));
-			$smarty->assign("pagename", "Leaderboard - Monthly");
+			$smarty->assign("pagename", "Leaderboard - " . $thismonth['month'] . "/" . $thismonth['year']);
 			$smarty->assign("boardlink", 1);
 			$smarty->assign("previouspage", "leaderboard/month/" . $previousmonth['year'] . "/" . $previousmonth['month'] . "/");
 			$smarty->assign("nextpage", "leaderboard/month/" . $nextmonth['year'] . "/" . $nextmonth['month'] . "/");
@@ -507,16 +507,18 @@ else if($_GET['page'] == "leaderboard"){
 			$previoussemester = get_previous_semester($thissemester['year'], $thissemester['number']);
 			
 			if($thissemester['number'] == 1){
-				$smarty->assign("board", "Spring " . $thissemester['year']);
+				$boardName = "Spring " . $thissemester['year'];
 			}
 			else if($thissemester['number'] == 2){
-				$smarty->assign("board", "Summer " . $thissemester['year']);
+				$boardName = "Summer " . $thissemester['year'];
 			}
 			else if($thissemester['number'] == 3){
-				$smarty->assign("board", "Fall " . $thissemester['year']);
-			}
+				$boardName = "Fall " . $thissemester['year'];
 				
-			$smarty->assign("pagename", "Leaderboard - Semesterly");
+			}
+			
+			$smarty->assign("board", $boardName);
+			$smarty->assign("pagename", "Leaderboard - " . $boardName );
 			$smarty->assign("boardlink", 2);
 			$smarty->assign("previouspage", "leaderboard/semester/" . $previoussemester['year'] . "/" . $previoussemester['number'] . "/");
 			$smarty->assign("nextpage", "leaderboard/semester/" . $nextsemester['year'] . "/" . $nextsemester['number'] . "/");
